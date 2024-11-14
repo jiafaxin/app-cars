@@ -1,0 +1,194 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.carbase;
+option java_multiple_files = true;
+option java_outer_classname = "SeriesCompareProto";
+option java_package = "autohome.rpc.car.app_cars.v1.carbase";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/carbase;carbase";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.carbase";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+
+/**
+  * service 样例
+  * 维护人: lihongchen
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service SeriesCompareService {
+  /**
+    * 车系对比
+    * 维护人:lihongchen
+    */
+  rpc GetSeriesCompareInfo(SeriesCompareRequest) returns (SeriesCompareResponse) {}
+  /**
+  * 车系下车型优惠信息
+  * 维护人: lihongchen
+ */
+  rpc GetBuyCarDiscountInfo(GetBuyCarDiscountInfoRequest) returns (GetBuyCarDiscountInfoResponse) {}
+
+  /**
+    * 车系优惠信息
+    * 维护人: lihongchen
+   */
+  rpc GetSeriesDiscountInfo (GetSeriesDiscountInfoRequest) returns (GetSeriesDiscountInfoResponse) {}
+
+
+}
+
+message SeriesCompareRequest {
+  int32 pm = 1;
+  string pluginversion = 2;
+  int32 cityid = 3;
+  string seriesids = 4;
+}
+
+message SeriesCompareResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  int32 cacheable = 4;
+
+  message Result{
+    repeated Cardlist cardlist = 1;
+    Shareinfo shareinfo = 2;
+
+    message Shareinfo{
+      int32 position = 1;
+      int32 sharetype = 2;
+      string text = 3;
+      string url = 4;
+    }
+  }
+}
+
+message Cardlist{
+  int32 type = 1;
+  Data data = 2;
+
+  message Data{
+    string bigtitle = 1;
+    string subtitle = 2;
+    string tipstitle = 3;
+    string tipsdescribe = 4;
+    repeated Tablist tablist = 5;
+    repeated Tablelist tablelist = 6;
+    Pvitem pvitem = 7;
+
+    message Tablist{
+      int32 tabid = 1;
+      string tabtitle = 2;
+      repeated Timelist timelist = 3;
+
+      message Timelist{
+        string title = 1;
+        repeated int32 ylist = 2;
+        repeated Xlist xlist = 3;
+        repeated Pklist pklist = 4;
+
+        message Xlist{
+          string title = 1;
+          int32 isshow = 2;
+        }
+
+        message Pklist{
+          string seriesname = 1;
+          string comparename = 2;
+          string themecolor = 3;
+          repeated Chartlist chartlist = 4;
+
+          message Chartlist{
+            int32  titlevalue = 1;
+            string reultcolor = 2;
+            string resulttitle = 3;
+            string reultvalue = 4;
+            string headertitle = 5;
+            string title = 6;
+          }
+        }
+      }
+    }
+
+    message Tablelist{
+      int32 seriesid = 1;
+      string title = 2;
+      string titlecolor = 3;
+      string subtitle = 4;
+      repeated List list = 5;
+
+      message List{
+        string name = 1;
+        string btnname = 2;
+        int32 btntype = 3;
+        string linkurl = 4;
+        string pvposition = 5;
+      }
+    }
+  }
+}
+
+enum SampleEnum {
+  ENUM_FIELD1 = 0;
+  ENUM_FIELD2 = 1;
+  ENUM_FIELD3 = 2;
+}
+
+
+message GetBuyCarDiscountInfoRequest{
+  string pm = 1;
+  string pluginversion = 2;
+  int32 cityid = 3;
+  int32 seriesid = 4;
+}
+
+message GetBuyCarDiscountInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    string title = 1;
+    repeated string tabletitle = 2;
+    repeated Content content = 3;
+
+    message Content{
+      int32 specid = 1;
+      string subsidy = 2;
+      string price = 3;
+      string name = 4;
+      string discount = 5;
+      string guideprice = 6;
+      string linkurl = 7;
+      int32 seriesid = 8;
+    }
+  }
+}
+
+message GetSeriesDiscountInfoRequest{
+  string pm = 1;
+  string pluginversion = 2;
+  int32 cityid = 3;
+  string seriesids = 4;
+  int32 fromtype = 5;
+}
+
+message GetSeriesDiscountInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Cardlist.Data result = 3;
+
+}
+

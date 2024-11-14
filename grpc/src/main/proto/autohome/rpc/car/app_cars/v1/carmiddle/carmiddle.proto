@@ -1,0 +1,221 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.carmiddle;
+option java_multiple_files = true;
+option java_outer_classname = "CarmiddleProto";
+option java_package = "autohome.rpc.car.app_cars.v1.carmiddle";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/carmiddle;carmiddle";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.carmiddle";
+
+
+/**
+  * service 样例
+  * 维护人: jiafaxin
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service CarMiddleService {
+  /**
+    * 获取品牌信息
+    *
+    */
+  rpc GetBrandInfoAll (BrandInfoAllRequest) returns (BrandInfoAllResponse) {}
+  /**
+    *获取车系信息
+   */
+  rpc GetSeriesListByBrandId (SeriesListByBrandIdRequest) returns (SeriesListByBrandIdResponse) {}
+  /**
+     *获取车型信息
+    */
+  rpc GetSpecListBySeriesId (SpecListBySeriesIdRequest) returns (SpecListBySeriesIdResponse) {}
+
+  /**
+  * 【获取顶部推荐列表】
+  * 维护人: zhangronghao
+ */
+  rpc GetRecommendationList (RecommendationListRequest) returns (RecommendationListResponse) {}
+
+
+}
+
+message BrandInfoAllRequest {
+  int64 timestamp = 1;
+  string app_id = 2 [json_name = "appId"];
+  string sign = 3;
+  int32 query_type = 4 [json_name = "queryType"];
+  int32 energy_type = 5 [json_name = "energyType"];
+}
+
+message BrandInfoAllResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result {
+    repeated BrandList list = 1;
+  }
+  message BrandList{
+    string letter = 1;
+    repeated BrandInfo list = 2;
+  }
+  message BrandInfo{
+    int32 brand_id = 1 [json_name = "brandId"];
+    string name = 2;
+    string img_url = 3 [json_name = "imgUrl"];
+    int32 is_new_energy = 4 [json_name = "isNewEnergy"];
+  }
+
+}
+
+message SeriesListByBrandIdRequest{
+  int64 timestamp = 1;
+  string app_id = 2 [json_name = "appId"];
+  string sign = 3;
+  int32 brand_id = 4 [json_name = "brandId"];
+  int32 query_type = 5 [json_name = "queryType"];
+  int32 energy_type = 6 [json_name = "energyType"];
+}
+
+message SeriesListByBrandIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    BrandInfo brand_info = 1 [json_name = "brandInfo"];
+    repeated FctInfo list = 2;
+    repeated FctInfo other_list = 3 [json_name = "otherList"];
+  }
+  message BrandInfo{
+    int32 brand_id = 1 [json_name = "brandId"];
+    string name = 2 ;
+    string img_url = 3 [json_name = "imgUrl"];
+  }
+  message FctInfo{
+    string name = 1;
+    repeated SeriesInfo list = 2;
+  }
+  message SeriesInfo{
+    int32 series_id = 1 [json_name = "seriesId"];
+    string name = 2 ;
+    string img_url = 3 [json_name = "imgUrl"];
+    int32 level_id = 4 [json_name = "levelId"];
+    string level_name = 5 [json_name = "levelName"];
+    string price = 6;
+    string param_is_show = 7 [json_name = "paramIsShow"];
+  }
+}
+
+message SpecListBySeriesIdRequest{
+  int64 timestamp = 1;
+  string app_id = 2 [json_name = "appId"];
+  string sign = 3;
+  int32 series_id = 4 [json_name = "seriesId"];
+  int32 city_id = 5 [json_name = "cityId"];
+  int32 query_type = 6 [json_name = "queryType"];
+  int32 energy_type = 7 [json_name = "energyType"];
+}
+
+message SpecListBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    BrandInfo brand_info = 1 [json_name = "brandInfo"];
+    SeriesInfo series_info = 2 [json_name = "seriesInfo"];
+    repeated SpecInfo list = 3;
+    repeated SpecInfo other_list = 4 [json_name = "otherList"];
+  }
+
+  message BrandInfo{
+    int32 brand_id = 1 [json_name = "brandId"];
+    string name = 2 ;
+    string img_url = 3 [json_name = "imgUrl"];
+  }
+
+  message SeriesInfo{
+    int32 series_id = 1 [json_name = "seriesId"];
+    string name = 2 ;
+    string img_url = 3 [json_name = "imgUrl"];
+    int32 level_id = 4 [json_name = "levelId"];
+    string level_name = 5 [json_name = "levelName"];
+    string price = 6;
+    string param_is_show = 7 [json_name = "paramIsShow"];
+  }
+
+  message SpecInfo{
+    string name = 2;
+    repeated SpecDetail list = 3;
+  }
+  message SpecDetail{
+    int32 spec_id = 1 [json_name = "specId"];
+    string name = 2;
+    string price = 3;
+    string down_price = 4 [json_name = "downPrice"];
+    string dealer_price = 5[json_name = "dealerPrice"];
+    string img_url = 6[json_name = "imgUrl"];
+    string description = 7;
+    string param_is_show = 8 [json_name = "paramIsShow"];
+    string price_tip = 9[json_name = "priceTip"];
+    int32 year = 10;
+    int32 state = 11;
+    string tag_title = 12[json_name = "tagTitle"];
+  }
+
+}
+
+
+message RecommendationListRequest{
+  int64 timestamp = 1 [json_name = "timestamp"];
+  string app_id = 2 [json_name = "appId"];
+  string sign = 3 [json_name = "sign"];
+  int32 pm = 4 [json_name = "pm"];
+  string device_id = 5 [json_name = "deviceId"];
+  repeated string series_id = 6 [json_name = "seriesId"];
+  string request_pid = 7 [json_name = "requestPId"];
+  int32 city_id = 8 [json_name = "cityId"];
+  int32 uid = 9 [json_name = "uid"];
+  int32 net_state = 10 [json_name = "netState"];
+}
+
+message RecommendationListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result {
+    repeated Item item = 1 [json_name = "items"];
+    message Item {
+      int32 type = 1 [json_name = "type"];
+      Data data = 2 [json_name = "data"];
+    }
+    message Data {
+      repeated CarCompareInfo list = 1 [json_name = "list"];
+    }
+
+    message CarCompareInfo {
+      string btn_title = 1 [json_name = "btnTitle"];
+      string energy_type = 2 [json_name = "energyType"];
+      string fct_text = 3 [json_name = "fctText"];
+      string image = 4 [json_name = "image"];
+      int32 series_id = 5 [json_name = "seriesId"];
+      string series_name = 6 [json_name = "seriesName"];
+      int32 spec_id = 7 [json_name = "specId"];
+      string spec_name = 8 [json_name = "specName"];
+      string spec_price = 9 [json_name = "specPrice"];
+      string stra = 10 [json_name = "stra"];
+    }
+  }
+}
+

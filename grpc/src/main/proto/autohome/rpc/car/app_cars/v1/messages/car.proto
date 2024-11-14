@@ -1,0 +1,149 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.messages;
+option java_multiple_files = true;
+option java_outer_classname = "CarProto";
+option java_package = "autohome.rpc.car.app_cars.v1.messages";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/messages;messages";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.messages";
+
+
+message SeriesDetailMessage{
+  /**
+       * 车系id
+       */
+  int32 id = 1;
+  /**
+   * 车系名称
+   */
+  string name = 2;
+  /**
+   * 车系代表图
+   */
+  string logo = 3;
+
+  /**
+   * 车系透明图
+   */
+  string pngLogo = 4;
+  /**
+   * 车系最低价
+   */
+  int32 minPrice = 5;
+  /**
+   * 车系最高价
+   */
+  int32 maxPrice = 6;
+  /**
+   * 车系状态
+   */
+  int32 state = 7;
+  /**
+   * 是否包含预定车型
+   */
+  int32 containBookedSpec = 8;
+  /**
+   * 车系排名
+   */
+  int32 rank = 9;
+  /**
+   * 品牌id
+   */
+  int32 brandId = 10;
+  /**
+   * 品牌名称
+   */
+  string brandName = 11;
+  /**
+   * 品牌logo
+   */
+  string brandLogo = 12;
+  /**
+   * 厂商id
+   */
+  int32 fctId = 13;
+  /**
+   * 厂商名称
+   */
+  string fctName = 14;
+  /**
+   * 车系级别
+   */
+  int32 levelId = 15;
+  /**
+   * 车系级别名称
+   */
+  string levelName = 16;
+  /**
+   * 车系产地
+   */
+  string place = 17;
+
+  int32 energytype = 18;
+
+  string fueltypes = 19;
+
+  /**
+   * 热门车型id
+   */
+  int32 hotSpecId = 20;
+
+  /**
+   * 热门车型名
+   */
+  string hotSpecName = 21;
+
+  /**
+   * 参数是否外显
+   */
+  int32 paramIsShow = 22;
+
+  /**
+   * 发动机排量
+   */
+  repeated string displacementItems = 23;
+
+  /**
+   * 在售车型数
+   */
+  int32 sellSpecNum = 24;
+
+  int32 stopSpecNum = 25;
+
+  int32 waitSpecNum = 26;
+  /**
+   * 智能驾驶xx项功能
+   */
+  int32 intelligentDrivingNum = 27;
+  /**
+   * 车系上市时间
+   */
+  string onLineTime = 28;
+  /**
+   * 资讯新车上市标签：
+   * 全新车系 1
+   * 车系换代 2
+   * 中期改款 5
+   * 小改款 6
+   * 新加车型 4
+   */
+  int32 newBrandTagId = 29;
+  /**
+   * 价格描述
+   */
+  string priceDescription = 30;
+  int32 liveStatus = 31;
+  bool isNewCar = 32;
+}

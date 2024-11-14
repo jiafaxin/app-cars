@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    active: dev,default
+
+server:
+  port: 8883
+
+dubbo:
+  application:
+    name: app-cars
+    qos-port: 22223
+    metadataServicePort: 20886
+    qosEnable: true
+    qosAcceptForeignIp: true
+  protocol:
+    name: tri
+    port: 50052
+  registry:
+    address: N/A
+  rpc:
+    tri:
+      initial-window-size: 1048576
+  tri:
+    builtin:
+      service:
+        init: true
+
+

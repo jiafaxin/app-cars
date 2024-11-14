@@ -1,0 +1,1176 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.pic;
+option java_multiple_files = true;
+option java_outer_classname = "PicProto";
+option java_package = "autohome.rpc.car.car_api.v1.pic";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/pic;pic";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.pic";
+
+import "autohome/api/annotations.proto";
+import "autohome/rpc/car/car_api/v1/enums.proto";
+import "google/protobuf/timestamp.proto";
+
+/**
+  * 图片服务
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service PicService {
+  /**
+    * 根据车系id、颜色id获取图片类别数量
+    * 维护人:shicuining
+    */
+  rpc GetClassItemsBySeriesId (GetClassItemsBySeriesIdRequest) returns (GetClassItemsBySeriesIdResponse) {}
+
+  /** 根据车系id,车型id,类型id,颜色id,页码及页大小获取图片信息 ps:包含用户上传图片
+    * 维护人:shicuining
+    */
+  rpc GetAllPictureItemsByCondition(GetAllPictureItemsByConditionRequest) returns (GetAllPictureItemsByConditionResponse){
+    option (autohome.api.http) = {get: "/v1/carpic/pic_allpictureitemsbycondition.ashx"};
+  }
+
+  /**
+    * 根据车型id、颜色id获取图片类别数量
+    * 维护人:jiaweiwei
+    */
+  rpc GetClassItemsBySpecId (GetClassItemsBySpecIdRequest) returns (GetClassItemsBySpecIdResponse) {}
+
+  rpc GetPicColorInfo(GetPicColorInfoRequest) returns (GetPicColorInfoResponse){
+    option (autohome.api.http) = {get: "/v1/carpic/piccolor_coloritemsbyspecid.ashx"};
+  }
+  rpc GetInnerColorInfo(GetPicColorInfoRequest) returns (GetPicColorInfoResponse){
+    option (autohome.api.http) = {get: "/v1/carpic/piccolor_innercoloritemsbyspecid.ashx"};
+  }
+  /**
+   * 根据车系id获取对应25图
+   */
+  rpc GetSeries25PictureBySeriesId(GetSeries25PictureBySeriesIdRequest)returns(GetSeries25PictureBySeriesIdResponse){}
+
+  /**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc NewMethod (NewMethodRequest) returns (NewMethodResponse) {}
+
+
+ /**
+  *根据车型id获取对应类别前五张图
+  */
+  rpc GetSpecClassPictureBySpecId(SpecClassPictureBySpecIdRequest)returns(SpecClassPictureBySpecIdResponse){
+    option (autohome.api.http) = {get: "/v1/carpic/spec_classpicturebyspecId.ashx"};
+  }
+
+
+  /**
+ * 根据车系id,车型id,类型id,颜色id,页码及页大小获取图片信息
+ */
+  rpc GetPicPictureItemsByCondition(GetPicPictureItemsByConditionV1Request)returns(GetPicPictureItemsByConditionV1Response){}
+
+  /**
+  * 根据车系id、颜色id获取图片类别数量
+   */
+  rpc GetPicClassItemsBySeriesId(GetPicClassItemsBySeriesIdRequest)returns(GetPicClassItemsBySeriesIdResponse){}
+
+  /**
+  * 根据车型id获取同年代款颜色列表
+   */
+  rpc GetSpecColorListBySpecList(GetSpecColorListBySpecListRequest)returns(GetSpecColorListBySpecListResponse){}
+
+  /**
+  * 根据车型id获取同年代款颜色列表
+   */
+  rpc GetSpecInnerColorListBySpecIdList(GetSpecColorListBySpecListRequest)returns(GetSpecColorListBySpecListResponse){}
+
+  /**
+* 根据车型id获取同年代款颜色列表
+ */
+  rpc GetSpecColorListBySpecId(GetSpecColorListBySpecIdRequest)returns(GetSpecColorListBySpecIdResponse){}
+
+  /**
+* 根据车型id获取同年代款内饰颜色列表
+*/
+  rpc GetSpecInnerColorListBySpecId(GetSpecColorListBySpecIdRequest)returns(GetSpecColorListBySpecIdResponse){}
+
+  /**
+* 根据批量车型id获取图片类别数量
+ */
+  rpc GetPicClassItemByMoreSpecId(GetPicClassItemByMoreSpecIdRequest)returns(GetPicClassItemByMoreSpecIdResponse){}
+
+
+  /**
+  * 根据车系id、图片类别id获取颜色图片数量
+   */
+  rpc GetPicColorItemsBySeriesId(PicColorItemsBySeriesIdRequest)returns(PicColorItemsBySeriesIdResponse){}
+
+
+  /**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc PicColorInnerColorItemsBySeriesId (PicColorInnerColorItemsBySeriesIdRequest) returns (PicColorInnerColorItemsBySeriesIdResponse) {}
+
+  /**
+    * 根据车型id及图片类别id获取图片类别数量及前五张图片
+   */
+  rpc GetPicClassPictureItemsBySpecId (GetPicClassPictureItemsBySpecIdRequest) returns (GetPicClassPictureItemsBySpecIdResponse) {}
+
+  /**
+ * 根据车系id,车型id,颜色id,图片id获取图片信息
+ */
+  rpc GetPicScanPictureItemsByPicId(GetPicScanPictureItemsByPicIdRequest)returns(GetPicScanPictureItemsByConditionResponse){}
+
+  /**
+ * 根据车系id,车型id,颜色id,分类id获取图片信息
+ */
+  rpc GetPicScanPictureItemsByClass(GetPicScanPictureItemsByClassRequest)returns(GetPicScanPictureItemsByConditionResponse){}
+
+  /**
+ * 根据车系id,车型id,颜色id获取图片信息
+ */
+  rpc GetPicScanPictureItemsByColor(GetPicScanPictureItemsByColorRequest)returns(GetPicScanPictureItemsByConditionResponse){}
+
+  /**
+ * 根据车系id,车型id,内饰颜色id获取图片信息
+ */
+  rpc GetPicScanPictureInnerItemsByInnerColor(GetPicScanPictureInnerItemsByInnerColorRequest)returns(GetPicScanPictureInnerItemsByConditionResponse){}
+
+  /**
+ * 根据车系id,车型id,内饰颜色id,图片id获取图片信息
+ */
+  rpc GetPicScanPictureInnerItemsByPicId(GetPicScanPictureInnerItemsByPicIdRequest)returns(GetPicScanPictureInnerItemsByConditionResponse){}
+
+  /**
+ * 根据车系id,车型id,内饰颜色id,分类id获取图片信息
+ */
+  rpc GetPicScanPictureInnerItemsByClass(GetPicScanPictureInnerItemsByClassRequest)returns(GetPicScanPictureInnerItemsByConditionResponse){}
+
+/**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc PicPicturedetailItemsbycondition (PicPicturedetailItemsbyconditionRequest) returns (PicPicturedetailItemsbyconditionResponse) {}
+
+  /**
+  * 多个车型id获取车型25图信息
+  */
+  rpc Spec25PictureBySpecList(Spec25PictureBySpecListRequest)returns(Spec25PictureBySpecListResponse){}
+
+  /**
+    * 根据年代款id获取车型颜色列表
+   */
+  rpc   GetSpecColorListByYearId(GetSpecColorListByYearIdRequest)returns(GetSpecColorListBySpecIdResponse){}
+
+  /**
+  * 根据年代款id获取车型内饰颜色列表
+ */
+  rpc   GetSpecInnerColorListByYearId(GetSpecColorListByYearIdRequest)returns(GetSpecColorListBySpecIdResponse){}
+  /**
+  *根据年代款id获取对应类别前五张图
+  */
+  rpc GetClassPictureByYearId(GetClassPictureByYearIdRequest)returns(GetClassPictureByYearIdResponse){}
+  /**
+    *根据年代款id获取对应25图
+   */
+  rpc GetYear25PictureByYearId(GetYear25PictureByYearIdRequest)returns(GetYear25PictureByYearIdResponse){}
+  /**
+    *根据精选类别获取全部精选信息
+   */
+  rpc GetFeaturedInfoByTypeId(GetFeaturedInfoByTypeIdRequest)returns(GetFeaturedInfoByTypeIdResponse){}
+
+  /**
+  * 根据车系id,图片id 获取某图片附近列表 用于轮播效果
+   */
+  rpc GetPicPictureListByCondition(GetPicPictureListByConditionRequest)returns(GetPicPictureListByConditionResponse){}
+  /**
+    *根据精选图片id获取对应图片列表
+   */
+  rpc GetFeaturedPhotoByFeaturedId(GetFeaturedPhotoByFeaturedIdRequest)returns(GetFeaturedPhotoByFeaturedIdResponse){}
+  /**
+    *获取全部精选图片分类
+   */
+  rpc GetFeaturedType(GetFeaturedTypeRequest)returns(GetFeaturedTypeResponse){}
+  /**
+    *根据车系id及图片类别id获取图片类别数量及前五张图片
+   */
+  rpc GetPictureItemsBySeriesIdAndClassId(GetPictureItemsBySeriesIdAndClassIdRequest)returns(GetPictureItemsBySeriesIdAndClassIdResponse){}
+
+  /**
+* 定制接口： 编辑后台写文章定制图片接口，无缓存。禁止其他业务线乱用。
+ */
+  rpc EditPicPictureItemByCondition(EditPicPictureItemByConditionRequest)returns(EditPicPictureItemByConditionResponse){}
+  /**
+   * 接口返回车型下图片、60图点位信息，关联了配置项目信息
+   */
+  rpc GetPicConfigRelation(GetPicConfigRelationRequest)returns(GetPicConfigRelationResponse){}
+
+  /**
+   * 根据车系id,点位id获取车系相关点位图片列表以及点位对应的参数配置信息
+   */
+  rpc  GetSeriesPicPointLocation(GetSeriesPicPointLocationRequest)returns(GetSeriesPicPointLocationResponse){}
+  /**
+    * 获取定时发布的图片数据
+   */
+  rpc GetPictureDetailItemsByConditionForPublish(PictureDetailItemsByConditionRequest)returns(PictureDetailItemsByConditionResponse){}
+
+}
+
+message PictureDetailItemsByConditionRequest{
+  int32 userid = 1;
+  int32 seriesid = 2;
+  int32 specid = 3;
+  int32 classid = 4;
+  int32 colorid = 5;
+  int32 page = 6;
+  int32 size = 7;
+
+}
+
+message PictureDetailItemsByConditionResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 pageindex = 1;
+    int32 size = 2;
+    int32 total = 3;
+    repeated PicItem picitems = 4;
+  }
+  message PicItem{
+    int32 id = 1;
+    int32 typeid = 2;
+    string typename = 3;
+    int32 colorid = 4;
+    string colorname = 5;
+    string filepath = 6;
+    int32 ishd = 7;
+    int32 specid = 8;
+    string specname = 9;
+    int32 yearid = 10;
+    string yearname = 11;
+    int32 seriesid = 12;
+    string seriesname = 13;
+    int32 fctid = 14;
+    string fctname = 15;
+    int32 brandid = 16;
+    string brandname = 17;
+    int32 specstate = 18;
+    google.protobuf.Timestamp publishtime = 19;
+  }
+}
+
+message GetPictureItemsBySeriesIdAndClassIdRequest{
+  int32 seriesid = 1;
+  int32 classid = 2;
+}
+
+message GetPictureItemsBySeriesIdAndClassIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    int32 classid = 3;
+    string classname = 4;
+    int32 picnum = 5;
+    repeated PicItem picitems = 6;
+  }
+  message PicItem{
+    int32 id = 1;
+    string filepath = 2;
+    int32 specid = 3;
+    string specname = 4;
+  }
+}
+
+message GetFeaturedTypeRequest{
+
+}
+
+message GetFeaturedTypeResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total = 1;
+    repeated FeaturedTypeItem typeitems = 2;
+  }
+  message FeaturedTypeItem{
+    int32 id = 1;
+    string name = 2;
+  }
+}
+
+message GetFeaturedPhotoByFeaturedIdRequest{
+  int32 featuredid = 1;
+  int32 size = 2;
+}
+
+message GetFeaturedPhotoByFeaturedIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 picid = 1;
+    int32 pageindex = 2;
+    int32 size = 3;
+    int32 total = 4;
+    repeated PicItem picitems = 5;
+  }
+  message PicItem{
+    int32 id = 1;
+    string picpath = 2;
+    int32 specid = 3;
+    string specname = 4;
+    int32 seriesid = 5;
+    string seriesname = 6;
+    int32 ishd = 7;
+  }
+}
+
+message GetFeaturedInfoByTypeIdRequest{
+  string typeid = 1;
+  int32 page = 2;
+  int32 size = 3;
+}
+
+message GetFeaturedInfoByTypeIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 pageindex = 1;
+    int32 size = 2;
+    int32 total = 3;
+    repeated FeaturedInfoItem featureditems = 4;
+  }
+  message FeaturedInfoItem {
+    int32 id = 1;
+    string title = 2;
+    string picpath = 3;
+    int32 picid = 4;
+    int32 specid = 5;
+    int32 seriesid = 6;
+    string publishtime = 7;
+    int32 typeid = 8;
+    string pcurl = 9;
+    string shorttitle = 10;
+    string mshorttitle = 11;
+  }
+}
+message GetYear25PictureByYearIdRequest{
+  int32 seriesid = 1;
+  int32 yearid = 2;
+}
+message GetYear25PictureByYearIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 yearid = 1;
+    int32 seriesid = 2;
+    string seriesname = 3;
+    int32 total = 4;
+    repeated PicItem picitems = 5;
+  }
+  message PicItem{
+    int32 itemid = 1;
+    int32 typeid = 2;
+    string itemname = 3;
+    int32 picid = 4;
+    string picpath = 5;
+    int32 specid = 6;
+    string specname = 7;
+  }
+}
+message GetClassPictureByYearIdRequest{
+  int32 seriesid = 1;
+  int32 yearid = 2;
+}
+message GetClassPictureByYearIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 yearid = 1;
+    int32 seriesid = 2;
+    string seriesname = 3;
+    repeated TypeItem typeitems = 4;
+  }
+  message TypeItem{
+    int32 typeid = 1;
+    string typename = 2;
+    int32 pictotal = 3;
+    repeated PicItem picitems = 4;
+  }
+  message PicItem{
+    int32 id = 1;
+    string filepath = 2;
+    int32 specid = 3;
+    string specname = 4;
+  }
+}
+
+message GetClassItemsBySeriesIdRequest {
+  //车系id
+  int32 series_id = 1;
+  //是否过滤小于3张图的车型
+  int32 filter_less_then_three_pic_spec = 2;
+  //颜色id
+  int32 color_id = 3;
+  //车型状态
+  SpecStateEnum state = 4;
+  string appid = 5 [json_name = "_appid"];
+}
+
+message GetClassItemsBySeriesIdResponse {
+  int32  return_code = 1;
+  string return_msg = 2;
+  int32 series_id = 3;
+  int32 color_id = 4;
+  repeated ClassItem class_items = 5;
+
+  message ClassItem{
+    int32 id = 1;
+    string name = 2;
+    int32 pic_count = 3;
+    int32 club_pic_count = 4;
+  }
+}
+
+message GetAllPictureItemsByConditionRequest{
+  int32 seriesid = 1;
+  int32 specid = 2;
+  int32 classid = 3;
+  int32 colorid = 4;
+  int32 page = 5;
+  int32 size = 6;
+  string appid = 7[json_name="_appid"];
+}
+
+message GetAllPictureItemsByConditionResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 4;
+
+  message Result{
+    int32 pageindex = 1;
+    int32 size = 2;
+    int32 total = 3;
+    repeated PicItem picitems = 4;
+
+    message PicItem{
+      int32 id = 1;
+      string filepath = 2;
+      int32 ishd = 3;
+      int32 specid = 4;
+      string specname = 5;
+      int32 typeid = 6;
+      string typename = 7;
+      int32 colorid = 8;
+      string colorname = 9;
+      int32 memberid = 10;
+      string membername = 11;
+      int32 width = 12;
+      int32 height = 13;
+      int32 dealerid = 14;
+      int32 sixtypicsortid = 15;
+      int32 iswallpaper = 16;
+      int32 optional = 17;
+      int32 showid = 18;
+      string showname = 19;
+
+    }
+  }
+}
+
+message GetClassItemsBySpecIdRequest {
+  //车型id
+  int32 specid = 1;
+  //颜色id
+  int32 colorid = 2;
+  string appid = 3 [json_name = "_appid"];
+}
+
+message GetClassItemsBySpecIdResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 specid = 1;
+    int32 colorid = 2;
+    repeated ClassItem classitems = 3;
+  }
+
+  message ClassItem{
+    int32 id = 1;
+    string name = 2;
+    int32 piccount = 3;
+    int32 clubpiccount = 4;
+  }
+}
+
+message GetPicColorInfoRequest {
+  int32 specid = 1;
+  int32 classid = 2;
+  string appid = 3 [json_name = "_appid"];
+}
+
+message GetPicColorInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 classid = 1;
+    repeated Coloritem coloritems = 2;
+    int32 seriesid = 3;
+
+    message Coloritem{
+      int32 clubpiccount = 1;
+      string name = 2;
+      int32 id = 3;
+      int32 piccount = 4;
+      string value = 5;
+    }
+  }
+}
+
+
+message GetSeries25PictureBySeriesIdRequest{
+  int32 seriesid = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetSeries25PictureBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result {
+    int32 seriesid = 1;
+    string seriesname = 2;
+    int32 total = 3;
+    repeated PicItems picitems = 4;
+
+    message PicItems {
+      int32 itemid = 1;
+      int32 typeid = 2;
+      string itemname = 3;
+      int32 picid = 4;
+      string picpath = 5;
+      int32 specid = 6;
+      string specname = 7;
+    }
+  }
+}
+
+message SpecClassPictureBySpecIdRequest{
+  int32 specid = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message SpecClassPictureBySpecIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 specid = 1;
+    string specname = 2;
+    int32 seriesid = 3;
+    string seriesname = 4;
+    repeated TypeItem typeitems = 5;
+
+    message TypeItem{
+      int32 typeid = 1;
+      string typename = 2;
+      int32 pictotal = 3;
+      repeated PicItem picitems = 4;
+
+      message PicItem{
+        int32 id = 1;
+        string filepath = 2;
+      }
+    }
+  }
+
+}
+message GetPicPictureItemsByConditionV1Request{
+  int32 seriesid = 1;
+  int32 specid = 2;
+  int32 classid = 3;
+  int32 colorid = 4;
+  int32 page = 5;
+  int32 size = 6;
+  string appid = 7 [json_name = "_appid"];
+}
+
+message GetPicPictureItemsByConditionV1Response{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result {
+    int32 pageindex = 1;
+    int32 size = 2;
+    int32 total = 3;
+    repeated PicItems picitems = 4;
+
+    message PicItems {
+      int32 id = 1;
+      string filepath = 2;
+      int32 ishd = 3;
+      int32 specid = 4;
+      string specname = 5;
+      int32 minprice = 6;
+      int32 maxprice = 7;
+      string specstate = 8;
+    }
+  }
+}
+
+
+message GetPicClassItemsBySeriesIdRequest {
+  //是否过滤小于3张图的车型。
+  int32 filterlessthenthreepicspec = 1;
+  //颜色id
+  int32 colorid = 2;
+  int32 seriesid = 3;
+  string state = 4;
+  string appid = 5 [json_name = "_appid"];
+}
+
+message GetPicClassItemsBySeriesIdResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 seriesid = 1;
+    int32 colorid = 2;
+    repeated ClassItem classitems = 3;
+  }
+
+  message ClassItem{
+    int32 id = 1;
+    string name = 2;
+    int32 piccount = 3;
+    int32 clubpiccount = 4;
+  }
+}
+
+message GetSpecColorListBySpecListRequest {
+  string spec_idlist = 1[json_name = "specIdlist"];
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetSpecColorListBySpecListResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 total = 1;
+    repeated SpecItem specitems = 2;
+  }
+
+  message SpecItem{
+    int32 specid = 1;
+    repeated ColorItem coloritems = 2;
+  }
+
+  message ColorItem{
+    int32 id = 1;
+    string name = 2;
+    string value = 3;
+    int32 price = 4;
+    string remark = 5;
+  }
+}
+
+message PicColorItemsBySeriesIdRequest {
+  int32 seriesid = 1;
+  int32 classid = 2;
+  string state = 3;
+}
+
+message PicColorItemsBySeriesIdResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 seriesid = 1;
+    int32 classid = 2;
+    int32 colorid = 3;
+    repeated Coloritem coloritems = 4;
+  }
+
+  message Coloritem{
+    int32 id = 1;
+    string name = 2;
+    string value = 3;
+    int32 piccount = 4;
+    int32 clubpiccount = 5;
+    int32 isonsale = 6;
+  }
+}
+
+message NewMethodRequest{
+
+}
+
+message NewMethodResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+}
+
+
+
+message PicColorInnerColorItemsBySeriesIdRequest{
+  int32 seriesid =1 ;
+  int32 classid= 2;
+  string state = 3;
+}
+
+message PicColorInnerColorItemsBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+ message Result{
+   int32 classid = 1;
+   repeated Coloritem coloritems = 2;
+   int32 seriesid = 3;
+
+  message Coloritem{
+    int32 clubpiccount = 1;
+    int32 isonsale = 2;
+    string name = 3;
+    int32 id = 4;
+    int32 piccount = 5;
+    string value = 6;
+  }
+ }
+}
+
+message GetSpecColorListBySpecIdRequest {
+  int32 specid = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetSpecColorListByYearIdRequest{
+  int32 seriesid = 1;
+  int32 yearid = 2;
+  string appid = 3 [json_name = "_appid"];
+}
+
+message GetSpecColorListBySpecIdResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 total = 1;
+    repeated SpecItem specitems = 2;
+  }
+
+  message SpecItem{
+    int32 specid = 1;
+    repeated ColorItem coloritems = 2;
+  }
+
+  message ColorItem{
+    int32 id = 1;
+    string name = 2;
+    string value = 3;
+    int32 picnum = 4;
+    int32 clubpicnum = 5;
+    int32 price = 6;
+    string remark = 7;
+  }
+}
+
+
+message GetPicClassItemByMoreSpecIdRequest {
+  string specid = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetPicClassItemByMoreSpecIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated PicItemList picitem = 1[json_name="PicItem"];
+    message PicItemList{
+      string specid = 1;
+      string picnum = 2[json_name="PicNum"];
+    }
+  }
+}
+
+message Spec25PictureBySpecListRequest{
+  string speclist = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message Spec25PictureBySpecListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated SpecItem specitems = 1;
+  }
+
+  message SpecItem{
+    int32 specid = 1;
+    string specname = 2;
+    int32 seriesid = 3;
+    string seriesname = 4[json_name="seriesName"];
+    int32 brandid = 5;
+    string brandname = 6;
+    int32 specprice = 7;
+    int32 specstate = 8;
+    repeated PicItemList picitems = 9;
+  }
+
+  message PicItemList{
+    string typename = 1;
+    repeated PicItem picitems = 2;
+  }
+
+  message PicItem{
+    int32 itemid = 1;
+    string itemname = 2;
+    int32 typeid = 3;
+    int32 picid = 4;
+    string picpath = 5;
+    string remark = 6;
+  }
+
+}
+
+
+message GetPicClassPictureItemsBySpecIdRequest {
+  int32 specid = 1;
+  int32 classid = 2;
+  string appid = 3 [json_name = "_appid"];
+}
+
+message GetPicClassPictureItemsBySpecIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    int32 specid = 3;
+    string specname = 4;
+    int32 classid = 5;
+    string classname = 6;
+    int32 picnum = 7;
+    repeated PicItemList picitems = 8;
+    message PicItemList{
+      int32 id = 1;
+      string filepath = 2;
+    }
+  }
+}
+
+message GetPicScanPictureItemsByPicIdRequest{
+  int32 seriesid = 1;
+  int32 specid = 2;
+  int32 colorid = 3;
+  int32 picid = 4;
+  string appid = 5 [json_name = "_appid"];
+}
+
+message GetPicScanPictureItemsByClassRequest{
+  int32 seriesid = 1;
+  int32 specid = 2;
+  int32 colorid = 3;
+  int32 classid = 4;
+  string appid = 5 [json_name = "_appid"];
+}
+
+message GetPicScanPictureItemsByColorRequest{
+  int32 seriesid = 1;
+  int32 specid = 2;
+  int32 colorid = 3;
+  string appid = 4 [json_name = "_appid"];
+}
+
+message GetPicScanPictureItemsByConditionResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total = 1;
+    int32 picid = 2;
+    repeated PicList picitems = 3;
+  }
+  message PicList{
+    int32 id = 1;
+    int32 typeid = 2;
+    int32 colorid = 3;
+    string filepath = 4;
+    int32 ishd = 5;
+    int32 brandid = 6;
+    string brandname = 7;
+    int32 factoryid = 8;
+    string factoryname = 9;
+    int32 seriesid = 10;
+    string seriesname = 11;
+    int32 specid = 12;
+    string specname = 13;
+  }
+}
+
+message GetPicScanPictureInnerItemsByInnerColorRequest{
+  int32 seriesid = 1;
+  int32 specid = 2;
+  int32 inner_colorid = 3 [json_name = "innerColorId"];
+  string appid = 4 [json_name = "_appid"];
+}
+
+message GetPicScanPictureInnerItemsByPicIdRequest{
+  int32 seriesid = 1;
+  int32 specid = 2;
+  int32 inner_colorid = 3 [json_name = "innerColorId"];
+  int32 picid = 4;
+  string appid = 5 [json_name = "_appid"];
+}
+
+message GetPicScanPictureInnerItemsByClassRequest{
+  int32 seriesid = 1;
+  int32 specid = 2;
+  int32 inner_colorid = 3 [json_name = "innerColorId"];
+  int32 classid = 4;
+  string appid = 5 [json_name = "_appid"];
+}
+
+message GetPicScanPictureInnerItemsByConditionResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total = 1;
+    int32 picid = 2;
+    repeated PicList picitems = 3;
+  }
+  message PicList{
+    int32 id = 1;
+    int32 typeid = 2;
+    int32 colorid = 3;
+    int32 innercolorid = 4;
+    string filepath = 5;
+    int32 ishd = 6;
+    int32 brandid = 7;
+    string brandname = 8;
+    int32 factoryid = 9;
+    string factoryname = 10;
+    int32 seriesid = 11;
+    string seriesname = 12;
+    int32 specid = 13;
+    string specname = 14;
+  }
+}
+
+
+message PicPicturedetailItemsbyconditionRequest{
+  int32 seriesid = 1;
+  int32 specid = 2;
+  int32 classid = 3;
+  int32 colorid = 4;
+  int32 page = 5;
+  int32 size = 6;
+  string appid = 7[json_name="_appid"];
+}
+
+message PicPicturedetailItemsbyconditionResponse{
+
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 4;
+
+  message Result{
+    int32 pageindex = 1;
+    int32 size = 2;
+    int32 total = 3;
+    repeated PicItem picitems = 4;
+
+    message PicItem{
+      int32 id = 1 ;
+      int32 typeid = 2 ;
+      string typename = 3 ;
+      int32 colorid = 4 ;
+      string colorname = 5 ;
+      string filepath = 6 ;
+      int32 ishd = 7 ;
+      int32 specid = 8 ;
+      string specname = 9 ;
+      int32 yearid = 10 ;
+      string yearname = 11 ;
+      int32 seriesid = 12 ;
+      string seriesname = 13 ;
+      int32 fctid = 14 ;
+      string fctname = 15 ;
+      int32 brandid = 16 ;
+      string brandname = 17 ;
+      int32 specstate = 18 ;
+    }
+  }
+}
+
+
+
+message GetPicPictureListByConditionRequest{
+  int32 seriesid = 1;
+  int32 classid = 2;
+  int32 page = 3;
+  int32 size = 4;
+  int32 imageid = 5 [json_name = "imageId"];
+  string appid = 6 [json_name = "_appid"];
+}
+
+message GetPicPictureListByConditionResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 pageindex = 1;
+    int32 size = 2;
+    int32 total = 3;
+    repeated PicList picitems = 4;
+  }
+  message PicList{
+    int32 rownum = 1;
+    int32 id = 2;
+    string smallimg = 3;
+    string bigimg = 4;
+    int32 specid = 5;
+    string specname = 6;
+    int32 minprice = 7;
+    int32 maxprice = 8;
+    int32 specstate = 9;
+  }
+}
+
+
+message EditPicPictureItemByConditionRequest{
+  int32 seriesid = 1;
+  int32 specid = 2;
+  int32 classid = 3;
+  int32 page = 4;
+  int32 size = 5;
+  string appid = 6[json_name="_appid"];
+}
+
+message EditPicPictureItemByConditionResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 4;
+
+  message Result{
+    int32 pageindex = 1;
+    int32 size = 2;
+    int32 total = 3;
+    repeated PicItem picitems = 4;
+
+    message PicItem{
+      int32 id = 1 ;
+      int32 typeid = 2 ;
+      string typename = 3 ;
+      string filepath = 4 ;
+      int32 ishd = 5 ;
+      int32 specid = 6 ;
+      string specname = 7 ;
+      int32 yearid = 8 ;
+      string yearname = 9 ;
+      int32 seriesid = 10 ;
+      string seriesname = 11 ;
+      int32 fctid = 12 ;
+      string fctname = 13 ;
+      int32 brandid = 14 ;
+      string brandname = 15 ;
+      int32 specstate = 16 ;
+    }
+  }
+}
+
+message GetPicConfigRelationRequest{
+  int32 specid = 1;
+  string appid = 2[json_name="_appid"];
+}
+
+message GetPicConfigRelationResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated PicItem result = 3;
+  message PicItem{
+    int32 picid = 1;
+    string picurl = 2;
+    int32 sixtypicid = 3;
+    int32 sixtypiceditor = 4;
+    repeated ConfigItem configlist = 5;
+  }
+  message ConfigItem{
+    int32 userid = 1;
+    int32 itemid = 2;
+    int32 subitemid = 3;
+    int32 picid = 4;
+  }
+}
+
+
+message GetSeriesPicPointLocationRequest{
+  int32 seriesid = 1;
+  int32 locationid = 2;
+  int32 pageindex = 3;
+  int32 pagesize = 4;
+  string appid = 5[json_name="_appid"];
+}
+
+message GetSeriesPicPointLocationResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 rowcount = 1;
+    int32 pagesize = 2;
+    repeated PicItem list = 3;
+  }
+  message PicItem{
+    int32 picid = 1;
+    int32 specid = 2;
+    string specname = 3;
+    string picurl = 4 [json_name = "picUrl"];
+    repeated ValueItem valuelist = 5;
+  }
+  message ValueItem{
+    int32 datatype = 1;
+    int32 itemid = 2;
+    int32 subitemid = 3;
+    string name = 4;
+    string value = 5;
+  }
+}

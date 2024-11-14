@@ -1,0 +1,255 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.new_energy;
+option java_multiple_files = true;
+option java_outer_classname = "NewEnergyProto";
+option java_package = "autohome.rpc.car.car_api.v1.new_energy";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/new_energy;new_energy";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.new_energy";
+
+
+/**
+  * service 样例
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service NewEnergyService {
+/**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc DingzhiSeriesSearchSeriesByPriceLevelKMFueltype (DingzhiSeriesSearchSeriesByPriceLevelKMFueltypeRequest) returns (DingzhiSeriesSearchSeriesByPriceLevelKMFueltypeResponse) {}
+
+  /**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc DingzhiSeriesRankForElectric (DingzhiSeriesRankForElectricRequest) returns (DingzhiSeriesRankForElectricResponse) {}
+
+  rpc DingzhiSeriesSpecNum(DingzhiSeriesSpecNumRequest) returns(DingzhiSeriesSpecNumResponse){}
+
+  rpc DingzhiSeriesResult(DingzhiSeriesResultRequest) returns(DingzhiSeriesResultResponse){}
+
+  rpc DingzhiSpecResult(DingzhiSpecResultRequest) returns(DingzhiSpecResultResponse){}
+
+  rpc DingzhiSeriesRankByMileage(DingzhiSeriesRankByMileageRequest) returns(DingzhiSeriesRankByMileageResponse){}
+}
+
+
+message DingzhiSeriesSearchSeriesByPriceLevelKMFueltypeRequest{
+  string level = 1;
+  string price = 2;
+  string km = 3;
+  int32 fueltype = 4;
+  int32 topnum = 5;
+}
+
+message DingzhiSeriesSearchSeriesByPriceLevelKMFueltypeResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated Serieslist serieslist = 1;
+
+    message Serieslist{
+      string seriesimg = 1;
+      string seriesname = 2;
+      int32 minprice = 3;
+      int32 maxprice = 4;
+      int32 seriesid = 5;
+    }
+  }
+}
+
+message DingzhiSeriesRankForElectricRequest{
+  int32 typeid = 1;
+}
+
+message DingzhiSeriesRankForElectricResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated Serieslist serieslist = 1;
+
+    message Serieslist{
+      string seriesimg = 1;
+      string seriesname = 2;
+      string zhengchezhibao = 3;
+      int32 minprice = 4;
+      int32 maxprice = 5;
+      repeated int32 electricmotormileage = 6;
+      int32 seriesrank = 7;
+      string dianchileixing = 8;
+      string electricchargetime = 9;
+      int32 seriesid = 10;
+      double official_slow_chargetime = 11 [json_name = "officialSlowChargetime"];
+      double official_fast_chargetime = 12 [json_name = "officialFastChargetime"];
+    }
+  }
+}
+
+message DingzhiSeriesSpecNumRequest{
+  string level = 1;
+  string price = 2;
+  string brand = 3;
+  string struct = 4;
+  string dcap = 5;
+  string gearbox = 6;
+  string country = 7;
+  string isimport = 8;
+  string seat = 9;
+  string energytype = 10;
+  string flowmode = 11;
+  string drivetype = 12;
+  string config = 13;
+  string mileage = 14;
+  string appid = 15[json_name="_appid"];
+}
+
+message DingzhiSeriesSpecNumResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesnum = 1 [json_name = "seriesNum"];
+    int32 specnum = 2 [json_name = "specNum"];
+  }
+}
+
+message DingzhiSeriesResultRequest{
+  string level = 1;
+  string price = 2;
+  string brand = 3;
+  string struct = 4;
+  string dcap = 5;
+  string gearbox = 6;
+  string country = 7;
+  string isimport = 8;
+  string seat = 9;
+  string energytype = 10;
+  string flowmode = 11;
+  string drivetype = 12;
+  string config = 13;
+  string mileage = 14;
+  string sorttype = 15[json_name="sortType"];
+  string seriesid = 16[json_name="seriesId"];
+  int32 pageindex = 17;
+  int32 pagesize = 18;
+  string appid = 19[json_name="_appid"];
+}
+
+message DingzhiSeriesResultResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 totlepage = 1;
+    int32 totalcount = 2;
+    string result = 3;
+    repeated SeriesItem seriesitmes = 4;
+    message SeriesItem{
+      int32 seriesid = 1;
+      string seriesname = 2;
+      int32 brandid = 3;
+      string brandname = 4;
+      int32 leveid = 5;
+      string levelname = 6;
+      int32 seriespricmin = 7;
+      int32 seriespricmax = 8;
+      int32 carcount = 9;
+      string seriespicurl = 10;
+      repeated int32 endurancemileage = 11;
+      repeated FuelClass fueltype = 12;
+      message FuelClass{
+        int32 id = 1;
+        string name = 2;
+      }
+    }
+  }
+}
+
+
+message DingzhiSpecResultRequest{
+  string level = 1;
+  string price = 2;
+  string brand = 3;
+  string struct = 4;
+  string dcap = 5;
+  string gearbox = 6;
+  string country = 7;
+  string isimport = 8;
+  string seat = 9;
+  string energytype = 10;
+  string flowmode = 11;
+  string drivetype = 12;
+  string config = 13;
+  string mileage = 14;
+  string sorttype = 15[json_name="sortType"];
+  string seriesid = 16[json_name="seriesId"];
+  string appid = 17[json_name="_appid"];
+}
+
+message DingzhiSpecResultResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    int32 seriespricmin = 3;
+    int32 seriespricmax = 4;
+    repeated SpecItem speclist = 5;
+    string seriespicurl = 6;
+    message SpecItem{
+      int32 specid = 1;
+      string specname = 2;
+      int32 energytypeid = 3;
+      string energytypename = 4;
+      int32 specstate = 5;
+      double electrickw = 6;
+      int32 mileage = 7;
+      int32 yearid = 8;
+      string yearname = 9;
+      int32 fctminprice = 10;
+      int32 fctmaxprice = 11;
+    }
+  }
+}
+
+message DingzhiSeriesRankByMileageRequest{
+  string fueltype = 1;
+  string appid = 2[json_name="_appid"];
+}
+
+message DingzhiSeriesRankByMileageResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Serieslist result = 3;
+  message Serieslist{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    string levelname = 3;
+    string minprice = 4;
+    string maxprice = 5;
+    string mileage = 6;
+    string pnglogo = 7;
+    string logo = 8;
+  }
+}

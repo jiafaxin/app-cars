@@ -1,0 +1,616 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.brand;
+option java_multiple_files = true;
+option java_outer_classname = "BrandProto";
+option java_package = "autohome.rpc.car.car_api.v1.brand";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/brand;brand";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.brand";
+
+import "autohome/api/annotations.proto";
+
+/**
+  * service 样例
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service BrandService {
+  /**
+    * rpc方法样例
+    * 维护人:shicuining
+    */
+  rpc GetBrandLogo (GetBrandLogoRequest) returns (GetBrandLogoResponse) {
+    option (autohome.api.http) = {get: "/v2/CarPrice/Brand_GetBrandLogo.ashx"};
+  }
+
+  /**
+   * 根据品牌id获取品牌代表图
+  */
+  rpc GetBrandLogoByBrandId(GetBrandLogoByBrandIdRequest)returns(GetBrandLogoByBrandIdResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/brand_logobybrandid.ashx"};
+  }
+  /**
+    *根据品牌获取关联厂商及车系信息
+   */
+  rpc GetBrandCorrelateInfoByBrandId(GetBrandCorrelateInfoByBrandIdRequest)returns(GetBrandCorrelateInfoByBrandIdResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/brand_correlateinfobybrandid.ashx"};
+  }
+
+  /**
+  * 根据品牌id获取品牌model
+  */
+  rpc GetBrandInfo (GetBrandInfoRequest) returns (GetBrandInfoResponse) {}
+
+  /**
+  * 根据品牌id获取厂商信息
+  */
+  rpc GetFactoryByBrand (FactoryByBrandRequest) returns (FactoryByBrandResponse) {}
+
+
+  /**
+  * 获取报价库品牌菜单
+  * 维护人: shicuining
+ */
+  rpc BrandPriceMenu (BrandPriceMenuRequest) returns (BrandPriceMenuResponse) {}
+
+
+
+  /**
+     根据多个品牌id获取品牌代表图
+   */
+  rpc GetBrandLogoByIds (GetBrandLogoByIdsRequest) returns (GetBrandLogoByIdsResponse) {}
+
+  /**
+  * 获取全部品牌名称
+  */
+  rpc GetAllBrandName(GetAllBrandNameRequest) returns(GetAllBrandNameResponse){}
+
+  /*
+  * 根据车系id获取品牌model
+  */
+  rpc BrandInfoBySeriesId(BrandInfoBySeriesIdRequest) returns(BrandInfoBySeriesIdResponse){}
+
+  /*
+  * 获取品牌列表,添加isFilterSpecImage（是否过滤图片车型）条件
+  */
+  rpc BrandByStateAndType(BrandByStateAndTypeRequest) returns(BrandByStateAndTypeResponse){}
+
+  /*
+  * 通过品牌等条件获取车系信息
+  */
+  rpc SeriesByBrand(SeriesByBrandRequest) returns(SeriesByBrandResponse){}
+
+  rpc BrandDingZhiElectric(BrandDingZhiElectricRequest)returns(BrandDingZhiElectricResponse){}
+  /**
+    *根据品牌id获取品牌名称
+   */
+  rpc GetBrandNameByBrandId(GetBrandNameByBrandIdRequest)returns(GetBrandNameByBrandIdResponse){}
+  /**
+    *根据品牌首字母和品牌热度排序，返回品牌列表
+   */
+  rpc GetBrandList(GetBrandListRequest)returns(GetBrandListResponse){}
+
+  rpc GetBrandMenu(GetBrandMenuRequest)returns(GetBrandMenuResponse){}
+  /**
+    *根据品牌名称获取品牌id
+   */
+  rpc GetBrandIdByBrandName(GetBrandIdByBrandNameRequest)returns(GetBrandIdByBrandNameResponse){}
+  /**
+    *获取报价库品牌菜单
+   */
+  rpc GetBrandMenuPrice(GetBrandMenuPriceRequest)returns(GetBrandMenuPriceResponse){}
+  /**
+    *根据首字母获取报价库品牌菜单(分页)
+  */
+  rpc GetBrandMenuWithPageByFirstLetter(GetBrandMenuWithPageByFirstLetterRequest)returns(GetBrandMenuWithPageByFirstLetterResponse){}
+
+  /**
+  根据车展ID,展馆ID,获取N条车展中某展馆品牌信息
+ */
+  rpc GetBrandByPavilionId(GetBrandByPavilionIdRequest)returns(GetBrandByPavilionIdResponse){}
+
+  rpc BrandShowByPavilionLetter(BrandShowByPavilionLetterRequest)returns(BrandShowByPavilionLetterResponse){}
+
+  /**
+    * 返回图片库品牌列表按品牌热度排序,没有品牌热度的品牌放同字母的后面按品牌名称排序。
+   */
+  rpc GetPicBrandListHot(GetPicBrandListHotRequest)returns(GetPicBrandListHotResponse){}
+
+
+  /*
+* 获取热门品牌数据
+*/
+  rpc BrandHot(BrandHotRequest) returns(BrandHotResponse){}
+}
+message GetBrandMenuWithPageByFirstLetterRequest{
+  string firstletter = 1;
+  int32 page = 2;
+  int32 size = 3;
+}
+
+message GetBrandMenuWithPageByFirstLetterResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+  message Result{
+    int32 pageindex = 1 [json_name = "pageIndex"];
+    int32 size = 2;
+    string firstletter = 3;
+    int32 total = 4;
+    repeated BrandItem branditems = 5;
+  }
+  message BrandItem{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    int32 speccount = 4;
+  }
+}
+
+message GetBrandMenuPriceRequest{
+
+}
+
+message GetBrandMenuPriceResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3 ;
+  message Result{
+    string firstletter = 1;
+    int32 total = 2;
+    repeated BrandItem branditems = 3;
+  }
+  message BrandItem{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    int32 speccount = 4;
+  }
+}
+
+message GetBrandIdByBrandNameRequest{
+  string brandname = 1;
+}
+
+message GetBrandIdByBrandNameResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+  message Result{
+    string brandname = 1;
+    int32 brandid = 2;
+  }
+}
+
+message GetBrandMenuRequest{
+
+}
+
+message GetBrandMenuResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3 ;
+  message Result{
+    string firstletter = 1;
+    int32 total = 2;
+    repeated BrandItem branditems = 3;
+  }
+  message BrandItem{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    int32 piccount = 4;
+  }
+}
+
+message GetBrandListRequest{
+
+}
+message GetBrandListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+  message Result{
+    repeated BrandItem brandlist = 1;
+  }
+  message BrandItem{
+    int32 brandid = 1;
+    string brandname = 2;
+    string firstletter = 3;
+    string logo = 4;
+    int32 ordernum = 5;
+  }
+}
+
+message GetBrandNameByBrandIdRequest{
+  int32 brandid = 1;
+}
+
+message GetBrandNameByBrandIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+  message Result{
+    int32 brandid = 1;
+    string brandname = 2;
+  }
+}
+
+message GetBrandLogoByIdsRequest{
+  string brandlist = 1;
+}
+message GetBrandLogoByIdsResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+  message Result{
+   repeated Branditems branditems = 1;
+   message Branditems{
+     int32 id = 1;
+     string logo = 2;
+     string name = 3;
+   }
+  }
+}
+
+message GetBrandLogoRequest {
+  int32 brandid = 1;
+  string appid = 2[json_name="_appid"];
+}
+
+message GetBrandLogoResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    int32 brandid = 1;
+    string brandlogo = 2;
+    string brandname = 3;
+  }
+}
+
+
+message GetBrandLogoByBrandIdRequest{
+  int32 brandid = 1;
+  string appid = 2[json_name="_appid"];
+}
+
+message GetBrandLogoByBrandIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 brandid = 1;
+    string brandlogo = 2;
+  }
+}
+
+message GetBrandCorrelateInfoByBrandIdRequest{
+  string appid = 1[json_name="_appid"];
+  int32 brandid = 2;
+}
+
+message GetBrandCorrelateInfoByBrandIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 brandid = 1;
+    string brandname = 2;
+    string brandlogo = 3;
+    string brandofficialurl = 4;
+    int32 sellseriescount = 5;
+    repeated FctAndSeriesInfo fctitems = 6;
+    int32 sellspeccount = 7;
+  }
+  message FctAndSeriesInfo{
+    int32 fctid = 1;
+    string fctname = 2;
+    string fctlogo = 3;
+    repeated SeriesInfo seriesitems = 4;
+    int32 sellseriescount = 5;
+  }
+  message SeriesInfo{
+    int32 seriesid = 1;
+    string seriesname = 2;
+  }
+
+}
+
+
+message GetBrandInfoRequest {
+  int32 brandid = 1;
+  string appid = 2[json_name="_appid"];
+}
+
+message GetBrandInfoResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    int32 brandid = 1;
+    string brandname = 2;
+    string brandlogo = 3;
+    string country = 4;
+    string brandofficialurl = 5;
+    string brandfirstletter = 6;
+  }
+}
+
+message FactoryByBrandRequest {
+  int32 brandid = 1;
+  string state = 2;
+  int32 typeid = 3;
+  string is_filter_spec_image = 4 [json_name="IsFilterSpecImage"];
+}
+
+message FactoryByBrandResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    repeated Factoryitems factoryitems = 1;
+  }
+
+  message Factoryitems{
+    int32 id = 1;
+    string name = 2;
+    string ffirstletter = 3;
+  }
+}
+
+
+message BrandPriceMenuRequest{
+
+}
+
+message BrandPriceMenuResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+
+  message Result{
+    repeated Branditem branditems = 1;
+    string firstletter = 2;
+
+    message Branditem{
+      string name = 1;
+      string logo = 2;
+      int32 speccount = 3;
+      int32 orders = 4;
+      int32 id = 5;
+    }
+  }
+}
+
+
+message GetAllBrandNameRequest {
+  string appid = 1 [json_name="_appid"];
+}
+
+message GetAllBrandNameResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    int32 total = 1;
+    repeated Branditems branditems = 2;
+  }
+
+  message Branditems{
+    int32 id = 1;
+    string name = 2;
+  }
+}
+
+message BrandInfoBySeriesIdRequest{
+  int32 seriesid = 1;
+  string appid = 2 [json_name="_appid"];
+}
+
+message BrandInfoBySeriesIdResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    int32 seriesid = 1;
+    Item item = 2;
+  }
+
+  message Item{
+    int32 brandid = 1;
+    string brandname = 2;
+    string brandofficialurl = 3;
+    string country = 4;
+    string brandfirstletter = 5;
+    string brandlogo = 6;
+  }
+}
+
+message BrandByStateAndTypeRequest{
+  string state = 1;
+  int32 typeid = 2;
+  string is_filter_spec_image = 3 [json_name="IsFilterSpecImage"];
+  string appid = 4 [json_name="_appid"];
+}
+
+message BrandByStateAndTypeResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    repeated BrandItem branditems = 1;
+  }
+
+  message BrandItem{
+    int32 id = 1;
+    string name = 2;
+    string bfirstletter = 3;
+    string logo = 4;
+    string country = 5;
+    int32 countryid = 6;
+  }
+}
+
+message SeriesByBrandRequest{
+  int32 brandid = 1;
+  string state = 2;
+  int32 typeid = 3;
+  string is_filter_spec_image = 4 [json_name="IsFilterSpecImage"];
+  string appid = 5 [json_name="_appid"];
+}
+
+message SeriesByBrandResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    repeated SeriesItem seriesitems = 1;
+  }
+
+  message SeriesItem{
+    int32 id = 1;
+    string name = 2;
+    string sfirstletter = 3;
+    int32 seriesstate = 4;
+    int32 seriesorder = 5;
+  }
+}
+
+
+message BrandDingZhiElectricRequest{
+  string state = 1;
+  int32 typeid = 2;
+  string is_filter_spec_image = 3 [json_name="IsFilterSpecImage"];
+  string appid = 4 [json_name="_appid"];
+}
+
+message BrandDingZhiElectricResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    repeated BrandItem branditems = 1;
+  }
+
+  message BrandItem{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    string bfirstletter = 4;
+  }
+}
+
+message GetBrandByPavilionIdRequest{
+  int32 size = 1;
+  int32 showid = 2;
+  int32 pavilionid = 3;
+}
+message GetBrandByPavilionIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 showid = 1;
+    int32 pavilionid = 2;
+    int32 total = 3;
+    repeated Branditem branditems = 4;
+
+    message Branditem{
+      int32 id = 1;
+      string name = 2;
+      string logo = 3;
+      string firstletter = 4;
+    }
+  }
+}
+
+
+message BrandShowByPavilionLetterRequest{
+  int32 showid = 1;
+  string pavilionlist = 2;
+  string firstletter = 3;
+  string appid = 4 [json_name="_appid"];
+}
+
+message BrandShowByPavilionLetterResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    int32 showid = 1;
+    string pavilionid = 2;
+    int32 total = 3;
+    repeated BrandItem branditems = 4;
+    message BrandItem{
+      int32 id = 1;
+      string name = 2;
+      string logo = 3;
+      string firstletter = 4;
+    }
+  }
+}
+
+message GetPicBrandListHotRequest{
+
+}
+message GetPicBrandListHotResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+  message Result{
+    repeated BrandItem brandlist = 1;
+  }
+  message BrandItem{
+    int32 brandid = 1;
+    string brandname = 2;
+    string firstletter = 3;
+    string logo = 4;
+    int32 ordernum = 5;
+  }
+}
+message BrandHotRequest{
+  string appid = 1 [json_name="_appid"];
+}
+
+message BrandHotResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    repeated BrandItem branditems = 1;
+    int32 total = 2;
+  }
+
+  message BrandItem{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+  }
+}
+

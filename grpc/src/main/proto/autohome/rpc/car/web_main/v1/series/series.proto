@@ -1,0 +1,347 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.web_main.v1.series;
+option java_multiple_files = true;
+option java_outer_classname = "SeriesProto";
+option java_package = "autohome.rpc.car.web_main.v1.series";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/web_main/v1/series;series";
+option csharp_namespace = "autohome.rpc.car.web_main.v1.series";
+
+
+/**
+  * service 样例
+  * 维护人: zhangfeifei16658
+  * 生产环境 - 主机: car_web_main.grpc.corpautohome.com
+  * 预发环境 - 主机: car_web_main.thallo.corpautohome.com
+  * 测试环境 - 主机: car_web_main.terra.corpautohome.com
+ */
+service SeriesService {
+  /**
+    * 浏览历史记录
+    * 维护人:zff
+    */
+  rpc GetHistorySeriesList (GetHistorySeriesRequest) returns (SeriesResponse) {}
+  /**
+   * 我的关注
+   * 维护人：zff
+   */
+  rpc GetFollowSeriesList (GetFollowSeriesRequest) returns (SeriesResponse) {}
+  /**
+   * 根据Id，获取Redis内，缓存的Sessionid对象；
+   *
+   */
+  rpc GetCacheSeries(GetCacheSeriesRequest)  returns(GetCacheSeriesResponse){}
+  /**
+    根据品牌id，获取车系列表；并且返回 检索条件；
+   */
+  rpc GetSeriesListByBrandid(GetSeriesListByBrandidRequest)  returns(GetSeriesListByBrandidResponse){}
+  /**
+    返回口碑-焕春数据；
+   */
+  rpc GetCacheSeriesKoubei(GetCacheSeriesKoubeiRequest) returns (GetCacheSeriesKoubeiResponse){}
+
+  rpc GetSeriesByBrandId(GetSeriesListByBrandidRequest)  returns(GetSeriesByBrandIdResponse){}
+
+  rpc GetSeriesByBrandIds(GetSeriesByBrandIdsRequest)  returns(GetSeriesByBrandIdsResponse){}
+
+
+  /**
+    *获取车系询价等其它信息，可扩展
+   */
+  rpc GetSeriesInfoBySeriesIds(GetSeriesInfoBySeriesIdRequest) returns (GetSeriesInfoBySeriesIdResponse){}
+
+}
+
+message GetSeriesInfoBySeriesIdRequest {
+  repeated int32 seriesids = 1;
+  int32 cityid = 2;
+  /**
+   * 是否需要榜单标签
+   */
+  int32 filteranktag = 3;
+}
+message GetHistorySeriesRequest {
+  string seriesids = 1;
+}
+
+message GetFollowSeriesRequest {
+  int32 userid = 1;
+  string pcpopclub = 2;
+}
+
+message SeriesResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result {
+    int32 total = 1;
+    repeated SeriesItem serieslist = 2;
+    message SeriesItem{
+      int32 seriesid = 1;
+      string seriesname = 2;
+      string levelname = 3;
+      string img = 4;
+      string fueltypedetailname = 5;
+      int32 minprice = 6;
+      int32 maxprice = 7;
+    }
+  }
+}
+
+message GetSeriesByBrandIdResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result {
+    int32 seriesid = 1;
+    string seriesname = 2;
+  }
+}
+message GetCacheSeriesRequest{
+  int32 seriesid = 1;
+}
+message GetCacheSeriesResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result {
+    /**
+    * 车系id
+    */
+    int32 id = 1;
+
+    /**
+    * 车系名称
+    */
+    string name = 2;
+    /**
+    * 车系代表图
+    */
+    string logo = 3;
+    /**
+ * 车系透明图
+ */
+    string png_logo = 4;
+    /**
+ * 车系最低价
+ */
+    int32 min_price = 5;
+    /**
+   * 车系最高价
+   */
+    int32 max_price = 6;
+    /**
+     * 车系状态
+     */
+    int32 state = 7;
+    /**
+    * 是否包含预定车型
+    */
+    int32 contain_booked_spec = 8;
+    /**
+    * 车系排名
+    */
+    int32 rank = 9;
+    /**
+    * 品牌id
+    */
+    int32 brand_id = 10;
+    /**
+    * 品牌名称
+    */
+    string brand_name = 11;
+    /**
+   * 品牌logo
+   */
+    string brand_logo = 12;
+    /**
+    * 厂商id
+    */
+    int32 fct_id = 13;
+    /**
+    * 厂商名称
+    */
+    string fct_name = 14;
+    /**
+     * 车系级别
+     */
+    int32 level_id = 15;
+    /**
+    * 车系级别名称
+    */
+    string level_name = 16;
+    /**
+    * 车系产地
+    */
+    string place = 17;
+    int32 energytype = 18;
+    string fueltypes = 19;
+    /**
+    * 热门车型id
+    */
+    int32 hot_spec_id = 20;
+    /**
+    * 热门车型名
+    */
+    string hot_spec_name = 21;
+    /**
+    * 参数是否外显
+    */
+    int32 param_is_show = 22;
+    /**
+     * 发动机排量
+     */
+    repeated string displacement_items = 23;
+    /**
+   * 在售车型数
+   */
+    int32 sell_spec_num = 24;
+    int32 stop_spec_num = 25;
+    int32 wait_spec_num = 26;
+    /**
+    * 智能驾驶xx项功能
+    */
+    int32 intelligent_driving_num = 27;
+
+
+  }
+}
+
+
+
+message GetSeriesListByBrandidRequest{
+  int32 brandid = 1;
+  /**
+   * 调用来源
+   */
+  int32 source = 2;
+}
+message GetSeriesListByBrandidResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result {
+    repeated SeriesItem serieslist = 1;
+    repeated SearchOption searchoption1 = 2; //按照App的样式，咱们这个数据，属于第二行
+    message SearchOption{
+      repeated int32 value = 1;
+      string name = 2;
+      string key = 3;
+    }
+    message SeriesItem{
+      int32 seriesid = 1;
+      string seriesname = 2;
+      int32 levelid = 3;
+      string levelname = 4;
+      string seriesimg = 5;
+      string fueltypedetailname = 6;
+      int32 minprice = 7;
+      int32 maxprice = 8;
+      int32 seriesstate = 9;
+      int32 fctid = 10;
+      string fctname = 11;
+      int32 rank = 12;
+      string pnglogo = 13;
+      int32 newenergyseriesid = 14;
+      int32 containbookedspec = 15;
+      int32 newenergy = 16;
+      int32 isforeigncar = 17;
+      int32 uvrank = 18;
+      int32 hotrank = 19;
+      /**
+      口碑评分；
+      */
+      double average = 20;
+      Statistics countinfo = 21;
+      message Statistics {
+        int32 total = 1;
+        int32 stopcount = 2;
+        int32 salecount = 3;
+        int32 unsalecount = 4;
+      }
+    }
+  }
+}
+message GetCacheSeriesKoubeiRequest{
+  int32 seriesid = 1;
+}
+
+message GetCacheSeriesKoubeiResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    Bean bean = 1;
+    ScoreInfo scoreinfo = 2;
+
+    message ScoreInfo{
+      int32 evalcount = 1;
+      double average = 2;
+    }
+    message Bean{
+      string subtitle = 1;
+      string scoretitle = 2;
+      string appscheme = 3;
+    }
+  }
+}
+
+message GetSeriesInfoBySeriesIdResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result {
+     repeated SeriesInfo serieslist = 1;
+
+     message SeriesInfo {
+       int32 seriesid = 1;
+       DealerAskPrice dealeraskprice = 2;
+       TagInfo taginfo = 3;
+
+       message DealerAskPrice {
+         int32 specid = 1;
+         int32 dealerid = 2;
+         int32 newsprice = 3;
+         int32 cityid = 4;
+       }
+
+       message TagInfo {
+         string tag = 1;
+       }
+     }
+  }
+}
+
+message GetSeriesByBrandIdsRequest {
+  repeated int32 brandids = 1;
+}
+message GetSeriesByBrandIdsResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result {
+    repeated BrandSeriesInfo items = 1;
+    message BrandSeriesInfo {
+      int32 seriesid = 1;
+      int32 brandid = 2;
+      string seriesname = 3;
+    }
+  }
+}
+
+
+
+

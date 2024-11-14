@@ -1,0 +1,1311 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.series;
+option java_multiple_files = true;
+option java_outer_classname = "SeriesProto";
+option java_package = "autohome.rpc.car.car_api.v1.series";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/series;series";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.series";
+
+import "autohome/api/annotations.proto";
+
+/**
+  * service 样例
+  * 维护人: jiafaxin
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service SeriesService {
+  /**
+    *车系id列表获取相关基本信息
+   */
+  rpc GetSeriesBaseInfoBySeriesList(GetBaseInfoBySeriesListRequest)returns(GetBaseInfoBySeriesListResponse){
+    option (autohome.api.http) = {get: "/v1/CarPrice/Series_BaseInfoBySeriesList.ashx"};
+  }
+
+  //rpc GetSeriesParamBySeriesId(GetSeriesParamBySeriesIdRequest)returns(GetSeriesParamBySeriesIdResponse){}
+
+  /** 根据车系id获取车系相关参数信息
+ * 维护人: shicuining
+ */
+  rpc GetSeriesConfig(GetSeriesConfigRequest) returns (GetSeriesConfigResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/series_parambyseriesid.ashx"};
+  }
+
+  rpc GetSeriesInfo(GetSeriesInfoRequest) returns (GetSeriesInfoResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/series_infobyseriesid.ashx"};
+  }
+  /**
+    根据多个车系id获取车系代表图
+   */
+  rpc GetSeriesLogoBySeriesList(GetSeriesLogoBySeriesListRequest) returns (GetSeriesLogoBySeriesListResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/series_logobyserieslist.ashx"};
+  }
+
+  /**
+   根据多个车系id获取车系相关参数信息
+  */
+  rpc GetSeriesParamBySeriesList(GetBaseInfoBySeriesListRequest) returns (GetSeriesParamBySeriesListResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/series_parambyserieslist.ashx"};
+  }
+
+  /**
+   查出级别下11条车系信息
+  */
+  rpc GetSeriesByLevelId(GetSeriesByLevelIdRequest) returns (GetSeriesByLevelIdResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/series_11infobylevelid.ashx"};
+  }
+  /**
+   根据车系id获取车系颜色列表
+  */
+  rpc GetSeriesColor(GetSeriesConfigRequest) returns (GetSeriesColorResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/series_colorbyseriesid.ashx"};
+  }
+
+  /**
+  * 根据车系id获取各个类型前五张图片
+  * 维护人:jiaweiwei
+  */
+  rpc GetSeriesClassPictureBySeriesId (SeriesClassPictureBySeriesIdRequest) returns (SeriesClassPictureBySeriesIdResponse) {}
+
+
+
+
+  /** 根据车系id获取车系基本信息V1
+ *  +java改版用多加字段： 车系级别下排名、参数配置页面下载链接
+ */
+  rpc GetSeriesConfigById(GetSeriesConfigByIdRequest) returns (GetSeriesConfigByIdResponse){}
+
+  /**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc SeriesParamConfigIsShow (SeriesParamConfigIsShowRequest) returns (SeriesParamConfigIsShowResponse) {}
+
+/**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc SeriesPicIsShow (SeriesPicIsShowRequest) returns (SeriesPicIsShowResponse) {}
+
+
+  rpc GetSeriesInfoBySeriesList(GetSeriesInfoBySeriesListRequest)returns(GetSeriesInfoBySeriesListResponse){
+    option (autohome.api.http) = {get: "/v1/App/Series_SeriesInfoBySeriesList.ashx"};
+  }
+
+  rpc GetSeriesMenuByBrandIdNew(GetSeriesMenuByBrandIdNewRequest)returns(GetSeriesMenuByBrandIdNewResponse){
+    option (autohome.api.http) = {get: "/v1/App/Series_MenuByBrandIdNew.ashx"};
+  }
+
+  /** 四期
+  * 根据车系id获取车系代表图
+  */
+  rpc GetSeriesLogoBySeriesId(GetSeriesConfigRequest) returns (GetSeriesLogoResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/series_logobyseriesid.ashx"};
+  }
+
+  /**
+   * 根据多个品牌id获取相关车系列表。
+   */
+  rpc GetSeriesBrandListByBrandIds(GetSeriesBrandListByBrandIdsRequest) returns (GetSeriesBrandListByBrandIdsResponse){}
+
+  /**
+  *  根据车系id获取车系颜色列表
+  */
+  rpc GetSeriesInnerColorBySeriesId(GetSeriesInnerColorBySeriesIdRequest) returns (GetSeriesInnerColorBySeriesIdResponse){}
+  /**
+    *根据品牌获取品牌下车系名称等信息
+   */
+  rpc GetSeriesNameByBrandId(GetSeriesNameByBrandIdRequest)returns(GetSeriesNameByBrandIdResponse){}
+
+  /**
+     根据多个车系id获取车系相关标签集合
+   */
+  rpc GetSeriesTagBySeriesIds(GetSeriesInfoBySeriesListRequest) returns (GetSeriesTagResponse){}
+  /*
+  * 根据车系查是否有碰撞测试信息
+   */
+  rpc SeriesHaveCrashInfo(SeriesHaveCrashInfoRequest) returns(SeriesHaveCrashInfoResponse){}
+
+  /*
+  * 碰撞测试，根据车系获取最新一条碰撞信息
+  */
+  rpc GetCrashTestBySeriesId(GetCrashTestBySeriesIdRequest) returns(GetCrashTestBySeriesIdResponse){}
+  rpc GetAllSeriesBaseInfo(GetAllSeriesBaseInfoRequest) returns (GetAllSeriesBaseInfoResponse){}
+  /**
+    * 根据系列id获取系列名称
+   */
+  rpc GetSeriesNameBySeriesId(GetSeriesNameBySeriesIdRequest)returns(GetSeriesNameBySeriesIdResponse){}
+  /**
+    *pp接口需求 v8.8.5产品库源接口需求
+    *获取车系当前状态下最高配置的几项参数配置信息
+   */
+  rpc GetSeriesBaseParamBySeriesId(GetSeriesBaseParamBySeriesIdRequest)returns(GetSeriesBaseParamBySeriesIdResponse){}
+  /**
+    *根据品牌，销售状态，页数，页码 搜索车系数据
+   */
+  rpc GetSeriesByBrandAndState(GetSeriesByBrandAndStateRequest)returns(GetSeriesByBrandAndStateResponse){}
+  /**
+    *根据品牌id获取报价库车系菜单
+   */
+  rpc GetSeriesMenuByBrandId(GetSeriesMenuByBrandIdRequest)returns(GetSeriesMenuByBrandIdResponse){}
+  /**
+    *
+   */
+  rpc GetSeriesInfoByBrandId(GetSeriesInfoByBrandIdRequest)returns(GetSeriesInfoByBrandIdResponse){}
+
+  /**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc SeriesMenuBySearch (SeriesMenuBySearchRequest) returns (SeriesMenuBySearchResponse) {}
+
+  /**
+   * 根据车型id获取车系相关参数信息
+   */
+  rpc GetSeriesParamBySpecId(GetSeriesConfigBySpecIdRequest)returns(GetSeriesConfigBySpecIdResponse){}
+
+  /**
+   * 返回即将上市车系列表
+   */
+  rpc GetSeriesStateInfo(GetGetSeriesStateInfoRequest)returns(GetGetSeriesStateInfoResponse){}
+  /**
+    *根据车系id配置选装包信息
+   */
+  rpc GetConfigBagBySeriesId(GetConfigBagBySeriesIdRequest)returns(GetConfigBagBySeriesIdResponse){}
+  /**
+    *根据车系名称获取车系id
+   */
+  rpc GetSeriesIdBySeriesName(GetSeriesIdBySeriesNameRequest)returns(GetSeriesIdBySeriesNameResponse){}
+
+  rpc GetCrashTestSeriesRank(GetCrashTestSeriesRankRequest)returns(GetCrashTestSeriesRankResponse){}
+
+  /**
+    *
+   */
+  rpc  SeriesWithPageByLevelId(SeriesWithPageByLevelIdRequest)returns(SeriesWithPageByLevelIdResponse){}
+
+  /**
+
+   */
+  rpc GetCarShowSeriesPicByCondition(GetCarShowSeriesPicByConditionRequest)returns(GetCarShowSeriesPicByConditionResponse){}
+
+  rpc GetSeriesLatestUpdateList(GetSeriesLatestUpdateListRequest)returns(GetSeriesLatestUpdateListResponse){}
+
+  /*
+  * 根据状态获取车系（根据热度排序）
+  */
+  rpc GetSeriesHot(GetSeriesHotRequest) returns (GetSeriesHotResponse){}
+
+  /*
+  * 获取车系25图点位
+  */
+  rpc Series25PointToVR(Series25PointToVRRequest) returns (Series25PointToVRResponse){}
+
+  /*
+  * 返回有碰接测试的车系列表
+  */
+  rpc CrashTestSeriesList(CrashTestSeriesListRequest) returns (CrashTestSeriesListResponse){}
+
+  rpc GetSeriesAllPrice(GetSeriesAllPriceRequest)returns(GetSeriesAllPriceResponse){}
+
+  rpc SeriesInfoByState(SeriesInfoByStateRequest)returns(SeriesInfoByStateResponse){}
+}
+
+message GetSeriesLatestUpdateListRequest{
+  int32 size = 1;
+}
+message GetSeriesLatestUpdateListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total = 1;
+    repeated SeriesItem seriesitems = 2;
+  }
+  message SeriesItem{
+    int32 id = 1;
+    string name = 2;
+    int32 picid = 3;
+    string picfilepath = 4;
+    string dtime = 5;
+  }
+}
+
+message GetSeriesIdBySeriesNameRequest{
+  string seriesname = 1;
+}
+
+message GetSeriesIdBySeriesNameResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    string seriesname = 1;
+    int32 seriesid = 2;
+  }
+}
+
+message GetConfigBagBySeriesIdRequest{
+  int32 seriesid = 1;
+}
+
+message GetConfigBagBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+      int32 seriesid = 1;
+      repeated SpecItem speclist = 2;
+      repeated BagTypeItem bagtypeitems = 3;
+  }
+  message SpecItem{
+    int32 specid = 1;
+    int32 specstate = 2;
+    int32 showstate = 3;
+  }
+  message BagTypeItem{
+    string name = 1;
+    repeated BagItem bagitems = 2;
+  }
+  message BagItem{
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    int32 price = 4;
+    repeated ValueItem valueitems = 5;
+  }
+  message ValueItem{
+    int32 specid = 1;
+    string value = 2;
+  }
+}
+
+message GetSeriesInfoByBrandIdRequest{
+  int32 brandid = 1;
+}
+
+message GetSeriesInfoByBrandIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated FctItem sellseries = 1;
+    repeated FctItem allsellseries = 2;
+  }
+  message FctItem{
+    int32 id = 1;
+    string name = 2;
+    repeated SeriesItem seriesitems = 3;
+  }
+  message SeriesItem{
+    int32 id = 1;
+    string name = 2;
+    int32 levelid = 3;
+    string levelname = 4;
+    int32 seriesstate = 5;
+    int32 maxprice = 6;
+    int32 minprice = 7;
+    string seriespicurl = 8;
+    string seriespnglogo = 9;
+    int32 newenergy = 10;
+  }
+}
+
+message GetSeriesMenuByBrandIdRequest{
+  string state = 1;
+  int32 brandid = 2;
+
+}
+message GetSeriesMenuByBrandIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    repeated FctItem fctitems = 4;
+  }
+  message FctItem{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    repeated SeriesItem seriesitems = 4;
+  }
+  message SeriesItem{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    int32 levelid = 4;
+    string levelname = 5;
+    int32 minprice = 6;
+    int32 maxprice = 7;
+    repeated string gearbox = 8;
+    repeated string displacement = 9;
+    repeated string structure = 10;
+    int32 seriesordercls = 11;
+
+  }
+}
+message GetSeriesByBrandAndStateRequest{
+  string state = 1;
+  int32 brandid = 2;
+  int32 page = 3;
+  int32 size = 4;
+
+}
+message GetSeriesByBrandAndStateResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 pageindex = 1;
+    int32 size = 2;
+    int32 total = 3;
+    repeated FctItem fctitems = 4 [json_name = "FctItems"];
+  }
+  message FctItem{
+    string id = 1 [json_name = "Id"];
+    string name = 2 [json_name = "Name"];
+    repeated SeriesItem seriesitems = 3 [json_name = "SeriesItems"];
+  }
+  message SeriesItem{
+    int32 id = 1 [json_name = "Id"];
+    string seriesname = 2;
+    string minprice = 3 [json_name = "MinPrice"];
+    int32 maxprice = 4 [json_name = "MaxPrice"];
+    string logo = 5 [json_name = "Logo"];
+    int32 fctid = 6 [json_name = "FctId"];
+    string fctname = 7 [json_name = "FctName"];
+  }
+}
+
+message GetSeriesBaseParamBySeriesIdRequest{
+  int32 seriesid = 1;
+}
+message GetSeriesBaseParamBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated SeriesItem list = 1;
+  }
+  message SeriesItem{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    int32 levelid = 3;
+    string levelname = 4;
+    int32 specid = 5;
+    string specname = 6;
+    int32 length = 7;
+    int32 width = 8;
+    int32 height = 9;
+    double officaloil = 10;
+    string seats = 11;
+    int32 doors = 12;
+    int32 mileage = 13;
+    double acceleratedspeed = 14;
+    int32 horsepower = 15;
+  }
+}
+
+message GetSeriesNameBySeriesIdRequest{
+  int32 seriesid = 1;
+}
+message GetSeriesNameBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    int32 brandid = 3;
+    string brandname = 4;
+    int32 fctid = 5;
+    string fctname = 6;
+  }
+}
+
+message GetSeriesNameByBrandIdRequest{
+  int32 brandid = 1;
+}
+message GetSeriesNameByBrandIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    string officialurl = 4;
+    repeated FactoryItem factoryitems = 5;
+  }
+  message FactoryItem{
+    int32 id = 1;
+    string name = 2;
+    repeated SeriesItem seriesitems = 3;
+  }
+  message SeriesItem{
+    int32 id = 1;
+    string name = 2;
+    int32 levelid = 3;
+    string levelname = 4;
+    int32 ispublic = 5;
+    int32 seriesstate = 6;
+  }
+}
+
+message GetSeriesMenuByBrandIdNewRequest{
+  string state = 1;
+  int32 brandid = 2;
+}
+
+message GetSeriesMenuByBrandIdNewResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    repeated FctInfo fctlist = 4;
+  }
+  message FctInfo{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    repeated SeriesInfo serieslist = 4;
+  }
+  message SeriesInfo{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    int32 levelid = 4;
+    string levelname = 5;
+    int32 minprice = 6;
+    int32 maxprice = 7;
+    int32 series_state = 8 [json_name = "seriesState"];
+    int32 seriesorders = 9;
+    int32 isvr = 10;
+    string pnglogo = 11;
+    int32 containbookedspec = 12;
+    int32 relationseriesid = 13;
+  }
+
+}
+
+message GetSeriesInfoBySeriesListRequest{
+  string seriesids = 1;
+}
+message GetSeriesInfoBySeriesListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    string seriesimage = 3;
+    int32 isvr = 4;
+    int32 minprice = 5;
+    int32 maxprice = 6;
+    string seriesplace = 7;
+  }
+}
+
+message GetBaseInfoBySeriesListRequest{
+  string appid = 1 [json_name = "_appid"];
+  string serieslist = 2;
+
+}
+
+//message GetSeriesParamBySeriesIdRequest{
+//  string appid = 1 [json_name = "_appid"];
+//  int32 seriesid = 2;
+//
+//}
+
+
+
+message GetBaseInfoBySeriesListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 rowcount = 1;
+    repeated SeriesList list = 2;
+  }
+  message SeriesList{
+    int32 seriesid = 1;
+    string name = 2;
+    int32 brandid = 3;
+    string brandname = 4;
+    string brandlogo = 5;
+    int32 fctid = 6;
+    string fctname = 7;
+    string level = 8;
+    string pic = 9;
+    string minprice = 10;
+    string maxprice = 11;
+    string seriespnglogo = 12;
+  }
+
+}
+
+message GetSeriesConfigRequest {
+  int32 seriesid = 1;
+  string appid = 2[json_name="_appid"];
+}
+
+message GetSeriesConfigResponse {
+  int32 return_code = 1[json_name="returncode"];
+  string return_msg = 2[json_name="message"];
+  Result result = 3;
+
+  message Result{
+    int32 id = 1;
+    string name = 2;
+    int32 maxprice = 3;
+    int32 minprice = 4;
+    int32 state = 5;
+    string series_official_url = 6[json_name="seriesOfficialUrl"];
+    int32 fctid = 7;
+    string fctname = 8;
+    int32 brandid = 9;
+    string brandname = 10;
+    repeated string structitems = 11;
+    repeated string transmissionitems = 12;
+    repeated string displacementitems = 13;
+    int32 levelid = 14;
+    string levelname = 15;
+    repeated string picitems = 16;
+    repeated SeriesLogo picinfoitems = 17;
+    int32 specnum = 18;
+    int32 sellspecnum = 19;
+    int32 stopspecnum = 20;
+    int32 waitspecnum = 21;
+    int32 picnum = 22;
+    int32 minfuelconsumption = 23;
+    int32 maxfuelconsumption = 24;
+    int32 isshow = 25;
+    int32 containbookedspec = 26;
+    double minoilwear = 27;
+    double maxoilwear = 28;
+    int32 containstopspec = 29;
+    string pnglogo = 30;
+
+    message SeriesLogo{
+      int32 specid = 1;
+      int32 picid = 2;
+      string picpath = 3;
+    }
+  }
+}
+
+message GetSeriesInfoRequest {
+  int32 seriesid = 1;
+  string appid=2[json_name="_appid"];
+  int32 dispqrcode=3;
+}
+
+message GetSeriesInfoResponse{
+  int32 return_code = 1[json_name="returncode"];
+  string return_msg = 2[json_name="message"];
+  Result result = 3;
+
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    string serieslogo = 3;
+    string seriesofficialurl = 4;
+    string seriesfirstletter = 5;
+    string seriesplace = 6;
+    int32 countryid = 7;
+    string countryname = 8;
+    int32 brandid = 9;
+    string brandname = 10;
+    string brandlogo = 11;
+    string brandofficialurl = 12;
+    string brandfirstletter = 13;
+    int32 fctid = 14;
+    string fctname = 15;
+    string fctlogo = 16;
+    string fctofficialurl = 17;
+    string fctfirstletter = 18;
+    int32 levelid = 19;
+    string levelname = 20;
+    string containelectriccar = 21;
+    string qrcode = 22;
+  }
+}
+message GetSeriesLogoBySeriesListRequest{
+  string serieslist = 1;
+  string appid=2[json_name="_appid"];
+}
+message GetSeriesLogoBySeriesListResponse{
+  int32 return_code = 1[json_name="returncode"];
+  string return_msg = 2[json_name="message"];
+  Result result = 3;
+  message Result{
+    repeated SeriesItems seriesitems = 1;
+  }
+  message SeriesItems{
+    int32 id = 1;
+    string logo = 2;
+    int32 piccount = 3;
+  }
+}
+
+message GetSeriesParamBySeriesListResponse{
+  int32 return_code = 1[json_name="returncode"];
+  string return_msg = 2[json_name="message"];
+  repeated Result result = 3;
+  message Result{
+    int32 id = 1;
+    string name = 2;
+    int32 maxprice = 3;
+    int32 minprice = 4;
+    int32 state = 5;
+    int32 picallnum = 6;
+    int32 fctid = 7;
+    string fctname = 8;
+    int32 brandid = 9;
+    string brandname = 10;
+    repeated string structitems = 11;
+    repeated string transmissionitems = 12;
+    repeated string displacementitems = 13;
+    int32 levelid = 14;
+    string levelname = 15;
+    repeated string picitems = 16;
+    repeated SeriesLogo picinfoitems = 17;
+    int32 specnum = 18;
+    int32 sellspecnum = 19;
+    int32 stopspecnum = 20;
+    int32 waitspecnum = 21;
+    int32 picnum = 22;
+    int32 minfuelconsumption = 23;
+    int32 maxfuelconsumption = 24;
+    int32 isshow = 25;
+    double minoilwear = 26;
+    double maxoilwear = 27;
+    int32 newenergy = 28;
+    int32 containstopspec = 29;
+    message SeriesLogo{
+      int32 specid = 1;
+      int32 picid = 2;
+      string picpath = 3;
+    }
+  }
+}
+
+message GetSeriesByLevelIdRequest{
+  int32 levelid = 1;
+}
+message GetSeriesByLevelIdResponse{
+  int32 return_code = 1[json_name="returncode"];
+  string return_msg = 2[json_name="message"];
+  Result result = 3;
+  message Result{
+    int32 levelid = 1;
+    int32 total = 2;
+    repeated Seriesitems seriesitems = 3;
+    message Seriesitems{
+      int32 id = 1;
+      string name = 2;
+      string logo = 3;
+      int32 picnum = 4;
+    }
+  }
+}
+
+message GetSeriesColorResponse{
+  int32 return_code = 1[json_name="returncode"];
+  string return_msg = 2[json_name="message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    int32 total = 2;
+    repeated Coloritems coloritems = 3;
+    message Coloritems{
+      int32 id = 1;
+      string name = 2;
+      string value = 3;
+      int32 picnum = 4;
+      int32 clubpicnum = 5;
+    }
+  }
+}
+
+message SeriesClassPictureBySeriesIdRequest{
+  int32 seriesid = 1;
+}
+
+message SeriesClassPictureBySeriesIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    repeated Typeitems typeitems = 8;
+
+    message Typeitems{
+      int32 id = 1;
+      string name = 2;
+      int32 pictotal = 3;
+      repeated Picitems picitems = 4;
+    }
+
+    message Picitems{
+      int32 id = 1;
+      string filepath = 2;
+      int32 specid = 3;
+      string specname = 4;
+
+    }
+  }
+}
+
+
+message GetSeriesConfigByIdRequest {
+  int32 seriesid = 1;
+  string appid = 2[json_name="_appid"];
+}
+
+message GetSeriesConfigByIdResponse {
+  int32 return_code = 1[json_name="returncode"];
+  string return_msg = 2[json_name="message"];
+  Result result = 3;
+
+  message Result{
+    int32 id = 1;
+    string name = 2;
+    int32 maxprice = 3;
+    int32 minprice = 4;
+    int32 state = 5;
+    string series_official_url = 6[json_name="seriesOfficialUrl"];
+    int32 fctid = 7;
+    string fctname = 8;
+    int32 brandid = 9;
+    string brandname = 10;
+    repeated string structitems = 11;
+    repeated string transmissionitems = 12;
+    repeated string displacementitems = 13;
+    int32 levelid = 14;
+    string levelname = 15;
+    repeated string picitems = 16;
+    repeated SeriesLogo picinfoitems = 17;
+    int32 specnum = 18;
+    int32 sellspecnum = 19;
+    int32 stopspecnum = 20;
+    int32 waitspecnum = 21;
+    int32 picnum = 22;
+    int32 minfuelconsumption = 23;
+    int32 maxfuelconsumption = 24;
+    int32 isshow = 25;
+    int32 clubisshow = 26;
+    int32 levelranknumber = 27;
+    string paramdownloadurl = 28;
+
+    message SeriesLogo{
+      int32 picid = 1;
+      int32 specid = 2;
+      string picpath = 3;
+    }
+  }
+}
+
+message GetSeriesLogoResponse{
+  int32 return_code = 1[json_name = "returncode"];
+  string return_msg = 2[json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    string serieslogo = 3;
+    string seriespnglogo = 4;
+  }
+}
+
+message GetSeriesBrandListByBrandIdsRequest {
+  string brandids = 1;
+  string state = 2;
+  string appid = 3[json_name="_appid"];
+}
+
+message GetSeriesBrandListByBrandIdsResponse {
+  int32 return_code = 1[json_name="returncode"];
+  string return_msg = 2[json_name="message"];
+  repeated Result result = 3;
+  message Result{
+    int32 brandid = 1;
+    string brandname = 2;
+    repeated SeriesList list = 3;
+    message SeriesList{
+      int32 seriesid = 1;
+      string seriesname = 2;
+      string image = 3;
+      int32 minprice = 4;
+      int32 maxprice = 5;
+      int32 seriesstate = 6;
+    }
+  }
+}
+message GetSeriesInnerColorBySeriesIdRequest{
+  int32 seriesid = 1;
+}
+
+message GetSeriesInnerColorBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    int32 total = 2;
+    repeated Coloritems coloritems= 3;
+  }
+
+  message Coloritems{
+    int32 id = 1;
+    string name = 2;
+    string value = 3;
+    int32 picnum = 4;
+    int32 clubpicnum = 5;
+  }
+}
+message GetSeriesTagResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated List list = 1;
+    message List{
+      int32 sereisid = 1;
+      string seriesname = 2;
+      repeated Taglist taglist = 3;
+      message Taglist{
+        int32 tagid = 1;
+        string tagname = 2;
+      }
+    }
+  }
+}
+
+message GetAllSeriesBaseInfoRequest {
+  string appid = 1[json_name="_appid"];
+}
+
+message GetAllSeriesBaseInfoResponse {
+  int32 return_code = 1[json_name = "returncode"];
+  string return_msg = 2[json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 total = 1;
+    repeated SeriesItem seriesitems = 2;
+    message SeriesItem{
+      int32 id = 1;
+      string name = 2;
+      string englishname = 3;
+    }
+  }
+}
+
+
+message SeriesParamConfigIsShowRequest{
+  int32 seriesid = 1;
+}
+
+message SeriesParamConfigIsShowResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    bool isshow = 1;
+    string url = 2;
+  }
+}
+
+message SeriesHaveCrashInfoRequest{
+  int32 seriesid = 1;
+  string appid = 2 [json_name="_appid"];
+}
+
+message SeriesHaveCrashInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 seriesid = 1;
+    int32 havecrashinfo = 2;
+    repeated int32 standards= 3;
+  }
+}
+
+message GetCrashTestBySeriesIdRequest{
+  int32 seriesid = 1;
+  int32 standardid = 2;
+  string appid = 3 [json_name="_appid"];
+}
+
+message GetCrashTestBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    string serieslogo = 3;
+    int32 articleid = 4 [json_name = "articleId"];
+    repeated Detail detail= 5;
+  }
+
+  message Detail{
+    int32 typeid = 1;
+    string typename = 2;
+    repeated DetailItem list = 3;
+  }
+
+  message DetailItem{
+    int32 itemid = 1;
+    string itemname = 2;
+    string dispcontent = 3;
+    string crashvalue = 4;
+    string remark = 5;
+    int32 valuetype = 6;
+  }
+}
+
+
+message SeriesPicIsShowRequest{
+  int32 seriesid = 1;
+}
+
+message SeriesPicIsShowResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    bool isshow = 1;
+    string url = 2;
+  }
+}
+
+message GetSeriesHotRequest{
+  string state = 1;
+  int32 size = 2;
+  int32 page = 3;
+  string appid = 4 [json_name="_appid"];
+}
+
+message GetSeriesHotResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 pageindex = 1;
+    int32 size = 2;
+    int32 total = 3;
+    repeated SeriesItem seriesitems = 4;
+  }
+
+  message SeriesItem{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    int32 minprice = 4;
+    int32 maxprice = 5;
+    int32 ispublic = 6;
+  }
+
+}
+
+message Series25PointToVRRequest{
+  int32 seriesid = 1;
+  string appid = 2 [json_name="_appid"];
+}
+
+message Series25PointToVRResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated ClassItem list = 1;
+  }
+
+  message ClassItem{
+    int32 classid = 1;
+    string name = 2;
+    string frameids = 3;
+  }
+}
+
+message CrashTestSeriesListRequest{
+  string appid = 1 [json_name="_appid"];
+}
+
+message CrashTestSeriesListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+
+  message Result{
+    int32 id = 1;
+    string name = 2;
+  }
+}
+
+
+message SeriesMenuBySearchRequest{
+  string state = 1;
+  int32 brandid =2 ;
+  int32 fctid = 3;
+  int32 minprice = 4;
+  int32 maxprice = 5;
+  int32 levelid = 6;
+  int32 countryid = 7;
+  string keyword = 8;
+  string firstletter = 9;
+  int32 store = 10;
+  int32 size = 11;
+  int32 page = 12;
+}
+
+message SeriesMenuBySearchResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 total = 1;
+    int32 size = 2;
+    int32 pageindex = 3;
+    repeated Seriesitem seriesitems = 4;
+
+    message Seriesitem{
+      string fctname = 1;
+      int32 maxprice = 2;
+      string brandname = 3;
+      repeated string structure = 4;
+      int32 seriesstate = 5;
+      int32 minprice = 6;
+      string name = 7;
+      string logo = 8;
+      string pnglogo = 9;
+      repeated string displacement = 10;
+      int32 id = 11;
+      repeated string gearbox = 12;
+      string levelname = 13;
+    }
+  }
+}
+
+
+message GetSeriesConfigBySpecIdRequest {
+  int32 specid = 1;
+  string appid = 2[json_name="_appid"];
+}
+
+message GetSeriesConfigBySpecIdResponse {
+  int32 return_code = 1[json_name="returncode"];
+  string return_msg = 2[json_name="message"];
+  Result result = 3;
+
+  message Result{
+    int32 id = 1;
+    string name = 2;
+    int32 maxprice = 3;
+    int32 minprice = 4;
+    int32 state = 5;
+    int32 fctid = 6;
+    string fctname = 7;
+    int32 brandid = 8;
+    string brandname = 9;
+    repeated string transmissionitems = 10;
+    repeated string displacementitems = 11;
+    int32 levelid = 12;
+    string levelname = 13;
+    repeated string picitems = 14;
+    int32 specnum = 15;
+    int32 sellspecnum = 16;
+    int32 stopspecnum = 17;
+    int32 waitspecnum = 18;
+    int32 picnum = 19;
+    int32 minfuelconsumption = 20;
+    int32 maxfuelconsumption = 21;
+    string specname = 22;
+  }
+}
+
+message GetGetSeriesStateInfoRequest{}
+
+message GetGetSeriesStateInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated Seriesitem seriesitems = 1;
+    message Seriesitem{
+      int32 seriesid = 1;
+    }
+  }
+}
+
+
+message SeriesWithPageByLevelIdRequest{
+  int32 levelid = 1 ;
+  int32 page = 2;
+  int32 size = 3;
+  string state = 4;
+  string appid = 5[json_name="_appid"];
+}
+
+message SeriesWithPageByLevelIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 levelid = 1;
+    int32 pageindex = 2;
+    int32 size = 3;
+    int32 total = 4;
+    repeated Seriesitem seriesitems = 5;
+
+    message Seriesitem{
+      int32 id = 1;
+      string name = 2;
+      string logo = 3;
+      int32 picnum = 4;
+      int32 minprice = 5;
+      int32 maxprice = 6;
+      int32 state = 7;
+      int32 ispublic = 8;
+    }
+  }
+}
+
+
+message GetCarShowSeriesPicByConditionRequest{
+  int32 seriesid = 1;
+  int32 showid = 2;
+  int32 pageindex = 3;
+  int32 size = 4;
+  int32 maxpicid = 5;
+  string appid = 6[json_name="_appid"];
+
+}
+message GetCarShowSeriesPicByConditionResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 showid = 1;
+    int32 pageindex = 2;
+    int32 size = 3;
+    int32 total = 4;
+    repeated Picitem picitems = 5;
+  }
+
+  message Picitem{
+    int32 id = 1;
+    string filepath =2;
+    int32 seriesid = 3;
+    string seriesname = 4;
+    int32 fctid = 5 ;
+    string fctname = 6 ;
+    int32 brandid  = 7;
+    string brandname = 8;
+  }
+}
+
+message GetCrashTestSeriesRankRequest{
+  int32 ordertype = 1;
+  string standardid = 2;
+}
+
+message GetCrashTestSeriesRankResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated List list = 1;
+
+    message List{
+      int32 ordernum = 1;
+      int32 seriesid = 2;
+      string seriesname = 3;
+      int32 minprice = 4;
+      int32 maxprice = 5;
+      string seriespnglogo = 6;
+      string starscore = 7;
+      string compscore = 8;
+      repeated Itemlist itemlist = 9;
+
+      message Itemlist{
+        int32 itemid = 1;
+        int32 testvalue = 2;
+      }
+    }
+  }
+}
+
+message GetSeriesAllPriceRequest{}
+message GetSeriesAllPriceResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total = 1;
+    repeated SeriesItem seriesitems = 2;
+  }
+  message SeriesItem{
+    int32 id = 1;
+    int32 minprice = 2;
+    int32 maxprice = 3;
+  }
+}
+
+
+message SeriesInfoByStateRequest{
+  string state = 1;
+  string appid = 2[json_name="_appid"];
+}
+
+message SeriesInfoByStateResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 total = 1;
+    repeated Seriesitem seriesitems = 4;
+    message Seriesitem{
+      int32 id = 1;
+      string name = 2;
+      string logo = 3;
+    }
+  }
+}

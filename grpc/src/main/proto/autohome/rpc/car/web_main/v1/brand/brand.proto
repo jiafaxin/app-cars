@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.web_main.v1.brand;
+option java_multiple_files = true;
+option java_outer_classname = "BrandProto";
+option java_package = "autohome.rpc.car.web_main.v1.brand";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/web_main/v1/brand;brand";
+option csharp_namespace = "autohome.rpc.car.web_main.v1.brand";
+
+
+/**
+  * service 样例
+  * 维护人: zhangfeifei16658
+  * 生产环境 - 主机: car_web_main.grpc.corpautohome.com
+  * 预发环境 - 主机: car_web_main.thallo.corpautohome.com
+  * 测试环境 - 主机: car_web_main.terra.corpautohome.com
+ */
+service BrandGrpcService {
+  /**
+    * rpc方法样例
+    */
+  rpc GetBrand (GetBrandRequest) returns (BrandResponse) {}
+
+  /**
+   * 根据品牌id获取品牌信息
+   */
+  rpc GetBrandById(BrandByIdRequest) returns (BrandByIdResponse) {}
+
+  /**
+   * 获取热门品牌
+   */
+  rpc GetHotBrand(GetBrandRequest) returns (HotBrandResponse) {}
+}
+
+
+message BrandByIdRequest {
+  int32 brandid = 1;
+  /**
+    是否需要热点车系
+    1 是   0否
+   */
+  int32 hottype = 2;
+
+  /**
+   * 是否需要简介
+   */
+  int32 describe = 3;
+}
+message GetBrandRequest {
+  int32 sorttype = 1;
+  int32 newenergy = 2;
+  int32 cityid = 3;
+}
+
+message BrandResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total=1;
+    repeated BrandItem brandlist = 2;
+    repeated BrandItem hotbrandlist = 3;
+    message BrandItem{
+      int32 id =1;
+      string name =2;
+      string logo =3;
+      string firstletter =4;
+      string country =5;
+      int32 state =6;
+      int32 rank =7;
+      int32 uvrank =8;
+      int32 luxury =9;
+      int32 havenewenergy =10;
+      int32 orderrank =11;
+    }
+  }
+}
+
+message BrandByIdResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 brandid = 1;
+    string brandname = 2;
+    string brandofficialurl = 3;
+    string country = 4;
+    string brandfirstletter = 5;
+    string brandlogo = 6;
+    string describe = 7;
+    repeated HotSeries hotseries = 8;
+    message HotSeries {
+       string name = 1;
+       int32 seriesid = 2;
+       int32 maxprice = 3;
+       int32 minprice = 4;
+       double average = 5;
+       string imgpath = 6;
+    }
+  }
+}
+message HotBrandResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated BrandItem hotbrandlist = 1;
+    message BrandItem{
+      int32 id =1;
+      string name =2;
+      string logo =3;
+      string firstletter =4;
+      string country =5;
+      int32 state =6;
+      int32 rank =7;
+      int32 uvrank =8;
+      int32 luxury =9;
+      int32 havenewenergy =10;
+      int32 orderrank =11;
+    }
+  }
+}
+

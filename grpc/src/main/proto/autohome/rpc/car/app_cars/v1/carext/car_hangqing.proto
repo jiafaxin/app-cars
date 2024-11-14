@@ -1,0 +1,269 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.carext;
+option java_multiple_files = true;
+option java_outer_classname = "CarHangqingProto";
+option java_package = "autohome.rpc.car.app_cars.v1.carext";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/carext;carext";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.carext";
+
+
+/**
+  * service 样例
+  * 维护人: chengjincheng
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service CarsHangqingService {
+  /**
+    *
+    * 维护人:cjc
+    */
+  rpc PageGetList (CarsHangqingPageGetRequest) returns (CarsHangqingPageGetResponse) {}
+
+  rpc GetSearchOptions (CarsHangqingSearchOptionsRequest) returns (CarsHangqingSearchOptionsResponse) {}
+}
+
+message CarsHangqingPageGetRequest {
+  int32 cityid = 1;
+  int32 pageindex = 2;
+  int32 pagesize = 3;
+  string brand = 4;
+  string levelid = 5;
+  string price = 6;
+  string energytype = 7;
+  int32 orderid = 8;
+}
+
+message CarsHangqingPageGetResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    PageInfo pageinfo = 1;
+    repeated CardList cardlist = 2;
+
+    message PageInfo{
+      int32 pageindex = 1;
+      int32 pagecount = 2;
+      int32 rowcount = 3;
+    }
+
+    message CardList{
+      int32 type = 1;
+      oneof data{
+        Card30501 card30501 = 2[json_name = "data"]; // 30501卡片
+        Card30502 card30502 = 3[json_name = "data"]; // 30502卡片
+        Card30503 card30503 = 4[json_name = "data"]; // 30503卡片
+      }
+    }
+
+    message Card30501{
+      SeriesInfo seriesinfo = 1;
+      int32 speccount = 2;
+      Pvitem pvitem = 3;
+      repeated SpecInfo speclist = 4;
+
+      message SeriesInfo {
+        uint32 id = 1;
+        string logo = 2;
+        string picurl = 3;
+        string seriesname = 4;
+        string price = 5;
+        string count = 6;
+        string jumpurl = 7;
+        Pvitem pvitem = 8;
+
+      }
+
+      message SpecInfo {
+        string specname = 1;
+        string pricedown = 2;
+        bool pricedecrease = 3;
+        string price = 4;
+        string guidprice = 5;
+        string jumpurl = 6;
+        Pvitem pvitem = 7;
+      }
+    }
+
+    message Card30502{
+      SeriesInfo seriesinfo = 1;
+      int32 speccount = 2;//车型数
+      Pvitem pvitem = 3;//点击更多车款埋点
+      repeated SpecInfo speclist = 4;
+
+      message SeriesInfo{
+        int32 id = 1;//车系id
+        string logo = 2;//品牌logo
+        string picurl = 3;//车系图片
+        string seriesname = 4;//车系名称
+        string price = 5;//价格
+        string count = 6;//在售款数
+        string jumpurl = 7;//跳转链接
+        Pvitem pvitem = 8;//列表卡片头部点击、曝光
+      }
+
+      message SpecInfo{
+        string specname = 1;//车型名
+        string pricedown = 2;//降价，没有变化返回""
+        string pricedowntag = 3; // 日期新降金额 没有返回 ''
+        bool pricedecrease = 4;//ture为下降，false为上升
+        string price = 5;//价格
+        string guidprice = 6;//指导价
+        string jumpurl = 7;//跳转链接
+        Pvitem pvitem = 8;//点击车型埋点
+      }
+    }
+
+    message Card30503{
+      SeriesInfo seriesinfo = 1;
+      int32 speccount = 2;//车型数
+      Pvitem pvitem = 3;//点击更多车款埋点
+      repeated SpecInfo speclist = 4;
+
+      message SeriesInfo{
+        int32 id = 1;
+        string logo = 2;
+        string picurl = 3;
+        string seriesname = 4;
+        string price = 5;
+        string count = 6;
+        string jumpurl = 7;
+        Pvitem pvitem = 8;
+      }
+
+      message SpecInfo{
+        string specname = 1;
+        string pricedown = 2;//降价，没有变化返回''
+        bool pricedecrease = 3;//ture为下降，false为上升
+        string price = 4;//价格
+        string pricehistorytag = 5;// 历史新低 没有返回''
+        string guidprice = 6;//指导价
+        string jumpurl = 7;//跳转链接
+        Pvitem pvitem = 8;//点击车型埋点
+      }
+    }
+
+    message Pvitem{
+      map<string, string> argvs = 1;
+      Click click = 2;
+      Show show = 3;
+
+      message Show{
+        string eventid = 1;
+        map<string,string> argvs = 2;
+      }
+
+      message Click{
+        string eventid = 1;
+        map<string,string> argvs = 2;
+      }
+    }
+  }
+}
+
+message CarsHangqingSearchOptionsRequest{
+  int32 pm = 1;
+  string pluginversion = 2;
+  string deviceid = 3;
+  int32 cityid = 4;
+}
+
+message CarsHangqingSearchOptionsResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    Baseinfo baseinfo = 1;
+    repeated ResultList resultlist = 2 [json_name = "alllist"];
+
+
+    message Baseinfo{
+      string bgpic = 1;//头部的背景图片
+      string bgcolor = 2;//头部图片为空，背景色值
+      string titlepic = 3;//文案图片
+      string subtitle = 4;//副标题
+      repeated LatestDownList list = 5;//新降模块数据
+
+      message LatestDownList{
+        int32 type = 1;// 最新降价类型的数据，后续可能会拓展
+        string date = 2;// 本次变价日期
+        string picurl = 3;
+        string seriesname = 4;
+        string pricetxt = 5;// 本地最低经销商价+起
+        string changepricetxt = 6;// 本次变价金额 没有返回空
+        bool pricedecrease = 7;//ture为下降，false为上升
+        string jumpurl = 8;// 跳转地址
+        RightInfo rightinfo = 9;
+        PvItem pvitem = 10;
+      }
+
+      message RightInfo{
+        string text = 1;
+        string orderid = 2;
+        PvItem pvitem = 3;
+      }
+
+      message PvItem{
+        map<string,string> argvs = 1;
+        Click click = 2;
+        Show show = 3;
+
+        message Click{
+          string eventid = 1;
+          map<string,string> argvs = 2;
+        }
+        message Show{
+          string eventid = 1;
+          map<string,string> argvs = 2;
+        }
+      }
+    }
+
+    message ResultList{
+      repeated Grouplist grouplist = 1;
+
+      message Grouplist{
+        string key = 1;
+        string showname = 2;
+        int32 isselectmore = 3;
+        repeated List list = 4;
+
+        message List{
+          string name = 1;
+          string value = 2;
+          string key = 3;
+          string parametername = 4;
+          repeated Childrenlist childrenlist = 5;
+
+          message Childrenlist{
+            string key = 1;
+            string name = 2;
+            string value = 3;
+            string parametername = 4;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+

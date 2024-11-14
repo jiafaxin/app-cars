@@ -1,0 +1,254 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.carbase;
+option java_multiple_files = true;
+option java_outer_classname = "SeriesSpecListProto";
+option java_package = "autohome.rpc.car.app_cars.v1.carbase";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/carbase;carbase";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.carbase";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+/**
+  * 车系车型列表接口
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service SeriesSpecListService {
+  /**
+    * 车系车型列表
+    * 维护人:邓凯
+    */
+  rpc SeriesSpecListBaseInfo (SeriesSpecListBaseInfoRequest) returns (SeriesSpecListBaseInfoResponse) {}
+}
+
+message SeriesSpecListBaseInfoRequest {
+  //1 ios,2 android
+  int32 pm = 1 ;
+  //城市id
+  int32 cityid = 2 ;
+  //车系id
+  int32 seriesid = 3 ;
+  //插件版本号
+  string pluginversion = 4 ;
+  //tagname
+  string tagname = 5 ;
+  //zixunabtest
+  string zixunabtest = 6 ;
+  //tagid
+  int32 tagid = 7 ;
+  //attentionabtest
+  string attentionabtest = 8 ;
+  //车型列表400电话实验
+  string dealer400ab = 9 ;
+  int32 usedcarspecid = 10;
+  string usedcarbtnstyleab = 11;
+}
+
+message SeriesSpecListBaseInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    //车系车型列表
+    SpecInfo specinfo = 1;
+
+    //我要卖车
+    SaleCarInfo salecarinfo = 2;
+
+    //上门试驾
+    repeated SpecBottomList specbottomlist = 3;
+
+    message SpecInfo{
+      repeated OrderList orderlist = 1;
+      repeated YearList yearlist = 2;
+      repeated SpecList speclist = 3;
+
+
+      message SpecList {
+        string nodealertip = 1;
+        string yearname = 2;
+        repeated Yearspeclist yearspeclist = 3;
+        uint32 yearvalue = 4;
+
+        message Yearspeclist {
+          string name = 1;
+          string nodealertip = 2;
+          repeated Spec speclist = 3;
+          string yearname = 4;
+
+          message Spec {
+            uint32 attention = 1;
+            uint32 attentionint = 2;
+            string attentioninfo = 3;
+            uint32 canaskprice = 4;
+            Diffconfiginfo diffconfiginfo = 5;
+            string downprice = 6;
+            string electriccarname = 7;
+            string electriccarval = 8;
+            string endurancemileage = 9;
+            string endurancetext = 10;
+            string ext = 11;
+            string fctpricetipinfo = 12;
+            string fueltypedetail = 13;
+            uint32 fueltypedetailid = 14;
+            uint32 id = 15;
+            Iminfo iminfo = 16;
+            uint32 imtype = 17;
+            uint32 isother = 18;
+            uint32 labletype = 19;
+            uint32 mali = 20;
+            string minprice = 21;
+            string minpricename = 22;
+            uint32 calcprice = 23;
+            uint32 noshowprice = 24;
+            string name = 25;
+            repeated int64 order = 26;
+            string paramisshow = 27;
+            string price = 28;
+            string pricename = 29;
+            string pricetip = 30;
+            uint32 roomid = 31;
+            string salebtn = 32;
+            string specbottomtitle = 33;
+            string specbottomtitle2 = 34;
+            string specbottomurl = 35;
+            string showpricealerttip = 36;
+            repeated SscInfo sscllist = 37;
+            string sscprice = 38;
+            string sscpricename = 39;
+            uint32 state = 40;
+            Telinfo telinfo = 41;
+            uint32 year = 42;
+            UsedCarPriceBtn usedcarpricebtn = 43;
+            string ssclinkurl = 44;
+            Pvitem sscpvitem = 45;
+            uint32 seatcount = 46;
+            uint32 istaxexemption = 47;
+            ZixunInfo zixuninfo = 48;
+            Dealer400 dealer400 = 49;
+            string pvareaid = 50;
+            string labelstr = 51;
+
+            message Diffconfiginfo {
+              string title = 1;
+              string linkurl = 2;
+              repeated Configlist configlist=3;
+
+              message Configlist{
+                string image=1;
+                string title=2;
+                string placeimgurl=3;
+              }
+            }
+
+            message Iminfo {
+              string imtitle = 1;
+              string imlinkurl = 2;
+              uint32 subline = 3;
+            }
+
+            message Telinfo {
+              string title = 1;
+              string subtitle = 2;
+              string tel = 3;
+            }
+
+            message SscInfo{
+              uint32 specid = 1;
+              string name = 2;
+              string image = 3;
+              string tags = 4;
+              string pricename = 5;
+              string price = 6;
+              string cityname = 7;
+              string linkurl = 8;
+              string pvareaid = 9;
+            }
+
+            message UsedCarPriceBtn{
+              string title = 1;
+              string linkurl = 2;
+              Pvitem pvitem = 3;
+            }
+
+            message   ZixunInfo {
+              string title = 1;
+              string linkurl = 2;
+              string ext = 3;
+              string eid = 4;
+              uint32 btntype = 5;
+            }
+
+            message Dealer400{
+              int32 btntype = 1;
+              string title = 2;
+              string tel = 3;
+              string linkurl = 4;
+              string ext = 5;
+              Pvitem pvitem = 6;
+            }
+          }
+        }
+      }
+
+      message YearList {
+        string yearname = 1;
+        uint32 yearvalue = 2;
+      }
+
+      message OrderList{
+        int32 index = 1;
+        string name = 2;
+      }
+    }
+
+    message SaleCarInfo {
+      string text = 1;
+      string image = 2;
+      string btnname = 3;
+      string icon = 4;
+      string linkurl = 5;
+      string subtip = 6;
+      string tipinfo = 7;
+      string btnbottomone = 8;
+      string btnbottomtwo = 9;
+      string conceallinkurl = 10;
+    }
+
+    message SpecBottomList {
+      int32 type = 1;
+      Data data = 2;
+
+      message Data {
+        int32 seriesid = 1;
+        string tipimg = 2;
+        string ratio = 3;
+        repeated string tags = 4;
+        string img = 5;
+        string bgimg = 6;
+        string seriesname = 7;
+        string subtitle = 8;
+        string btntitle = 9;
+        string btnlinkurl = 10;
+        Pvitem pvitem = 11;
+        string lefticon = 12;
+        repeated string headerlist = 13;
+      }
+    }
+  }
+}

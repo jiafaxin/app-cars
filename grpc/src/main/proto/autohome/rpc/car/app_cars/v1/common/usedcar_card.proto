@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package autohome.rpc.car.app_cars.v1.common;
+option java_multiple_files = true;
+option java_outer_classname = "UsedCarCardProto";
+option java_package = "autohome.rpc.car.app_cars.v1.common";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/common;common";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.common";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+message UsedCarCard {
+  Crosscut crosscut = 1;
+  string hadgetext = 2;
+  string hadgevalue = 3;
+  string linkurl = 4;
+  string pricetext = 5;
+  string pricevalue = 6;
+  carbase.Pvitem pvitem = 7;
+  string righttoptext = 8;
+  uint32 seriesid = 9;
+  string seriesname = 10;
+  int32 infoid = 11;
+  string mark = 12;
+  string price = 13;
+  string saveprice = 14;
+  string specimage = 15;
+  string specname = 16;
+  repeated string submark = 17;
+  RdPvInfo rdpvinfo = 18;
+  string savetitle = 19;
+
+  message Crosscut {
+    string label = 1;
+    string linkurl = 2;
+    carbase.Pvitem pvitem = 3;
+    string rightbtntext = 4;
+    string title = 5;
+  }
+
+  message RdPvInfo {
+    string url = 1;
+    string json = 2;
+  }
+}

@@ -1,0 +1,404 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.carbase;
+option java_multiple_files = true;
+option java_outer_classname = "SeriesDetailProto";
+option java_package = "autohome.rpc.car.app_cars.v1.carbase";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/carbase;carbase";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.carbase";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+
+/**
+  * service 样例
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service SeriesDetailService {
+  /**
+    * 车系综述页的基础信息
+    * 维护人:shicuining
+    */
+  rpc SeriesBaseInfo (SeriesBaseInfoRequest) returns (SeriesBaseInfoResponse) {}
+}
+
+message SeriesBaseInfoRequest {
+  int32 seriesid = 1;
+  int32 cityid = 2;
+  //1 ios,2 android
+  int32 pm = 3;
+  //卡片编辑模式
+  int32 model = 4;
+  //插件版本
+  string pluginversion = 5;
+  //ab实验,11.63.8以后固化成实验组B了!!!
+  int32 funcabtest = 6;
+  //冬测实验
+  string energytestab = 7;
+  //没有选中的城市，使用定位的
+  int32 nodefaultcityid = 8;
+  //参配简述实验
+  string simpleinfoabtest = 9;
+  //新车定向订阅入口实验
+  string subscribeabtest = 10;
+  //新车定向订阅文案实验
+  string subscribetitleabtest = 11;
+  //车系热评实验tab
+  string hotcommentabtest = 12;
+  //车系热评文案实验
+  string comtabtextab = 13;
+  //车系热评AI观点实验
+  string aiviewpointab=14;
+  //新车对比实验
+  string newcarpkabtest = 15;
+  //热点资讯功能实验
+  string toparticlehotab = 16;
+  //新车日历二期入口实验
+  string newcarsingledingyueab = 17;
+  //车系头图实验
+  string megaab = 18;
+  //车系新版实验
+  string newsummaryab = 19;
+  //车系选购视频实验（值是实验中的自定义参数）
+  string articlexuangouab = 20;
+  // 车系停售页改版实验 101915
+  string seriesabtest = 21;
+  // 糖豆运营位实验101963
+  string seriesnewlineab = 22;
+  // 101964
+  string seriesnewlinerecab = 23;
+  // 画像
+  string serieskbrec = 24;
+  //
+  string downtagabtest = 25;
+  // 保值率糖豆实验
+  string bzlabtest = 26;
+  //玩车tab逻辑实验
+  string playcartab = 27;
+}
+
+message SeriesBaseInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    Actionvideoinfo actionvideoinfo = 1;
+    repeated Itemlist itemlist = 2;
+    Seriesbaseinfo seriesbaseinfo = 3;
+    repeated Tabinfo tabinfo = 4;
+    Head headinfo = 5;
+    repeated HotItem hotitemlist = 6;
+    repeated MainTab maintab = 7;
+
+    message Seriesbaseinfo{
+      int32 attentionspecid = 1;
+      string attentionspecname = 2;
+      string boothbg = 3;
+      int32 brandid = 4;
+      string brandlogo = 5;
+      string brandname = 6;
+      Carparmconfig carparmconfig = 7;
+      int32 darkstylevr = 8;
+      Dealerpricerangeinfo dealerpricerangeinfo = 9;
+      Edgehyperlink edgehyperlink = 10;
+      int32 energetype = 11;
+      string fctprice = 12;
+      string fctpricenamenew = 13;
+      string headbg = 14;
+      int32 levelid = 15;
+      string levelname = 16;
+      string logo = 17;
+      string minusbgcolor = 18;
+      string newenergyprice = 19;
+      string newenergypricetip = 20;
+      int32 paramisshow = 21;
+      string pnglogo = 22;
+      int32 seriesid = 23;
+      string seriesname = 24;
+      string seriestag = 25;
+      string ssclinkurl = 26;
+      string sscpriceinfo = 27;
+      string sscpricnamenew = 28;
+      int32 state = 29;
+      string stateinfo = 30;
+      Vrmaterial vrmaterial = 31;
+      int32 wintertestflag = 32;
+      int32 isnewcar=33;
+      int32 livestatus = 34;
+      int32 defaulttypeid =35;
+
+      message Vrmaterial{
+        repeated ColorList color_list = 1 [json_name = "color_list"];
+        int32 is3dpk = 2;
+        int32 iscloud = 3;
+        bool issuperspeclinkurl = 4;
+        string jump_url = 5 [json_name = "jump_url"];
+        int32 narration = 6;
+        int32 showtype = 7;
+        int32 spec_id = 8 [json_name = "specId"];
+        int32 spec_state = 9 [json_name = "specState"];
+        string superspeclinkurl = 10;
+        string vrinfo_backgroud_img = 11 [json_name = "vrinfo_backgroudImg"];
+        int32 vrspecstate = 12;
+
+        message ColorList{
+          string base_color_name = 1 [json_name = "baseColorName"];
+          int32 color_id = 2 [json_name = "colorId"];
+          string color_name = 3 [json_name = "colorName"];
+          string color_names = 4 [json_name = "colorNames"];
+          string color_value = 5 [json_name = "colorValue"];
+          string color_values = 6 [json_name = "colorValues"];
+          Hori hori = 7;
+          int32 id = 8;
+          Over over = 9;
+          int32 remote_color_id = 10 [json_name = "remoteColorId"];
+
+          message Over{
+            repeated Normal normal = 1;
+            repeated Preview preview = 2;
+          }
+
+          message Hori{
+            repeated Normal normal = 1;
+            repeated Preview preview = 2;
+          }
+
+          message Preview{
+            repeated string pointinfo = 1;
+            int32 seq = 2;
+            string url = 3;
+          }
+
+          message Normal{
+            repeated string pointinfo = 1;
+            int32 seq = 2;
+            string url = 3;
+          }
+        }
+      }
+
+
+      message Edgehyperlink{
+        repeated Bottomlist bottomlist = 1;
+
+        message Bottomlist{
+          string darkicon = 1;
+          string icon = 2;
+          int32 iconwidth = 3;
+          int32 position = 5;
+          Pvitem pvitem = 6;
+          int32 tagid = 7;
+          string title = 8;
+          int32 type = 9;
+          string url = 10;
+        }
+      }
+
+      message Dealerpricerangeinfo{
+        string dealerprice = 1;
+        string dealerpricelinkurl = 2;
+        string dealerpricename = 3;
+        int32 typeid = 4;
+        Pvitem pvitem = 5;
+      }
+
+      message Carparmconfig{
+        string iconurl = 1;
+        string labels = 2;
+        string linkurl = 3;
+        string name = 4;
+      }
+
+      message Pricelist{
+        Pvitem pvitem = 1;
+        string subtitle = 2;
+        int32 typeid = 3;
+        string linkurl = 4;
+        string title = 5;
+      }
+
+    }
+
+    message Actionvideoinfo{
+      int32 videobytesize = 1;
+      string videourl = 2;
+      string videoimage = 3;
+      string scheme = 4;
+    }
+
+    message Itemlist{
+      Data data = 1;
+      int32 id = 2;
+      int32 type = 3;
+
+      message Data{
+        int32 seriesid = 1;
+        int32 sortid = 2;
+        int32 energetype = 3;
+        repeated List list = 4;
+        repeated List operatelist = 5;
+        repeated List pricelist = 6;
+        Pvitem pvitem = 7;
+        string linkurl = 8;
+        string leftimg = 9;
+        Energyinfo energyinfo = 10;
+        NewCarInfo newcarinfo = 11;
+        HotSpotInfo hotspotinfo = 12;
+	      NewLineInfo newlineinfo = 13;
+
+        message List{
+          string subtitlehighlight = 1;
+          string code = 2;
+          Pvitem pvitem = 3;
+          string subtitle = 4;
+          string iconurl = 5;
+          int32 scale = 6;
+          int32 typeid = 7;
+          string linkurl = 8;
+          string title = 9;
+          //11072卡片用的
+          string logo=10;
+          //11072卡片用的
+          string logob=11;
+          string content=12;
+          string bgurl=13;
+          int32 sortid = 14;
+        }
+
+        message Energyinfo{
+          string title = 1;
+          string subtitle = 2;
+          string linkurl=3;
+          repeated string imglist = 4;
+          repeated List list = 5;
+          Pvitem pvitem = 6;
+
+          message List{
+              string title = 1;
+              string subtitle = 2;
+              string pointcolor = 3;
+          }
+        }
+
+        message NewCarInfo{
+          string title = 1;
+          string time = 2;
+          string subtitle = 3;
+          string linkurl = 4;
+          string btntext = 5;
+          string nobtntext = 6;
+          int32 subscribestate = 7;
+          Pvitem pvitem = 8;
+        }
+
+	message NewLineInfo{
+	  string icon = 1;
+          string title = 2;
+	  string linkurl = 3;
+	  int32 maxline = 4;
+	  int32 angleindex = 5;
+	  int32 iconw = 6;
+	  int32 iconh = 7;
+          Pvitem pvitem = 8;
+        }
+
+        message HotSpotInfo{
+          string iconurl = 1;
+          float scale = 2;
+          string subtitle = 3;
+          string linkurl = 4;
+          string title = 5;
+          Pvitem pvitem = 6;
+        }
+      }
+    }
+
+    message Tabinfo{
+      int32 apiservicetype = 1;
+      string cardtitle = 2;
+      int32 displaytitlebar = 3;
+      Extrainfo extrainfo = 4;
+      int32 moduletype = 5;
+      string tabbgurl = 6;
+      string tabtitle = 7;
+      string taburl = 8;
+      int32 typeid = 9;
+      string tabicon = 10;
+      string taginfo = 11;
+
+      message Extrainfo{
+        string areaid = 1;
+      }
+    }
+
+    message Head{
+      string scheme = 1;
+      repeated Headinfo list = 2;
+
+
+      message Headinfo{
+        Tabinfo tabinfo = 1;
+        repeated Pageinfo pagelist = 2;
+
+        message Tabinfo{
+          string name = 1;
+          string imgurl = 2;
+          string topcolor = 3;
+          int32 count = 4;
+          int32 objectid = 5;
+          Pvitem pvitem = 6;
+        }
+
+        message Pageinfo{
+          string name = 1;
+          int32 type = 2;
+          string videourl = 3;
+          string imgurl = 4;
+          string scheme = 5;
+          string vid = 6;
+          Pvitem pvitem = 7;
+        }
+      }
+    }
+
+    message HotItem {
+      int32 moduletype = 1;
+      int32 typeid = 2;
+      Data data = 3;
+
+      message Data{
+        Pvitem pvitem = 1;
+        string subtitle = 2;
+        string iconurl = 3;
+        double scale = 4;
+        string linkurl = 5;
+        string title = 6;
+      }
+
+    }
+
+    message MainTab {
+      string tabtitle = 1;
+      uint32 type = 2;
+      string tagtext = 3;
+      string subtitle = 4;
+      string shortsubtitle = 5;
+    }
+  }
+}
+

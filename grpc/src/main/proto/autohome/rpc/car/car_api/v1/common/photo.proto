@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.common;
+option java_multiple_files = true;
+option java_outer_classname = "PhotoProto";
+option java_package = "autohome.rpc.car.car_api.v1.common";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/common;common";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.common";
+
+message CarPhotoViewMessage{
+  repeated CarPhotoViewItemMessage list = 1;
+}
+
+message CarPhotoViewItemMessage{
+  int32 id = 1;
+  int32 spec_id = 2 [json_name = "specId"];
+  int32 series_id = 3 [json_name = "seriesId"];
+  int32 pic_class = 4 [json_name = "picClass"];
+  string pic_file_path = 5 [json_name = "picFilePath"];
+  int32 pic_id = 6 [json_name = "picId"];
+  int32 pic_color_id = 7 [json_name = "picColorId"];
+  int32 is_h_d = 8 [json_name = "isHD"];
+  int32 is_title = 9 [json_name = "isTitle"];
+  int32 spec_state = 10 [json_name = "specState"];
+  int32 syear_id = 11 [json_name = "syearId"];
+  int32 syear = 12;
+  int32 spec_pic_number = 13 [json_name = "specPicNumber"];
+  int32 inner_color_id = 14 [json_name = "innerColorId"];
+  int32 state_order = 15 [json_name = "stateOrder"];
+  int32 is_club_photo = 16 [json_name = "isClubPhoto"];
+  float class_order = 17 [json_name = "classOrder"];
+  int32 isclassic = 18;
+  int32 dealer_pic_order = 19 [json_name = "dealerPicOrder"];
+  int32 source_type_order = 20 [json_name = "sourceTypeOrder"];
+  int32 spec_pic_upload_time_order = 21 [json_name = "specPicUploadTimeOrder"];
+  int32 width = 22;
+  int32 height = 23;
+  int32 dealerid = 24;
+  int32 pointlocatinid = 25;
+  int32 is_wall_paper = 26 [json_name = "isWallPaper"];
+  int32 optional = 27;
+  int32 show_id = 28 [json_name = "showId"];
+  string typename = 29;
+  string colorname = 30;
+  string specname = 31;
+  string showname = 32;
+  string series_name = 33 [json_name = "seriesName"];
+  string inner_color_name = 34 [json_name = "innerColorName"];
+  int32 newpicorder = 35 [json_name = "newPicOrder"];
+}
+

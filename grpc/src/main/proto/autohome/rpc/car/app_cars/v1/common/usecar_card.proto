@@ -1,0 +1,122 @@
+syntax = "proto3";
+
+package autohome.rpc.car.app_cars.v1.common;
+option java_multiple_files = true;
+option java_outer_classname = "UseCarCardProto";
+option java_package = "autohome.rpc.car.app_cars.v1.common";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/common;common";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.common";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+message UseCarCard {
+  Carddata carddata = 1;
+  Extension extension = 2;
+  repeated ListData list = 3;
+  carbase.Pvitem pvitem = 4;
+  string righttitle = 5;
+  string scheme = 6;
+  string subtitle = 7;
+  string title = 8;
+  string address = 9;
+  string coupon = 10;
+  string couponScheme = 11;
+  string distance = 12;
+  bool last = 13;
+  string shopscheme = 14;
+  string shopurl = 15;
+  string tag = 16;
+  string tel = 17;
+  carbase.Pvitem telPVItem = 18;
+  ShopLevelInfo shoplevelinfo = 19;
+  repeated Taglist taglist = 20;
+  CornerTagBean cornertag = 21;
+  repeated SmallTagsBean smalltags = 22;
+  carbase.Pvitem repairfctpvitem = 23;
+
+
+  message Carddata {
+    Cardinfo cardinfo = 1;
+    uint32 cardtype = 2;
+    uint32 mediatype = 3;
+    carbase.Pvitem pvitem = 4;
+  }
+
+  message ListData {
+    string apphref = 1;
+    string code = 2;
+    string data = 3;
+    string imgurl = 4;
+    string imgurlforrn = 5;
+    string mhref = 6;
+    string subtitle = 7;
+    string title = 8;
+    uint32 typeid = 9;
+  }
+
+  message Extension {
+    uint32 index = 1;
+    uint32 jumptype = 2;
+    uint32 livebroadcast = 3;
+    Objinfo objinfo = 4;
+    string scheme = 6;
+    uint32 schemecontainertype = 7;
+    uint32 sink = 8;
+  }
+
+  message Cardinfo {
+    uint32 bbsid = 1;
+    uint32 bizid = 2;
+    repeated Img img = 3;
+    repeated Taginfo taginfo = 4;
+    string title = 5;
+    carbase.Pvitem pvitem = 6;
+  }
+
+  message Img {
+    string url = 1;
+  }
+
+  message Taginfo {
+    string iconurl = 1;
+    uint32 position = 2;
+    string scheme = 3;
+    uint32 styletype = 4;
+    string text = 5;
+    string bgcolor = 6;
+    string fontcolor = 7;
+  }
+
+  message Objinfo {
+    uint32 bizid = 1;
+    uint32 biztype = 2;
+    uint32 jhtopic = 3;
+    uint32 mediatype = 4;
+  }
+
+  message ShopLevelInfo {
+    string img = 1;
+    string score = 2;
+    string scorecontent = 3;
+  }
+
+  message Taglist {
+    string coupon = 1;
+    string linkurl = 2;
+    string tag = 3;
+    carbase.Pvitem pvitem = 4;
+    string suffix = 5;
+    string suffixcolor = 6;
+  }
+
+  message CornerTagBean{
+    string imgurl = 1;
+    int32 width = 2;
+    int32 height = 3;
+  }
+
+  message SmallTagsBean{
+    string text = 1;
+    string bgcolor = 2;
+    string textcolor = 3;
+  }
+}

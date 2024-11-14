@@ -1,0 +1,189 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.subsidy;
+option java_multiple_files = true;
+option java_outer_classname = "SubsidyPolicyReportProto";
+option java_package = "autohome.rpc.car.app_cars.v1.subsidy";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/subsidy;subsidy";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.subsidy";
+import "google/protobuf/any.proto";
+/**
+  * service 样例
+  * 维护人: chengjincheng
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service SubsidyPolicyService {
+  /**
+    * rpc方法样例
+    * 维护人:shicuining
+    */
+  rpc GetSubsidyPolicyReport (SubsidyPolicyReportRequest) returns (SubsidyPolicyReportResponse) {}
+}
+
+message SubsidyPolicyReportRequest {
+  int32 seriesid = 1;
+  int32 specid = 2;
+  int32 cityid = 3;
+  string eid = 4;
+  string businessid = 5;
+  string ordertype = 6;
+}
+
+message SubsidyPolicyReportResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    BaseInfo baseinfo = 1;
+    repeated CardList cardlist = 2;
+
+    message BaseInfo{
+      string pagetitle = 1;
+      int32 seriesid = 2;
+      string seriesname = 3;
+      int32 specid = 4;
+      string specname = 5;
+      string eid = 6;
+      string askpricescheme = 7;
+      repeated string explain = 8;
+    }
+
+    message CardList{
+      int32 type = 1;
+      google.protobuf.Any data = 2;
+    }
+
+    message Card30101 {
+      SeriesInfo seriesinfo = 1;
+      repeated SpecList speclist = 2;
+
+      message SeriesInfo {
+        string seriesname = 1;
+        string carpic = 2;
+        string price = 3;
+        string unit = 4;
+        string fctprice = 5;
+        string specnum = 6;
+        string scheme = 7;
+        Pvitem pvitem = 8;
+      }
+
+      message SpecList {
+        string fctprice = 1;
+        string specname = 2;
+        int32 specid = 3;
+        string tag = 4;
+        int32 select = 5;
+        Pvitem pvitem = 6;
+      }
+    }
+
+    message Card30102 {
+      string title = 1;
+      string righttext = 2;
+      string righttextvague = 3;
+      string unit = 4;
+      repeated List list = 5;
+
+      message List {
+        string title = 1;
+        string value = 2;
+        string valuevague = 3;
+        string unit = 4;
+      }
+    }
+
+    message Card30103 {
+      string title = 1;
+      repeated TabList tablist = 2;
+      repeated SubCardList subcardlist = 3;
+
+      message TabList {
+        string name = 1;
+        int32 tabid = 2;
+        repeated string filterids = 3;
+        Pvitem pvitem = 4;
+      }
+
+      message SubCardList {
+        int32 type = 1;
+        Card30104 data = 2;
+      }
+    }
+
+    message Card30104 {
+      string filterid = 1;
+      string acttitle = 2;
+      string acttime = 3;
+      ActInfo actinfo = 4;
+      TagInfo taginfo = 5;
+      string righttext = 6;
+      string righttextvague = 7;
+      repeated List list = 8;
+      Pvitem pvitem = 9;
+
+      message ActInfo {
+        string title = 1;
+        repeated ActInfoList list = 2;
+        Pvitem pvitem = 3;
+      }
+
+      message TagInfo {
+        string text = 1;
+        string backcolor = 2;
+      }
+
+      message ActInfoList {
+        string title = 1;
+        repeated string subtitle = 2;
+      }
+
+      message List {
+        string title = 1;
+        string value = 2;
+      }
+    }
+
+    message Card30105 {
+      string title = 1;
+      repeated List list = 2;
+      Pvitem pvitem = 3;
+
+      message List {
+        string acttitle = 1;
+        string acttime = 2;
+        repeated string actlist = 3;
+      }
+    }
+
+  }
+
+  message Pvitem{
+    map<string, string> argvs = 1;
+    Click click = 2;
+    Show show = 3;
+
+    message Show{
+      string eventid = 1;
+    }
+
+    message Click{
+      string eventid = 1;
+    }
+  }
+}

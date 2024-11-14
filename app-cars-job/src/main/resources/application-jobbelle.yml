@@ -1,0 +1,20 @@
+autohome:
+  job:
+    executor:
+      appname: app-cars-yz
+    admin:
+      addresses: http://jobadmin.autohome.com.cn
+    accessToken: carappcarsyzc4ca4238a0b923820dcc509a6f75
+
+kafkatopics: autohome_data_transit
+
+#spring:
+#  elasticsearch:
+#    uris: lf-online-public-es79.search.corpautohome.com
+#    port: 80
+#    username: jxsbaojia_read
+#    password: CIheaZf1CWrQxqH6A3oR
+#    indexname: dealer-app-baojia-city_spec_benefits_public
+#  elasticsearch2:
+#    uris: lf-appes-es68.search.hera.corpautohome.com
+#    port: 80

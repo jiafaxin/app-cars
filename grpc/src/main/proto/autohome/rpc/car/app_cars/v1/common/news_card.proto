@@ -1,0 +1,285 @@
+syntax = "proto3";
+
+package autohome.rpc.car.app_cars.v1.common;
+option java_multiple_files = true;
+option java_outer_classname = "NewsCardProto";
+option java_package = "autohome.rpc.car.app_cars.v1.common";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/common;common";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.common";
+
+
+
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+message NewsCard{
+  int32 tabid = 1;
+  int32 source = 2;
+  int32 istop = 3;
+  RcmdDtaPv rcmdatapv = 4;
+  CardData carddata = 5;
+  CardExtension extension = 6;
+
+}
+
+message RcmdDtaPv{
+  string pvid = 1;
+  string stra = 2;
+  string recm_id = 3;
+  string t = 4;
+  string object_id = 5;
+  string refreshtype = 6;
+}
+
+message CardData{
+  int32 cardtype = 1;
+  int32 mediatype = 2;
+  int64 objid = 3;
+  string datajson = 4;
+  PvData pvdata = 5;
+  CardInfo cardinfo = 6;
+  carbase.Pvitem pvitem = 7;
+}
+
+message CardInfo{
+  string rcmtitle = 1;
+  string imgicon = 2;
+  string playtime = 3;
+  string title = 4;
+  string iconurl = 5;
+  string videoid = 6;
+  string videourl = 7;
+  string size = 8;
+  string summary = 9;
+  int32 islogin = 10;
+  string num = 11;
+  int32 livetype = 12;
+  string state = 13;
+  CardCardInfoTitleTagModel titletag = 14;
+  CardCardInfoMoreModel more = 15;
+  CardCardInfoScoreModel score = 16;
+  CardCardInfoBottomModel bottom = 17;
+  repeated NewsCard cardlist = 18;
+  repeated CardCardInfoFeedNagNewModel feednag = 19;
+  repeated CardCardInfoTagModel taginfo = 20;
+  repeated CardCardInfoImageModel img = 21;
+  repeated CardCardInfoImageModel vrimg = 22;
+  repeated CardCardInfoPointModel points = 23;
+}
+
+message CardCardInfoPointModel{
+  int32 id = 1;
+  string scheme = 2;
+  int32 type = 3;
+  string partinnum = 4;
+  string title = 5;
+  CardCardInfoImageModel img = 6;
+  repeated CardCardInfoImageModel imglist = 7;
+  string content = 8;
+  ExtendMap extendmap = 9;
+  string btntitle = 10;
+  string btnscheme = 11;
+  string btnsummary = 12;
+  Author author = 13;
+  string videourl = 14;
+  int32 iscps = 15;
+  int32 cpstype = 16;
+  int32 isjingxuan = 17;
+  string playtime = 18;
+  string videoid = 19;
+  string session_id = 20;
+  string playicon = 21;
+  repeated string tags = 22;
+  string ext = 23;
+  repeated CardCardInfoTagModel taginfo = 24;
+}
+
+message ExtendMap{
+  string price = 1;
+  string price2 = 2;
+  string pricetext = 3;
+  string price2text = 4;
+  string pricemode = 5;
+  string extendtext = 6;
+  string tagtext = 7;
+  string width = 8;
+  string height = 9;
+  string videourl = 10;
+  int32 isjingxuan = 11;
+  int32 iscps = 12;
+  int32 cpstype = 13;
+  string titlecolor = 14;
+  string contentcolor = 15;
+  string tagcolor = 16;
+}
+
+message Author{
+  int32 userid = 1;
+  string username = 2;
+  string headimage = 3;
+  string summary = 4;
+  int32 concernstatus = 5;
+  string scheme = 6;
+  string vicon = 7;
+}
+
+message CardCardInfoImageModel{
+  string url = 1;
+  string scheme = 2;
+  string width = 3;
+  string height = 4;
+}
+
+message CardCardInfoTagModel{
+  string text = 1;
+  string scheme = 2;
+  int32 styletype = 3;
+  int32 position = 4;
+  string iconurl = 5;
+  string fontcolor = 6;
+  string bgcolor = 7;
+  string riconurl = 8;
+  string pvext = 9;
+  int32 type = 10;
+  string fontselectcolor = 11;
+  string iconselecturl = 12;
+  string leftimgratio = 13;
+  int32 topflag = 14;
+  repeated string icons = 15;
+}
+
+message CardCardInfoFeedNagNewModel{
+  int64 id = 1;
+  int64 dimid = 2;
+  string parenttitle = 3;
+  string title = 4;
+  string summary = 5;
+  int32 type = 6;
+  string iconurl = 7;
+  string scheme = 8;
+  string toasttxt = 9;
+  int32 style = 10;
+  repeated CardCardInfoFeedNagNewModel list = 11;
+}
+
+message CardCardInfoBottomModel{
+  string title = 1;
+  string linktext = 2;
+  string scheme = 3;
+}
+
+message CardCardInfoScoreModel{
+  string pretext = 1;
+  double score = 2;
+  string promttext = 3;
+}
+
+message PvData{
+  string pvid = 1;
+  string t = 2;
+  string object_id = 3;
+  string cardtypeid = 4;
+  string stra = 5;
+  string p = 6;
+}
+
+message CardCardInfoTitleTagModel{
+  string text = 1;
+  string fontcolor = 2;
+  string bgcolor = 3;
+}
+
+message CardCardInfoMoreModel{
+  string text = 1;
+  string scheme = 2;
+  string iconurl = 3;
+}
+
+
+message CardExtension{
+  string componetid = 1;
+  string scheme = 2;
+  int32 schemecontainertype = 3;
+  string componentname = 4;
+  string modulename = 5;
+  int32 position = 6;
+  CardDataObjInfo objinfo = 7;
+  CardCardInfoThemeModel theme = 8;
+  string ext = 9;
+  string sdkdata = 10;
+  int32 jumptype = 11;
+  string videoid = 12;
+  string videourl = 13;
+  int32 livebroadcast = 14;
+  string pagepv_eventname = 15;
+  int32 showtype = 16;
+  int32 guideflag = 17;
+  int32 seektime = 18;
+  string specialflag = 19;
+  int32 autoplay = 20;
+  int32 highlight = 21;
+  string highvid = 22;
+  CardCardInfoRelationWordsModel relationword = 23;
+}
+
+
+message CardDataObjInfo{
+  int64 id = 1;
+  string title = 2;
+  string lastupdatetime = 3;
+  string seriesid = 4;
+  string specid = 5;
+  string picids = 6;
+  string islogin = 7;
+  int32 type = 8;
+  string playcount = 9;
+  string replycount = 10;
+  string publishtime = 11;
+  string clubid = 12;
+  string session_id = 13[json_name="session_id"];
+  string likecount = 14;
+  string businesstype = 15;
+  string businessname = 16;
+  string width = 17;
+  string height = 18;
+  string seriesids = 19;
+  string seriesnames = 20;
+  string sharetitle = 21;
+  string sharelogo = 22;
+  string shareurl = 23;
+  string authorid = 24;
+  string authorname = 25;
+  string authorheadimg = 26;
+  string authorscheme = 27;
+  string authorlevel = 28;
+  string liveline = 29;
+  int32 state = 30;
+  int32 liveid = 31;
+  string pvcontent = 32;
+  string videoid = 33;
+  string cyid = 34;
+  string playtime = 35;
+  string rankid = 36;
+  string ranktitle = 37;
+  string timeline = 38;
+  string mergejump = 39;
+}
+
+message CardCardInfoThemeModel{
+  string keyword = 1;
+  string scheme = 2;
+  string iconurl = 3;
+  string rcmtext = 4;
+  int32 keytype = 5;
+}
+
+message CardCardInfoRelationWordsModel{
+  string rcmtext = 1;
+  repeated CardCardInfoRelationWord keywords = 2;
+}
+
+message CardCardInfoRelationWord{
+  string keyword = 1;
+  string scheme = 2;
+  string buid = 3;
+  string mediatype = 4;
+}

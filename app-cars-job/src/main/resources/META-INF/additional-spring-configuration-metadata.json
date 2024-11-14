@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "spring.elasticsearch2.uris",
+      "type": "java.lang.String",
+      "description": "Description for spring.elasticsearch2.uris."
+    },
+    {
+      "name": "spring.elasticsearch2.port",
+      "type": "java.lang.Integer",
+      "description": "Description for spring.elasticsearch2.port."
+    }
+  ]
+}

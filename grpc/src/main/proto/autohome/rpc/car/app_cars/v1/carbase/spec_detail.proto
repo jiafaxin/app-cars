@@ -1,0 +1,201 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.carbase;
+option java_multiple_files = true;
+option java_outer_classname = "SpecDetailProto";
+option java_package = "autohome.rpc.car.app_cars.v1.carbase";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/carbase;carbase";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.carbase";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+
+/**
+  * service 样例
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service SpecDetailService {
+  /**
+    * 车系综述页的基础信息
+    * 维护人:shicuining
+    */
+  rpc SpecBaseInfo (SpecBaseInfoRequest) returns (SpecBaseInfoResponse) {}
+}
+
+message SpecBaseInfoRequest {
+  int32 specid = 1;
+  int32 cityid = 2;
+  // 1 ios,2 android
+  int32 pm = 3;
+  // 卡片编辑模式
+  int32 model = 4;
+  // 插件版本
+  string pluginversion = 5;
+  // 新旧版车型页实验标识
+  string funcabtest = 6;
+  // 咨询实验标识
+  string zixunabtest = 7;
+  // 车型页论坛tab实验
+  string clubabtest = 8;
+  // 直降、限时降活动实验
+  string downtagabtest = 9;
+}
+
+message SpecBaseInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    Carparmconfig carparmconfig = 1;
+    repeated Dealermodules dealermodules = 2;
+    Practicalinfo practicalinfo = 3;
+    repeated Pricelist pricelist = 4;
+    Specbaseinfo specbaseinfo = 5;
+    Specpicinfo specpicinfo = 6;
+    repeated Tabinfo tabinfo = 7;
+    Priceinfo priceinfo = 8;
+    ZixunInfo zixuninfo = 9;
+
+    message Carparmconfig{
+      string iconurl = 1;
+      string linkurl = 2;
+      string name = 3;
+      int32 typeid = 4;
+    }
+
+    message Dealermodules{
+      string cardtitle = 1;
+      int32 moduletype = 2;
+      string tabbgurl = 3;
+      string tabtitle = 4;
+      string taburl = 5;
+      int32 typeid = 6;
+      Extrainfo extrainfo = 7;
+
+      message Extrainfo{
+        string areaid = 1;
+        int32 islast = 2;
+      }
+    }
+
+    message Practicalinfo{
+      string iconurl = 1;
+      string linkurl = 2;
+      string title = 3;
+      repeated Infoitem list = 4;
+      Pvitem pvitem = 5;
+
+      message Infoitem{
+        string subtitle = 1;
+        string title = 2;
+
+      }
+    }
+
+    message Pricelist{
+      string linkurl = 1;
+      string subtitle = 2;
+      string subtitlecolor = 3;
+      string title = 4;
+      int32 typeid = 5;
+      Pvitem pvitem = 6;
+    }
+
+    message Specbaseinfo{
+      int32 brandid = 1;
+      string brandlogo = 2;
+      string brandname = 3;
+      int32 energetype = 4;
+      string energetypename = 5;
+      string fctprice = 6;
+      string fctpricename = 7;
+      string fctpricetipinfo = 8;
+      int32 levelid = 9;
+      string levelname = 10;
+      string logo = 11;
+      int32 logotypeid = 12;
+      int32 paramisshow = 13;
+      int32 piccount = 14;
+      int32 salestate = 15;
+      int32 seriesid = 16;
+      string seriesname = 17;
+      int32 specid = 18;
+      string specname = 19;
+      string specnamelink = 20;
+      string sscpricname = 21;
+      string sscpriceinfo = 22;
+      string ssclinkurl = 23;
+      int32 state = 24;
+      int32 tabdefaluttypeid = 25;
+      // 已无业务使用，但为了客户端保持兼容，暂时保留新能源补贴的这俩字段
+      string newenergyprice = 26;
+      string newenergypricename = 27;
+      string pvareaid=28;
+    }
+
+    message Specpicinfo{
+      string linkurl = 1;
+      string piccount = 2;
+      string picicon = 3;
+      string tip = 4;
+      repeated Piclist piclist = 5;
+      Pvitem pvitem = 6;
+
+      message Piclist{
+        string icon = 1;
+        int32 isoutvr = 2;
+        string linkurl = 3;
+        string tag = 4;
+        Pvitem pvitem = 5;
+      }
+    }
+
+
+    message Tabinfo{
+      string tabtitle = 1;
+      string taburl = 2;
+      int32 typeid = 3;
+    }
+
+    message Priceinfo{
+      string dealerpricetip = 1;
+      string dealerpricename = 2;
+      string dealerprice = 3;
+      int32 typeid = 4;
+      string dealerpricelinkurl = 5;
+      Pvitem pvitem = 6;
+    }
+
+    message ZixunInfo {
+      int32 interval = 1;
+      string bgurl = 2;
+      repeated DatalistBean datalist = 3;
+
+      message DatalistBean {
+        string icon = 1;
+        string title = 2;
+        string btntitle = 3;
+        string linkurl = 4;
+        string ext = 5;
+        string eid = 6;
+        int32 position = 7;
+      }
+    }
+  }
+}
+

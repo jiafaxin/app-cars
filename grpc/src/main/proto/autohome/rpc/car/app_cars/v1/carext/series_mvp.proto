@@ -1,0 +1,192 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.carext;
+option java_multiple_files = true;
+option java_outer_classname = "SeriesMvpProto";
+option java_package = "autohome.rpc.car.app_cars.v1.carext";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/carext;carext";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.carext";
+
+
+/**
+  * service 样例
+  * 维护人: yangchengwei
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service SeriesStreamingService {
+  /**
+    *
+    *
+    */
+  rpc GetMvpInfo (SeriesMvpRequest) returns (SeriesMvpResponse) {}
+}
+
+message SeriesMvpRequest {
+  int32 cityid = 1;
+  int32 seriesid = 2;
+  int32 specid = 3;
+  int32 from = 4;
+  string deviceid = 5;
+  string abtest = 6;
+  string pluginversion = 7;
+}
+
+message SeriesMvpResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    string bigtitle = 1;
+    int32 firstshowsubsidycount = 2;
+    repeated SpecList speclist = 3;
+    repeated MvpList mvplist = 4;
+    repeated SubsidyList subsidylist = 5;
+    TipsInfo tipsinfo = 6;
+    BottomInfo bottominfo = 7;
+    int32 specid = 8;
+    message SpecList{
+      int32 specid = 1;
+      string specname = 2;
+      string pricetext = 3;
+      string price = 4;
+      Pvitem pvitem = 5;
+    }
+
+
+    message MvpList{
+      int32 type = 1;
+      int32 id = 2;
+      oneof data{
+        Card11102 card11102 = 3[json_name = "data"]; // 11102卡片
+        Card11103 card11103 = 4[json_name = "data"]; // 11103卡片
+        Card11107 card11107 = 5[json_name = "data"]; // 11107卡片
+      }
+    }
+
+    message SubsidyList{
+      int32 type = 1;
+      int32 id = 2;
+      oneof data{
+        Card11104 card11104 = 3[json_name = "data"]; // 11104卡片
+      }
+    }
+
+    message TipsInfo{
+      string tipstitle = 1;
+      string tipstext = 2;
+    }
+
+    message BottomInfo{
+      string bottomopen = 1;
+      string bottomclose = 2;
+      Pvitem pvitem = 3;
+    }
+    message Card11102{
+      string title = 1;
+      string key = 2;
+      string subtitle = 3;
+      repeated DataList datalist = 4;
+      Pvitem pvitem = 5;
+      int32 positiontype = 6;
+
+      message DataList {
+        uint32 dataid = 1;
+        string color = 2;
+        string name = 3;
+        int32 pricevalue = 4;
+      }
+    }
+
+    message Card11103{
+      string title = 1;
+      string key = 2;
+      string subtitle = 3;
+      repeated DataList datalist = 4;
+      Pvitem pvitem = 5;
+      int32 positiontype = 6;
+
+      message DataList {
+        uint32 dataid = 1;
+        string imageurl = 2;
+        string name = 3;
+        int32 pricevalue = 4;
+      }
+    }
+
+    message Card11104{
+      string title = 1;
+      int32 pricevalue = 4;
+      string tagname = 2;
+      SubsidyInfo subsidyinfo = 3;
+      string pricename = 5;
+      string configbagname = 6;
+      string subsidytitle = 7;
+      string lat = 8;
+      string lon = 9;
+      string address = 10;
+      string btnname = 11;
+      string linkurl = 12;
+      int32 dealerid = 13;
+      Pvitem pvitem = 14;
+
+      message SubsidyInfo {
+        string prefix = 1;
+        string title = 2;
+        string unit = 3;
+        string suffix = 4;
+      }
+    }
+
+    message Card11107{
+      string pricename = 1;
+      int32 pricevalue = 2;
+      int32 positiontype = 3;
+      string orangetitle = 4;
+      string subtitle = 5;
+      string linkurl = 6;
+      string eid = 7;
+      string ext = 8;
+      string btntitle = 9;
+      string btnsubtitle = 10;
+      int32 linktype = 11;
+      string entryid = 12;
+      Pvitem pvitem = 13;
+    }
+
+    message Pvitem{
+      map<string, string> argvs = 1;
+      Click click = 2;
+      Show show = 3;
+
+      message Show{
+        string eventid = 1;
+        map<string, string> argvs = 2;
+      }
+
+      message Click{
+        string eventid = 1;
+        map<string, string> argvs = 2;
+      }
+    }
+  }
+}
+
+
+
+
+

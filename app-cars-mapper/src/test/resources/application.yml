@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    dynamic:
+      primary: default
+      strict: false
+      datasource:
+        default:
+          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+          url: jdbc:sqlserver://10.27.12.80:1433; DatabaseName=popauto;encrypt=true;trustServerCertificate=true
+          username: zixun
+          password: wzU3b^W3
+
+        popauto:
+          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+          url: jdbc:sqlserver://10.27.12.80:1433; DatabaseName=popauto;encrypt=true;trustServerCertificate=true
+          username: zixun
+          password: wzU3b^W3
+
+server:
+  port: 8801

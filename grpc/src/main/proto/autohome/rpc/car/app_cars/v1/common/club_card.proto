@@ -1,0 +1,237 @@
+syntax = "proto3";
+
+package autohome.rpc.car.app_cars.v1.common;
+option java_multiple_files = true;
+option java_outer_classname = "ClubCardProto";
+option java_package = "autohome.rpc.car.app_cars.v1.common";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/common;common";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.common";
+
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+
+message ClubCard{
+  int32 tabid = 1;
+  string tabname = 2;
+  CardData carddata = 3;
+  Extension extension = 4;
+
+  message CardData{
+    int32 cardtype = 1;
+    int32 mediatype = 2;
+    int32 biztype = 3;
+    int32 bizid = 4;
+    CardInfo cardinfo = 5;
+    PVData pvdata = 6;
+    carbase.Pvitem pvitem = 7;
+
+    message CardInfo{
+      string title = 1;
+      int32 bizid = 2;
+      string bbs = 3;
+      int32 bbsid = 4;
+      TitleTag titletag = 5;
+      Video video = 6;
+      Live live = 7;
+      repeated Point points = 8;
+      repeated FeedNag feednag = 9;
+      repeated Img img = 10;
+      repeated TagInfo taginfo = 11;
+      UserInfo userinfo = 12;
+      Tags tags = 13;
+      Tags tagsv2 = 14;
+      GodReply godreply = 15;
+
+      message TitleTag{
+        string text = 1;
+        string fontcolor = 2;
+        repeated string bgcolor = 3;
+      }
+
+      message Video{
+        string playtime = 1;
+        string iconurl = 2;
+        string videoid = 3;
+        string videourl = 4;
+      }
+
+      message Live{
+        string imgicon = 1;
+        string scheme = 2;
+        int32 livetype = 3;
+        string livetypestr = 4;
+        int32 liveid = 5;
+        string watchnum = 6;
+      }
+
+      message Point{
+        int32 id = 1;
+        string title = 2;
+        Img img = 3;
+        string scheme = 4;
+        ExtendMap extendmap = 5;
+
+        message Img{
+          string scheme = 1;
+          string url = 2;
+        }
+
+        message ExtendMap{
+          int32 width = 1;
+          int32 height = 2;
+          string videourl = 3;
+        }
+      }
+
+      message FeedNag{
+        int32 dimid = 1;
+        string iconurl = 2;
+        int32 id = 3;
+        repeated FeedNagB list = 4;
+        string parenttitle = 5;
+        string scheme = 6;
+        string summary = 7;
+        string title = 8;
+        int32 type = 9;
+        string toasttxt = 10;
+        map<string,string> pvdata = 11;
+
+        message FeedNagB{
+          int32 dimid = 1;
+          string iconurl = 2;
+          int32 id = 3;
+          string parenttitle = 4;
+          string scheme = 5;
+          string summary = 6;
+          string title = 7;
+          int32 type = 8;
+          string toasttxt = 9;
+        }
+      }
+
+      message Img{
+        string scheme = 1;
+        string url = 2;
+      }
+
+      message TagInfo{
+        int32 position = 1;
+        string scheme = 2;
+        int32 styletype = 3;
+        string text = 4;
+        string iconurl = 5;
+        string fontcolor = 6;
+        string bgcolor = 7;
+      }
+
+      message UserInfo{
+        int32 userid = 1;
+        string username = 2;
+        string headimg = 3;
+        int32 authseriesid = 4;
+        string authseriesname = 5;
+        int32 authlevel = 6;
+        string cityname = 7;
+        string adddate = 8;
+        repeated MedalItem medallist = 9;
+
+        message MedalItem{
+          int32 id = 1;
+          string icon = 2;
+          string scheme = 3;
+        }
+      }
+
+      message Tags{
+        repeated TagInfo list = 1;
+        ReplyInfo replys = 2;
+
+        message TagInfo{
+          int32 position = 1;
+          string scheme = 2;
+          int32 styletype = 3;
+          string text = 4;
+          string iconurl = 5;
+          string fontcolor = 6;
+          string bgcolor = 7;
+        }
+
+        message ReplyInfo{
+          int32 replycount = 1;
+          int32 prizecount = 2;
+          int32 prizestate = 3;
+          string replyscheme = 4;
+          string showcontrol = 5;
+          int32 showshare = 6;
+        }
+      }
+
+      message GodReply{
+        string label = 1;
+        string reply = 2;
+        string bgcolor = 3;
+        string fontcolor = 4;
+        repeated string bgcolors = 5;
+        string schema = 6;
+        GodUser user = 7;
+        int32 type = 8;
+
+        message GodUser{
+          int32 userid = 1;
+          string username = 2;
+          string headimg = 3;
+        }
+      }
+    }
+
+    message PVData{
+      string pvclick = 1;
+      string pvlight = 2;
+      string pvid = 3;
+      string t = 4;
+      string object_id = 5;
+      string cardtypeid = 6;
+      string stra = 7;
+    }
+
+  }
+
+  message Extension{
+    string componentname = 1;
+    string componetid = 2;
+    string ext = 3;
+    int32 jumptype = 4;
+    int32 livebroadcast = 5;
+    string modulename = 6;
+    string scheme = 7;
+    int32 schemecontainertype = 8;
+    string sdkdata = 9;
+    Theme theme = 10;
+    ObjInfo objinfo = 11;
+    RelationWord relationword = 12;
+    int32 sink = 13;
+    int32 index = 14;
+
+    message Theme{
+    }
+
+    message ObjInfo{
+      int32 bizid = 1;
+      int32 mediatype = 2;
+      int32 biztype = 3;
+      int32 jhtopic = 4;
+      int64 id = 5;
+      ShareInfo share = 6;
+      int32 ispoll = 7;
+
+      message ShareInfo{
+        string pic = 1;
+        string url = 2;
+        string title = 3;
+      }
+    }
+
+    message RelationWord{
+    }
+  }
+}

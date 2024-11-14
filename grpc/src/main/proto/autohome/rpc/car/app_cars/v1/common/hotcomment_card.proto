@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package autohome.rpc.car.app_cars.v1.common;
+option java_multiple_files = true;
+option java_outer_classname = "HotCommentCardProto";
+option java_package = "autohome.rpc.car.app_cars.v1.common";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/common;common";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.common";
+
+message HotCommentCard {
+
+  uint32 seriesId = 1;
+  uint32 specId = 2;
+  Weekreport weekReport = 3;
+  Hottopic hotTopic = 4;
+
+  message Weekreport {
+    uint32 vpWeekReportId = 1;
+    uint32 likeCount = 2;
+    bool isLiked = 3;
+    string headerTxtCenter = 4;
+    string summary = 5;
+    uint32 summaryMemberCount = 6;
+    repeated Items items = 7;
+    string appUrl = 8;
+    string header = 9;
+    string footer = 10;
+  }
+
+  message Hottopic {
+    string headerTxtCenter = 1;
+    string headerTxtRight = 2;
+    repeated Hottopics hotTopics = 3;
+    string header = 4;
+    string footer = 5;
+  }
+
+  message Hottopics {
+    string topicIcon = 1;
+    string topicName = 2;
+    uint32 topicHotValue = 3;
+    string topicHotValueTxt = 4;
+    string appUrl = 5;
+  }
+
+  message Items {
+    string itemName = 1;
+    string itemViewPoint = 2;
+    uint32 itemType = 3;
+    uint32 itemMemberCount = 4;
+  }
+}

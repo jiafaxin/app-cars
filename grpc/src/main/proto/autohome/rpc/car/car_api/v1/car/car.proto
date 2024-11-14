@@ -1,0 +1,262 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.car;
+option java_multiple_files = true;
+option java_outer_classname = "CarProto";
+option java_package = "autohome.rpc.car.car_api.v1.car";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/car;car";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.car";
+
+
+/**
+  * service 样例
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service CarService {
+/**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc ParamConfigBaseInfo (ParamConfigBaseInfoRequest) returns (ParamConfigBaseInfoResponse) {}
+  /**
+    *根据车型id获取其同年代款下所有车型的配置（包含选装价格）
+   */
+  rpc GetConfigListOfYearBySpecId(GetConfigListOfYearBySpecIdRequest)returns(GetConfigListOfYearBySpecIdResponse){}
+
+  /**
+   *根据车系id和年代款Id获取车型的配置信息（包含选装报价）
+   */
+  rpc ConfigListByYearId(ConfigListByYearIdRequest) returns(ConfigListByYearIdResponse) {}
+
+  rpc LevelFindCar(LevelFindCarRequest)returns(LevelFindCarResponse){}
+  /**
+    *根据车型id获取多个参数信息
+   */
+  rpc GetSpecParamListBySpecId(GetSpecParamListBySpecIdRequest)returns(GetSpecParamListBySpecIdResponse){}
+  /**
+    *根据车系id获取多个参数信息
+   */
+  rpc GetSpecParamListBySeriesId(GetSpecParamListBySeriesIdRequest)returns(GetSpecParamListBySeriesIdResponse){}
+  /**
+    *根据车系id获取状态为待售+在售+停产在售车型的配置（包含选装价格）
+   */
+  rpc GetConfigListBySeriesId(GetConfigListBySeriesIdRequest)returns(GetConfigListBySeriesIdResponse){}
+}
+
+message GetConfigListBySeriesIdRequest{
+  int32 seriesid = 1;
+  int32 disptype = 2;
+}
+
+message GetConfigListBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    repeated SpecListItem speclist = 2;
+    repeated ConfigTypeItem configtypeitems = 3;
+  }
+}
+
+message GetSpecParamListBySeriesIdRequest{
+  int32 seriesid = 1;
+}
+
+message GetSpecParamListBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    repeated SpecListItem speclist = 2;
+    repeated ParaTypeItem paramtypeitems = 3;
+  }
+
+}
+
+message GetSpecParamListBySpecIdRequest{
+  int32 specid = 1;
+}
+
+message GetSpecParamListBySpecIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 t1 = 1;
+    int32 specid = 2;
+    repeated SpecListItem speclist = 3;
+    repeated ParaTypeItem paramtypeitems = 4;
+  }
+}
+
+message SpecListItem{
+  int32 specid = 1;
+  int32 specstate = 2;
+  int32 showstate = 3;
+}
+
+message ParaTypeItem{
+  string name = 1;
+  repeated ParaItem paramitems = 2;
+  message ParaItem{
+    string name = 1;
+    string pnid = 2;
+    int32 id = 3;
+    repeated ValueItem valueitems = 4;
+  }
+  message ValueItem{
+    int32 specid = 1;
+    string value = 2;
+  }
+}
+
+
+message GetConfigListOfYearBySpecIdRequest{
+  int32 specid = 1;
+  int32 disptype = 2;
+}
+
+message GetConfigListOfYearBySpecIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 specid = 1;
+    repeated SpecListItem speclist = 2;
+    repeated ConfigTypeItem configtypeitems = 3;
+  }
+
+}
+
+
+message ParamConfigBaseInfoRequest{
+  int32 type = 1;
+}
+
+message ParamConfigBaseInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+
+  message Result{
+    string name = 1;
+    repeated string list = 2;
+  }
+}
+
+message ConfigListByYearIdRequest{
+  int32 seriesid = 1;
+  int32 yearid = 2;
+  int32 disptype = 3;
+  string appid = 4 [json_name = "_appid"];
+}
+
+message ConfigListByYearIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 seriesid = 1;
+    int32 yearid = 2;
+    repeated ConfigSpecItem speclist = 3;
+    repeated ConfigTypeItem configtypeitems = 4;
+  }
+  message ConfigSpecItem {
+    int32 specid = 1;
+    int32 specstate = 2;
+    int32 showstate = 3;
+  }
+}
+
+message ConfigTypeItem {
+  string groupname = 1;
+  string name = 2;
+  repeated ConfigItem configitems = 3;
+  message ConfigItem {
+    int32 configid = 1;
+    string name = 2;
+    string pnid = 3;
+    int32 id = 4;
+    int32 disptype = 5;
+    repeated ValueItem valueitems = 6;
+  }
+  message ValueItem {
+    int32 specid = 1;
+    string value = 2;
+    repeated SubPrice price = 3 ;
+    repeated SubItem sublist = 4;
+  }
+  message SubPrice{
+    string subname = 1 ;
+    int32 price = 2 ;
+  }
+  message SubItem {
+    string subname = 1;
+    int32 subvalue = 2;
+    int32 price = 3;
+  }
+}
+
+message LevelFindCarRequest{
+  string level = 1;
+  string price = 2;
+  string displacement = 3;
+  string drive = 4;
+  string gear = 5;
+  string structure = 6;
+  string attribute = 7;
+  string fuel = 8;
+  string country = 9;
+  string seat = 10;
+  string config = 11;
+  string appid = 12 [json_name = "_appid"];
+}
+
+message LevelFindCarResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 timer = 1;
+    int32 seriescount = 2;
+    repeated SeriesItem serieslist = 3;
+  }
+  message SeriesItem{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    string logo = 3;
+    int32 state = 4;
+    int32 minprice = 5;
+    int32 maxprice = 6;
+    int32 brandid = 7;
+    int32 fctid = 8;
+    string fctname = 9;
+    int32 showclub = 10;
+    int32 isphotoseries = 11;
+    int32 order = 12;
+    int32 priceurlisshow = 13;
+    string priceurl = 14;
+    int32 cluburlisshow = 15;
+    string cluburl = 16;
+  }
+
+}

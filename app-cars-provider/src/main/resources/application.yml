@@ -1,0 +1,33 @@
+server:
+  compression:
+    enabled: true
+  port: 8881
+spring:
+  param-security:
+    filter:
+      enabled=true: true
+      security-param-name: chert
+      servlet-filter:
+        order: 1
+
+dubbo:
+  application:
+    name: app-cars
+    qos-port: 22222
+    metadataServicePort: 20885
+    qosEnable: true
+    qosAcceptForeignIp: true
+  protocol:
+    name: tri
+    port: 50051
+  registry:
+    address: N/A
+  rpc:
+    tri:
+      initial-window-size: 65535
+  tri:
+    builtin:
+      service:
+        init: true
+
+

@@ -1,0 +1,449 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.carbase;
+option java_multiple_files = true;
+option java_outer_classname = "PicListProto";
+option java_package = "autohome.rpc.car.app_cars.v1.carbase";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/carbase;carbase";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.carbase";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+
+/**
+  * 图片列表接口
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service PicListService {
+  /**
+    * 图片列表接口
+    * 维护人:石翠宁
+    */
+  rpc GetPicList (PicListRequest) returns (PicListResponse) {}
+
+  /**
+   * 图片列表接口
+   * 维护人:石翠宁
+   */
+  rpc GetPicListPc (PicListRequest) returns (PicListResponse) {}
+
+  /**
+   * 图片列表页分享结果
+   * 维护人:陈启欣
+   */
+  rpc GetPicListShare(PicListShareRequest) returns (PicListShareResponse) {}
+}
+
+message PicListRequest {
+  //车系id
+  int32 seriesid = 1;
+
+  //1 ios,2 android
+  int32 pm = 2;
+
+  //车型id
+  int32 specid = 3;
+
+  //分类id
+  int32 categoryid = 4;
+
+  //颜色id
+  int32 colorid = 5;
+
+  //页码
+  int32 pageindex = 6;
+
+  //每页数量
+  int32 pagesize = 7;
+
+  //是否内饰
+  int32 isinner = 8;
+
+  //vr素材尺寸
+  string sizelevel = 9;
+
+  //图片分组
+  int32 reqpicgroup = 10;
+
+  //外观下，命中实验，外观填充细节图片
+  int32 outermixdetialpic = 11;
+
+  //互动视频ab
+  string videovrabtest = 12;
+
+  //插件版本
+  string pluginversion = 13;
+
+  //megaab实验
+  string megaab = 14;
+
+  //二级分类
+  int32 sectab = 15;
+
+  //接口根据图片id计算图片在该tab的索引，并在result下返回picindex
+  string picid = 16;
+
+  //图库缺失图片补全实验1
+  string piccolor1 = 17;
+  //图库缺失图片补全实验2
+  string piccolor2 = 18;
+  //图库缺失图片补全实验3
+  string piccolor3 = 19;
+
+  //混合图片视频的id，用于客户端定位顺序
+  string mixid = 20;
+  //颜色其他车型补全实验
+  string rcotherspec = 21;
+}
+
+message PicListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 pageindex = 1;
+    int32 rowcount = 2;
+    int32 pagecount = 3;
+    Refitinfo refitinfo = 4;
+    Vrmaterial vrmaterial = 5;
+    Actionvideoinfo actionvideoinfo = 6;
+    VideoInfo video = 7;
+    Tdcarinfo tdcarinfo = 8;
+    Cartest cartest = 9;
+    H5vrinfo h5vrinfo = 10;
+    Vr vr = 11;
+    repeated GlTablist gltablist = 12;
+    repeated string speclist = 13;
+    repeated PicGroupItem picgrouplist = 14;
+    repeated Piclist piclist = 15;
+    repeated Colorlist colorlist = 16;
+    repeated SecFilter secfilters = 17;
+    Videoalbum videoalbum = 18;
+    int32 megastyle = 19;
+    int32 picindex = 20;
+    int32 ismegatestseries = 21;
+
+    message Videoalbum{
+      repeated Func func = 1;
+      repeated Album album = 2;
+
+      message Func{
+        int32 type = 1;
+        string name = 2;
+        string imgurl = 3;
+        string selimgurl = 4;
+        Pvitem pvitem = 5;
+      }
+
+      message Album{
+        Info info = 1;
+        repeated Video videos = 2;
+
+        message Info{
+          string name = 1;
+          string imgurl = 2;
+          Pvitem pvitem = 3;
+        }
+
+        message Video{
+          string name = 1;
+          string vid = 2;
+          string imgurl = 3;
+          Pvitem pvitem = 4;
+          string namenoindex = 5;
+        }
+      }
+    }
+
+    message SecFilter{
+      string name = 1;
+      int32 filterid = 2;
+      Pvitem pvitem = 3;
+    }
+
+    message GlTablist{
+      int32 count = 1;
+      int32 tabid = 2;
+      string tabname = 3;
+    }
+
+    message Refitinfo{
+      string iconurl = 1;
+      string linkurl = 2;
+    }
+
+    message PicGroupItem{
+      int32 specid = 1;
+      string specname = 2;
+      int32 salestate = 3;
+      string salestatetip = 4;
+      int32 piccount = 5;
+      int32 autoshowid = 6;
+      repeated Piclist imagelist = 7;
+      string allcolorcounttext = 8;
+    }
+
+    message Piclist{
+      string optiontips = 1;
+      string specid = 2;
+      int32 dealerid = 3;
+      string nowebppic = 4;
+      string dealername = 5;
+      string autoshowtitle = 6;
+      string difconfiglinkurl = 7;
+      double displacement = 8;
+      int32 typeid = 9;
+      string id = 10;
+      string shareurl = 11;
+      int32 categoryid = 12;
+      int32 height = 13;
+      int32 isuserup = 14;
+      int32 horsepower = 15;
+      string specname = 16;
+      int32 iswallpaper = 17;
+      string originalpic = 18;
+      string salestatetip = 19;
+      int32 width = 20;
+      string bigpic = 21;
+      string highpic = 22;
+      repeated ConfigItem configlist = 23;
+      string smallpic = 24;
+      string linkurl = 25;
+      int32 syear = 26;
+      int32 salestate = 27;
+      string picsource = 28;
+      string picsourcelinkurl = 29;
+      GlPointInfo glpointinfo = 30;
+      int32 mediatype = 31;
+      string vid = 32;
+      string pointname = 33;
+      int32 secondtabid = 34;
+      string secondtabname = 35;
+      int32 ishqpic = 36;
+      string mixid = 37;
+      int32 recommendbycolor = 38;
+      int32 colorid = 39;
+      string colorname = 40;
+      int32 colortype = 41;
+
+      message GlPointInfo{
+        int32 glpointid = 1;
+        string glpointname = 2;
+        int32 gltabid = 3;
+        string gltabname = 4;
+      }
+
+      message ConfigItem{
+        string name = 1;
+        string value = 2;
+        int32 typeid = 3;
+        string scheme = 4;
+        string img = 5;
+        string title = 6;
+        string desc = 7;
+      }
+
+    }
+
+    message MegaInfo{
+      string name = 1;
+      string imgurl = 2;
+      Pvitem pvitem = 3;
+    }
+
+    message Vrmaterial{
+      int32 spec_id = 1 [json_name = "specId"];
+      repeated ColorList color_list = 2 [json_name = "color_list"];
+      bool issuperspeclinkurl = 3;
+      string specname = 4;
+      int32 vrspecstate = 5;
+      int32 showtype = 6;
+      int32 is3dpk = 7;
+      string vrinfo_backgroud_img = 8 [json_name = "vrinfo_backgroudImg"];
+      string jump_url = 9 [json_name = "jump_url"];
+      string salestatetip = 10;
+      int32 narration = 11;
+      int32 spec_state = 12 [json_name = "specState"];
+      int32 iscloud = 13;
+      string superspeclinkurl = 14;
+      int32 salestate = 15;
+      string taglabel = 16;
+      MegaInfo megainfo = 17;
+
+
+      message ColorList{
+        Over over = 1;
+        string color_name = 2 [json_name = "colorName"];
+        string base_color_name = 3 [json_name = "baseColorName"];
+        string color_names = 4 [json_name = "colorNames"];
+        int32 color_id = 5 [json_name = "colorId"];
+        string color_value = 6 [json_name = "colorValue"];
+        int32 remote_color_id = 7 [json_name = "remoteColorId"];
+        int32 id = 8;
+        string color_values = 9 [json_name = "colorValues"];
+        Hori hori = 10;
+
+        message Over{
+          repeated Normal normal = 1;
+          repeated Preview preview = 2;
+        }
+
+        message Hori{
+          repeated Normal normal = 1;
+          repeated Preview preview = 2;
+        }
+
+        message Preview{
+          repeated Pointinfo pointinfo = 1;
+          int32 seq = 2;
+          string url = 3;
+        }
+
+        message Normal{
+          repeated Pointinfo pointinfo = 1;
+          int32 seq = 2;
+          string url = 3;
+        }
+
+        message Pointinfo{
+          int32 locationid = 1;
+          string name = 2;
+          string linkurl = 3;
+        }
+      }
+    }
+
+    message Actionvideoinfo{
+      int32 videobytesize = 1;
+      string videourl = 2;
+      string videoimage = 3;
+      string scheme = 4;
+      int32 salestate = 5;
+      string salestatetip = 6;
+      string name = 7;
+      FullVideoinfo fullvideoinfo = 8;
+      FullVideoinfo verticalfullvideoinfo = 9;
+      Pvitem pvitem = 10;
+      MegaInfo megainfo = 11;
+      FullVideoinfo fulldoorvideoinfo = 12;
+      Doorinfo doorinfo = 13;
+
+
+      message FullVideoinfo{
+        string videourl = 1;
+        int32 videobytesize = 2;
+        string videoimage = 3;
+      }
+
+      message Doorinfo{
+        repeated Anchor anchor = 1;
+        string videourl = 2;
+        string icon = 3;
+        string selicon = 4;
+        string videoimage = 5;
+        Pvitem pvitem = 6;
+      }
+
+      message Anchor{
+
+      }
+
+    }
+
+    message VideoInfo{
+      string videoid = 1;
+      string cover = 2;
+      string exptitle = 3;
+      string expscheme = 4;
+      string scheme = 5;
+      string sameleveltitle = 6;
+      repeated VideoCar samelevelcars = 7;
+      Pvitem videopvitem = 8;
+      Pvitem despvitem = 9;
+      Pvitem samecarpvitem = 10;
+
+      message VideoCar{
+        string name = 1;
+        string scheme = 2;
+        Pvitem pvitem = 3;
+      }
+    }
+
+    message Tdcarinfo{
+      string iconurl = 1;
+      string linkurl = 2;
+    }
+
+    message Cartest{
+      string iconurl = 1;
+      string linkurl = 2;
+    }
+
+    message H5vrinfo{
+      string liteurl = 1;
+      string showurl = 2;
+      string schemashowurl = 3;
+      MegaInfo megainfo = 4;
+    }
+
+    message Colorlist{
+      repeated Colorlist sublist = 1;
+      string name = 2;
+      int32 id = 3;
+      int32 sort = 4;
+      string tag = 5;
+      string value = 6;
+      int32 colortype = 7;
+    }
+
+    message Vr{
+      string cover = 1;
+      string image = 2;
+      string guideicon = 3;
+      string scheme = 4;
+      Pvitem pvitem = 5;
+    }
+  }
+}
+
+message PicListShareRequest{
+  int32 pm = 1;
+  string pluginversion = 2;
+  int32 seriesid = 3;
+  int32 specid = 4;
+  int32 classid = 5;
+}
+
+message PicListShareResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  PicListShareResult result = 3;
+
+  message PicListShareResult{
+    string path = 1;
+    string weixinlogo = 2;
+    int32 vrstate = 3;
+    string weixintitle = 4;
+    string banner = 5;
+    string specname = 6;
+    string shareurl = 7;
+    repeated string imagelist = 8;
+    string qrcode = 9;
+    string sharetip = 10;
+  }
+}

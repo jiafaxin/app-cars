@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package autohome.rpc.car.app_cars.v1.common;
+option java_multiple_files = true;
+option java_outer_classname = "AiViewPointCardProto";
+option java_package = "autohome.rpc.car.app_cars.v1.common";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/common;common";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.common";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+
+message AiViewPointCard{
+  string buttonicon = 1;
+  int32 seriesId = 2;
+  repeated ViewPoint list = 3;
+
+  message ViewPoint{
+    string title = 1;
+    string linkurl = 2;
+    int32 contentSeq = 3;
+    string requestNo = 4;
+  }
+}

@@ -1,0 +1,84 @@
+auto-httpclient:
+  env: DEV
+spring:
+  datasource:
+    dynamic:
+      datasource:
+        default:
+          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+          url: jdbc:sqlserver://10.27.14.170:1433; DatabaseName=popauto;encrypt=true;trustServerCertificate=true
+          username: popautoadmin
+          password: A5088CC1-78B2-415F-81AF-511CC9537AAF
+
+        popauto:
+          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+          url: jdbc:sqlserver://10.27.14.170:1433; DatabaseName=popauto;encrypt=true;trustServerCertificate=true
+          username: popautoadmin
+          password: A5088CC1-78B2-415F-81AF-511CC9537AAF
+        appcars:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://10.60.12.34:3202/app_cars?characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+          username: zixun_my
+          password: swqi2C#2@YcYqzCj
+        car:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://10.60.12.34:3202/car?characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+          username: zixun_my
+          password: swqi2C#2@YcYqzCj
+      primary: appcars
+  kafka:
+    default:
+      bootstrap-servers: lf-test-broker0.kafka.mq.corpautohome.com:9092,lf-test-broker1.kafka.mq.corpautohome.com:9092,lf-test-broker2.kafka.mq.corpautohome.com:9092
+      client-id: 91c8297cea11496bad4adb86ab3760b9
+      consumer:
+        group-id: app-cars-dev
+  elasticsearch:
+    uris: lf-test-es79.search.corpautohome.com
+    port: 80
+    username: autotest
+    password: 4R16vKlFMYZEltuZ4YaC
+  elasticsearch2:
+    uris: lf-appes-es68.search.hera.corpautohome.com
+    port: 80
+
+
+  redis:
+    main-data:
+      password: autohome@123
+      cluster:
+        nodes[0]: 10.168.100.124:6379
+        nodes[1]: 10.168.100.125:6379
+        nodes[2]: 10.168.100.123:6379
+    #    peer-main-data:
+    #      password:
+    #      cluster:
+    #        nodes[0]: 10.60.19.5:29140
+    #        nodes[1]: 10.60.12.35:29140
+    #        nodes[2]: 10.60.18.6:29140
+    #        nodes[3]: 10.60.19.6:29140
+    #        nodes[4]: 10.60.18.5:29140
+    #        nodes[5]: 10.60.17.6:29140
+    default:
+      password: autohome@123
+      cluster:
+        nodes[0]: 10.168.100.124:6379
+        nodes[1]: 10.168.100.125:6379
+        nodes[2]: 10.168.100.123:6379
+
+# Apollo配置
+app.id: app-cars
+apollo:
+  cacheDir: /opt/data/                        #配置本地配置缓存目录
+  cluster: default                            #指定使用哪个集群的配置
+  meta: http://10.168.96.6:8061               #DEV环境配置中心地址
+  autoUpdateInjectedSpringProperties: true    #是否开启 Spring 参数自动更新
+  bootstrap:
+    enabled: true                             #是否开启 Apollo
+    namespaces: application                   #设置 Namespace
+    eagerLoad:
+      enabled: false                          #将 Apollo 加载提到初始化日志系统之前
+
+## SQL 日志
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

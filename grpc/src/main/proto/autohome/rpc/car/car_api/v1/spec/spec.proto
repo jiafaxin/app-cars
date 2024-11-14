@@ -1,0 +1,1772 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.spec;
+option java_multiple_files = true;
+option java_outer_classname = "SpecProto";
+option java_package = "autohome.rpc.car.car_api.v1.spec";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/spec;spec";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.spec";
+
+import "autohome/api/annotations.proto";
+import "autohome/rpc/car/car_api/v2/spec/spec.proto";
+
+/**
+  * spec 服务
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service SpecService {
+  /**
+    * 获取车型参数
+    * 维护人:shicuining
+    */
+  rpc GetSpecParamBySpecId (GetSpecParamBySpecIdRequest) returns (GetSpecParamBySpecIdResponse) {
+    option (autohome.api.http) = {get: "/v1/carprice/spec_parambyspecid.ashx"};
+  }
+  /**
+   * 根据多个车型id获取相关信息
+   * 维护人:jiafaxin
+   */
+  rpc GetSpecInfoBySpecList(GetSpecInfoBySpecListRequest) returns (GetSpecInfoBySpecListResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/spec_infobyspeclist.ashx"};
+  }
+  /**
+   * 根据车系id获取电车的车型信息
+   */
+  rpc GetElectricSpecParamBySeriesId(GetElectricSpecParamBySeriesIdRequest)returns(GetElectricSpecParamBySeriesIdResponse){
+    option (autohome.api.http) = {get: "/v1/App/Electric_SpecParamBySeriesId.ashx"};
+  }
+  /**
+   * 根据车系id获取车型的参数信息
+   */
+  rpc GetSpecParamBySeriesId(GetSpecParamBySeriesIdRequest)returns(GetSpecParamBySeriesIdResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/spec_parambyseriesId.ashx"};
+  }
+  /**
+     * 获取车型信息(如厂商信息,品牌信息,车系信息及年代款)
+     */
+  rpc GetSpecInfoBySpecId(GetSpecInfoBySpecIdRequest)returns(GetSpecInfoBySpecIdResponse){}
+  /**
+    * 根据多个车型id获取车型代表图
+    * 维护人:zff
+    */
+  rpc GetSpecLogoBySpecList(GetSpecLogoBySpecListRequest)returns(GetSpecLogoBySpecListResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/spec_LogoBySpecList.ashx"};
+  }
+  /**
+     * 根据车系id获取车型详细信息(v1版本)
+     * 维护人:zff
+     */
+  rpc GetSpecDetailBySeriesIdV1(autohome.rpc.car.car_api.v2.spec.GetSpecDetailBySeriesIdRequest)returns(GetSpecDetailBySeriesIdV1Response){
+    option (autohome.api.http) = {get: "/v1/carprice/spec_detailbyseriesId.ashx"};
+  }
+
+/**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc SpecParamSingleBySpecIdItemId (SpecParamSingleBySpecIdItemIdRequest) returns (SpecParamSingleBySpecIdItemIdResponse) {}
+
+/**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc SpecParamSingleBySpecid (SpecParamSingleBySpecidRequest) returns (SpecParamSingleBySpecidResponse) {}
+
+
+  /**
+    * 根据车系id获取车型详细信息(v1版本)
+    * 维护人:zff
+    */
+  rpc GetSpecParamListBySpecList(GetSpecLogoBySpecListRequest)returns(GetCarpriceSpecParamListBySpecListResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/spec_paramlistbyspeclist.ashx"};
+  }
+
+  /**
+    * 二期开发
+    * 根据车系id获取车型详细信息(v1版本)
+    * 维护人:zff
+    */
+  rpc GetCarPriceSpecInfoBySeriesId(autohome.rpc.car.car_api.v2.spec.GetSpecDetailBySeriesIdRequest)returns(GetCarPriceSpecInfoResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/spec_infobyseriesId.ashx"};
+  }
+
+  /**
+  * 二期开发
+  * 获取车型的颜色信息
+  * 维护人:zff
+  */
+  rpc GetSpecColorBySpecId(GetSpecInfoBySpecIdRequest)returns(GetSpecColorBySpecIdResponse){
+    option (autohome.api.http) = {get: "/v1/carprice/spec_colorbyspecid.ashx"};
+  }
+
+  /**
+  * 三期开发
+  * 根据车系id获取可预定车型列表
+  * 维护人:zff
+  */
+  rpc GetSpecListBySeries(GetElectricSpecParamBySeriesIdRequest)returns(GetSpecListBySeriesResponse){
+    option (autohome.api.http) = {get: "/v1/car/Spec_ListOfBookedBySeries.ashx"};
+  }
+
+  /**
+  * 三期开发
+  * 获取车型的颜色信息
+  * 维护人:zff
+  */
+//  rpc GetSpecInnerColorBySpecId(GetSpecInfoBySpecIdRequest)returns(GetSpecColorBySpecIdResponse){
+//    option (autohome.api.http) = {get: "/v1/CarPrice/Spec_InnerColorBySpecId.ashx"};
+//  }
+
+  /**
+  * 根据车系、颜色、图片类别获取车型列表
+  * 维护人:jiaweiwei
+   */
+  rpc GetSpecPictureCountByCondition (SpecPictureCountByConditionRequest) returns (SpecPictureCountByConditionResponse) {}
+
+  /**
+  * 根据车型id获取对应25图
+  * 维护人:jiaweiwei
+  */
+  rpc GetSpec25PictureBySpecId (Spec25PictureBySpecIdRequest) returns (Spec25PictureBySpecIdResponse) {}
+
+  /**
+  * 获取车型的颜色信息
+  * 维护人:jiaweiwei
+  */
+  rpc GetSpecInnerColorBySpecId (SpecInnerColorBySpecIdRequest) returns (SpecInnerColorBySpecIdResponse) {}
+
+  /**
+  * 根据车系id获取车型信息
+  * 维护人:jiaweiwei
+  */
+  rpc GetSpecInfoBySeriesId (SpecInfoBySeriesIdRequest) returns (SpecInfoBySeriesIdResponse) {}
+
+  /**
+  * 根据车系id获取车型内饰颜色列表
+  */
+  rpc GetSpecInnerColorBySeriesId(GetSpecInnerColorBySeriesIdRequest)returns(GetSpecInnerColorBySeriesIdResponse){}
+
+  /**
+  * 根据车系id获取车型颜色列表
+  */
+  rpc GetSpecSpecColorBySeriesId(GetSpecSpecColorBySeriesIdRequest)returns(GetSpecSpecColorBySeriesIdResponse){}
+
+  /**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc SpecDetailByYearId (SpecDetailByYearIdRequest) returns (SpecDetailByYearIdResponse) {}
+
+
+  /**
+  * 四期开发
+  * 根据车型id获取车型名称
+  */
+  rpc GetSpecName(GetSpecInfoBySpecIdRequest)returns(GetSpecNameResponse){}
+  /**
+ * 四期开发
+ * 根据车型id获取车型代表图
+ */
+  rpc GetSpecLogo(GetSpecInfoBySpecIdRequest)returns(GetSpecLogoResponse){}
+
+  /**
+    四期开发
+    根据车型id获取多个配置信息
+   */
+  rpc GetConfigListBySpecId(GetConfigListRequest)returns(GetConfigListResponse){}
+
+  /**
+   四期开发
+   根据车系id获取多个参数信息
+   */
+  rpc GetSpecParamsBySeriesId(GetSpecInfoBySeriesIdRequest)returns(GetSpecParamsBySeriesIdResponse){}
+  /**
+   *根据车型id+城市id获取补贴后售价
+  */
+  rpc GetSpecBuTieBySpecIdAndCityId(GetSpecBuTieBySpecIdAndCityIdRequest)returns(GetSpecBuTieBySpecIdAndCityIdResponse){}
+
+
+
+  /**
+  * 获取多个车型差异配置信息
+  * 维护人: shicuining
+ */
+  rpc ConfigDistinctListBySpecList (ConfigDistinctListBySpecListRequest) returns (ConfigDistinctListBySpecListResponse) {}
+
+
+
+  /**
+   * 根据车系查各状态车型数量
+   */
+  rpc GetSpecStateCountBySeriesId(GetSpecStateCountBySeriesIdRequest)returns(GetSpecStateCountBySeriesIdResponse);
+
+  /**
+   * 根据同车系id下车型列表获取车型详细信息
+   */
+  rpc GetSpecDetailBySpecList(GetSpecDetailBySpecListRequest)returns(GetSpecDetailBySpecListResponse){}
+  rpc GetAppSpecParamBySpecList(GetSpecLogoBySpecListRequest)returns(GetAppSpecParamBySpecListResponse){}
+
+
+  /*
+  * 根据车型列表获取车型相关基础信息
+  */
+  rpc SpecBaseInfbySpecList(SpecBaseInfbySpecListRequest)returns(SpecBaseInfbySpecListResponse){}
+
+  /*
+  * 根据车型状态获取全量车型数据
+  */
+  rpc SpecAllSpecInfo(SpecAllSpecInfoRequest)returns(SpecAllSpecInfoResponse){}
+
+  /**
+    *根据车系id获取各状态下车型数量
+   */
+  rpc GetSpecCountBySeriesId(GetSpecCountBySeriesIdRequest)returns(GetSpecCountBySeriesIdResponse){}
+
+  /**
+  * 根据车系id和年代款id获取多个配置信息
+  */
+  rpc GetCarPriceSpecParamListByYearId(GetCarPriceSpecParamListByYearIdRequest)returns(GetCarPriceSpecParamListByYearIdResponse){}
+  /**
+* 根据车系id和年代款id获取多个配置信息
+*/
+  rpc GetCarSpecParamListByYearId(GetCarSpecParamListByYearIdRequest)returns(GetCarSpecParamListByYearIdResponse){}
+
+  rpc GetCarSpecPriceByYearId(GetCarSpecPriceByYearIdRequest)returns(GetCarSpecPriceByYearIdResponse){}
+
+  /**
+   * 根据车型id,参数类别id获取相应的参数信息
+   */
+  rpc GetSpecParamSingleByItem(GetSpecParamSingleByItemRequest)returns(GetSpecParamSingleByItemResponse){}
+
+  /**
+   * 根据车系id列表获取不同状态下的车型列表
+   */
+  rpc GetSpecListBySeriesIds(GetSpecListBySeriesIdsRequest)returns(GetSpecListBySeriesIdsResponse){}
+
+  /**
+   * app 车主价格用多车型获取相关信息
+   */
+  rpc GetAppSpecInfoBySpecList(GetAppSpecInfoBySpecListRequest)returns(GetAppSpecInfoBySpecListResponse){}
+  /**
+* 根据车系id获取多个配置信息
+*/
+//  rpc GetCarSpecParamListBySeriesId(GetCarSpecParamListBySeriesIdRequest)returns(GetCarSpecParamListBySeriesIdResponse){}
+
+  /**
+   * 根据厂商获取厂商下车系名称
+   */
+  rpc GetCarSeriesNameByFctId(GetCarSeriesNameByFctIdRequest)returns(GetCarSeriesNameByFctIdResponse){}
+
+  /**
+
+   */
+  rpc GetDingZhiSpecMainParam(GetDingZhiSpecMainParamRequest)returns(GetDingZhiSpecMainParamResponse){}
+
+  /**
+   * 车系获取车型列表，三端pc、m、www 统计排序规则。
+   */
+  rpc GetUnifySpecListBySeries(GetUnifySpecListBySeriesRequest)returns(GetUnifySpecListBySeriesResponse){}
+
+  rpc GetLabelPicConfigListBySpecId(GetSpecInfoBySpecIdRequest)returns(GetLabelPicConfigListResponse){}
+  /**
+    *根据日期获取当天上传图片相关的车型列表。
+   */
+  rpc GetPicSpecListByDate(GetPicSpecListByDateRequest)returns(GetPicSpecListByDateResponse){}
+  /**
+
+   */
+  rpc GetDuibiSpecParamBySpecList(GetDuibiSpecParamBySpecListRequest)returns(GetDuibiSpecParamBySpecListResponse){}
+
+  rpc GetSpecParamListBySpecId(GetSpecParamListBySpecIdRequest)returns(GetSpecParamListBySpecIdResponse){}
+
+  /**
+* 对车型id进行加密
+*/
+  rpc VerifyPE(VerifyPERequest)returns(VerifyPEResponse){}
+  /**
+    *根据车系id+城市id获取车型补贴后售价列表
+   */
+  rpc GetSpecBuTieBySeriesIdAndCityId(GetSpecBuTieBySeriesIdAndCityIdRequest)returns(GetSpecBuTieBySeriesIdAndCityIdResponse){}
+
+  rpc  GetSpecAllName(GetSpecAllNameRequest)returns(GetSpecAllNameResponse){}
+  /**
+    *根据多个车型id及城市id获取补贴金额
+   */
+  rpc GetSpecElectricSubsidyBySpecList(GetSpecElectricSubsidyBySpecListRequest)returns(GetSpecElectricSubsidyBySpecListResponse){}
+}
+
+message GetSpecElectricSubsidyBySpecListRequest{
+  string speclist = 1;
+  int32 cityid = 2;
+}
+
+message GetSpecElectricSubsidyBySpecListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+
+  }
+
+}
+
+message GetSpecBuTieBySeriesIdAndCityIdRequest{
+  string seriesids = 1;
+  int32 cityid = 2;
+}
+
+message GetSpecBuTieBySeriesIdAndCityIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    repeated SpecItem items = 3;
+  }
+  message SpecItem{
+    int32 specid = 1;
+    string specname = 2;
+    int32 specstate = 3;
+    int32 minprice = 4;
+    int32 maxprice = 5;
+    int32 cityid = 6;
+  }
+}
+
+message GetSpecParamListBySpecIdRequest{
+  int32 specid = 1;
+}
+message GetSpecParamListBySpecIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 specid = 1;
+    repeated Paramtypeitems paramtypeitems = 2;
+  }
+}
+
+message GetPicSpecListByDateRequest{
+  string date = 1;
+}
+message GetPicSpecListByDateResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated int32 speclist = 1;
+  }
+}
+
+message GetSpecBuTieBySpecIdAndCityIdRequest{
+  int32 specid = 1;
+  int32 cityid = 2;
+}
+message GetSpecBuTieBySpecIdAndCityIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    int32 cityid = 3;
+    int32 specid = 4;
+    string specname = 5;
+    int32 specstate = 6;
+    int32 minprice = 7;
+    int32 maxprice = 8;
+  }
+}
+
+message GetSpecInfoBySeriesIdRequest{
+  int32 seriesid = 1;
+
+}
+
+message GetSpecCountBySeriesIdRequest{
+  int32 seriesid = 1;
+}
+
+message GetSpecCountBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    int32 total = 2;
+    repeated SpecCountItem items = 3;
+  }
+  message SpecCountItem{
+    int32 state = 1;
+    int32 count = 2;
+    int32 noimgcount = 3;
+  }
+}
+
+message GetSpecParamBySpecIdRequest {
+  int32 specid = 1;
+  int32 dispqrcode = 2;
+  string appid = 3[json_name = "_appid"];
+}
+
+message GetSpecInfoBySpecListRequest{
+  string speclist = 1;
+  int32 isconfig = 2;
+  string appid = 3[json_name = "_appid"];
+}
+
+message GetElectricSpecParamBySeriesIdRequest{
+  string appid = 1 [json_name = "_appid"];
+  int32 seriesid = 2;
+}
+
+message GetSpecParamBySeriesIdRequest{
+  int32 seriesid = 1;
+  string state = 2;
+  string appid = 3 [json_name = "_appid"];
+}
+
+message GetSpecInfoBySpecIdRequest{
+  int32 specid = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+
+message GetSpecLogoBySpecListRequest{
+  string speclist = 1;
+  string appid = 2 [json_name = "_appid"];
+
+}
+
+
+message GetSpecInfoBySpecListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total = 1;
+    repeated SpecList specitems = 2;
+  }
+  message SpecList{
+    int32 id = 1;
+    string name = 2;
+    int32 minprice = 3;
+    int32 maxprice = 4;
+    string logo = 5;
+    int32 yearid = 6;
+    int32 yearname = 7;
+    int32 seriesid = 8;
+    string seriesname = 9;
+    string serieslogo = 10;
+    string seriesofficialurl = 11;
+    string seriesfirstletter = 12;
+    int32 brandid = 13;
+    string brandname = 14;
+    string brandlogo = 15;
+    string brandofficialurl = 16;
+    string brandfirstletter = 17;
+    int32 fctid = 18;
+    string fctname = 19;
+    string fctlogo = 20;
+    string fctofficialurl = 21;
+    string fctfirstletter = 22;
+    int32 levelid = 23;
+    string levelname = 24;
+    string specquality = 25;
+    int32 state = 26;
+    int32 paramisshow = 27;
+    string timemarket = 28;
+    string emissionstandards = 29;
+    int32 specisbooked = 30;
+    string dynamicprice = 31;
+    int32 fueltypedetail = 32;
+  }
+
+}
+
+
+
+
+
+message GetSpecParamBySpecIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{int32 specid = 1;
+    string specname = 2;
+    int32 seriesid = 3;
+    string seriesname = 4;
+    int32 brandid = 5;
+    string brandname = 6;
+    int32 fctid = 7;
+    string fctname = 8;
+    int32 levelid = 9;
+    string levelname = 10;
+    int32 specpicount = 11;
+    string speclogo = 12;
+    int32 specminprice = 13;
+    int32 specmaxprice = 14;
+    int32 specengineid = 15;
+    string specenginename = 16;
+    int32 specstructuredoor = 17;
+    string specstructureseat = 18;
+    string specstructuretypename = 19;
+    string spectransmission = 20;
+    int32 specstate = 21;
+    double specoiloffical = 22;
+    int32 speclength = 23;
+    int32 specwidth = 24;
+    int32 specheight = 25;
+    int32 specweight = 26;
+    string specdrivingmodename = 27;
+    int32 specflowmodeid = 28;
+    string specflowmodename = 29;
+    double specdisplacement = 30;
+    int32 specenginepower = 31;
+    int32 specparamisshow = 32;
+    int32 specispreferential = 33;
+    int32 specistaxrelief = 34;
+    int32 specistaxexemption = 35;
+    string specquality = 36;
+    string specisimport = 37;
+    bool specisbooked = 38;
+    string dynamicprice = 39;
+    int32 oilboxvolume = 40;
+    int32 fueltype = 41;
+    string fastchargetime = 42;
+    string slowchargetime = 43;
+    string fastcharge_percent = 44[json_name="fastchargePercent"];
+    string batterycapacity = 45;
+    string mile = 46;
+    int32 fueltypedetail = 47;
+    string fueltypename = 48;
+    string greenstandards = 49;
+    string enginetorque = 50;
+    string engingkw = 51;
+    string qrcode = 52;
+    string pricedescription = 53;
+    string electricmotorgrosspower = 54;
+    string electricmotorgrosstorque = 55;
+    string oillabel = 56;
+    int32 wheelbase = 57;
+  }
+
+}
+message GetElectricSpecParamBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    repeated SpecMainItem specitems = 3;
+  }
+  message SpecMainItem{
+    int32 specid = 1;
+    string specname = 2;
+    int32 specstate = 3;
+    int32 minprice = 4;
+    int32 maxprice = 5;
+    int32 horsepower = 6;
+    int32 mileage = 7;
+    double officialfastchargetime = 8;
+    double officialslowchargetime = 9;
+    double batterycapacity = 10;
+    int32 paramisshow = 11;
+    int32 fueltypedetail = 12;
+  }
+}
+
+message GetSpecParamBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    int32 brandid = 3;
+    string brandname = 4;
+    int32 fctid = 5;
+    string fctname = 6;
+    int32 levelid = 7;
+    string levelname = 8;
+    string isimport = 9;
+    int32 total = 10;
+    repeated SpecDetailItem items = 11;
+  }
+  message SpecDetailItem{
+    int32 specid = 1;
+    string specname = 2;
+    int32 specpicount = 3;
+    string speclogo = 4;
+    int32 specminprice = 5;
+    int32 specmaxprice = 6;
+    int32 specengineid = 7;
+    string specenginename = 8;
+    int32 specstructuredoor = 9;
+    string specstructureseat = 10;
+    string specstructuretypename = 11;
+    string spectransmission = 12;
+    int32 specstate = 13;
+    double specoiloffical = 14;
+    int32 speclength = 15;
+    int32 specwidth = 16;
+    int32 specheight = 17;
+    int32 specweight = 18;
+    string specdrivingmodename = 19;
+    int32 specflowmodeid = 20;
+    string specflowmodename = 21;
+    double specdisplacement = 22;
+    int32 specenginepower = 23;
+    int32 specparamisshow = 24;
+    int32 specispreferential = 25;
+    int32 specistaxrelief = 26;
+    int32 specistaxexemption = 27;
+    string specquality = 28;
+    int32 specorder = 29;
+    int32 specyear = 30;
+
+  }
+}
+
+message GetSpecInfoBySpecIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 id = 1;
+    string name = 2;
+    int32 minprice = 3;
+    int32 maxprice = 4;
+    string logo = 5;
+    int32 yearid = 6;
+    string yearname = 7;
+    int32 seriesid = 8;
+    string seriesname = 9;
+    string serieslogo = 10;
+    string seriesofficialurl = 11;
+    string seriesfirstletter = 12;
+    int32 brandid = 13;
+    string brandname = 14;
+    string brandlogo = 15;
+    string brandofficialurl = 16;
+    string brandfirstletter = 17;
+    int32 fctid = 18;
+    string fctname = 19;
+    string fctlogo = 20;
+    string fctofficialurl = 21;
+    string fctfirstletter = 22;
+    int32 levelid = 23;
+    string levelname = 24;
+    string specquality = 25;
+    int32 state = 26;
+    int32 paramisshow = 27;
+    string timemarket = 28;
+    int32 ranliaoxingshi = 29;
+    string pricedescription = 30;
+    int32 booked = 31;
+    int32 fueltype = 32;
+    string displacement = 33;
+  }
+}
+
+message GetSpecLogoBySpecListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated Specitems specitems = 1;
+  }
+  message Specitems{
+    int32 id = 1;
+    string logo = 2;
+  }
+}
+
+message GetSpecDetailBySeriesIdV1Response{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    int32 total = 2;
+    repeated SpecDetail specitems= 3;
+  }
+  message SpecDetail{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    int32 syearid = 4;
+    int32 year = 5;
+    int32 minprice = 6;
+    int32 maxprice = 7;
+    string transmission = 8;
+    string gearbox = 9;
+    int32 state = 10;
+    string drivingmodename = 11;
+    int32 flowmodeid = 12;
+    string flowmodename = 13;
+    double displacement = 14;
+    int32 enginepower = 15;
+    int32 ispreferential = 16;
+    int32 istaxrelief = 17;
+    int32 istaxexemption = 18;
+    int32 order = 19;
+    int32 specisimage = 20;
+    int32 paramisshow = 21;
+    int32 isclassic = 22;
+    string structtype = 23;
+    string fueltype = 24;
+    int32 fueltypeid = 25;
+    int32 electrictype = 26;
+    double electrickw = 27;
+    int32 isnewcar = 28;
+    string emissionstandards = 29;
+    string seat = 30;
+  }
+}
+message GetCarpriceSpecParamListBySpecListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated Paramtypeitems paramtypeitems = 1;
+  }
+}
+message Paramtypeitems{
+  string name = 1;
+  repeated Paramitems paramitems = 2;
+  message Paramitems{
+    int32 id = 1;
+    string name = 2;
+    repeated Valueitems valueitems = 3;
+  }
+  message Valueitems{
+    int32 specid = 1;
+    string value = 2;
+    string url = 3;
+  }
+}
+
+message GetCarSpecParamListByYearIdRequest{
+  int32 seriesid = 1;
+  int32 yearid = 2;
+  string appid = 3 [json_name = "_appid"];
+}
+
+message GetCarSpecParamListByYearIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    int32 yearid = 2;
+    repeated SpecList speclist = 3;
+    repeated Paramtypeitems paramtypeitems = 4;
+  }
+  message SpecList{
+    int32 specid = 1;
+    int32 specstate = 2;
+    int32 showstate = 3;
+  }
+  message Paramtypeitems{
+    string name = 1;
+    repeated Paramitems paramitems = 2;
+    message Paramitems{
+      int32 id = 1;
+      string name = 2;
+      string pnid = 3;
+      repeated Valueitems valueitems = 4;
+    }
+    message Valueitems{
+      int32 specid = 1;
+      string value = 2;
+    }
+  }
+}
+
+
+message GetCarPriceSpecParamListByYearIdRequest{
+  int32 seriesid = 1;
+  int32 yearid = 2;
+  string appid = 3 [json_name = "_appid"];
+}
+
+message GetCarPriceSpecParamListByYearIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    int32 yearid = 2;
+    repeated SpecList speclist = 3;
+    repeated Paramtypeitems paramtypeitems = 4;
+  }
+  message SpecList{
+    int32 specid = 1;
+    int32 specstate = 2;
+    int32 showstate = 3;
+  }
+  message Paramtypeitems{
+    string name = 1;
+    repeated Paramitems paramitems = 2;
+    message Paramitems{
+      int32 id = 1;
+      string name = 2;
+      repeated Valueitems valueitems = 3;
+    }
+    message Valueitems{
+      int32 specid = 1;
+      string value = 2;
+      string url = 3;
+    }
+  }
+}
+
+
+message GetCarPriceSpecInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    int32 tatal = 2;
+    repeated SpecInfoDetail specitems= 3;
+  }
+  message SpecInfoDetail{
+    int32 id = 1;
+    string name = 2;
+    int32 minprice = 3;
+    int32 maxprice = 4;
+    string logo = 5;
+    int32 yearid = 6;
+    string yearname = 7;
+    string quality = 8;
+    string seat = 9;
+  }
+}
+
+message GetSpecColorBySpecIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 specid = 1;
+    int32 total = 2;
+    repeated ColorItem coloritems= 3;
+  }
+  message ColorItem{
+    int32 id = 1;
+    string name = 2;
+    string value = 3;
+    int32 picnum = 4;
+    int32 clubpicnum = 6;
+    int32 price = 7;
+    string remark = 8;
+  }
+}
+
+
+message SpecParamSingleBySpecIdItemIdRequest{
+
+}
+
+message SpecParamSingleBySpecIdItemIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+}
+
+
+message SpecParamSingleBySpecidRequest{
+  int32 specid = 1;
+}
+
+message SpecParamSingleBySpecidResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 specid = 1 ;
+    repeated Paramtypeitem paramtypeitems = 2 ;
+
+    message Paramtypeitem{
+      string name = 1;
+      repeated Paramitem paramitems = 2;
+
+      message Paramitem{
+        string name = 1;
+        int32 id = 2;
+        string value = 3;
+      }
+    }
+  }
+}
+message GetSpecListBySeriesResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated int32 speclist = 1;
+  }
+}
+
+message SpecPictureCountByConditionRequest{
+  int32 seriesid = 1;
+  int32 colorid = 2;
+  int32 classid = 3;
+}
+
+message SpecPictureCountByConditionResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 seriesid = 1;
+    int32 classid = 2;
+    int32 colorid = 3;
+    repeated Specitems specitems = 4;
+  }
+
+  message Specitems{
+    int32 id = 1;
+    string name = 2;
+    int32 syear = 3;
+    int32 ispublic = 4;
+    int32 piccount = 5;
+    double displacement = 6;
+    string flowmodename = 7;
+    int32 horsepower = 8;
+  }
+}
+
+message Spec25PictureBySpecIdRequest{
+  int32 specid = 1;
+}
+
+message Spec25PictureBySpecIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 specid = 1;
+    string specname = 2;
+    int32 seriesid = 3;
+    string seriesname = 4;
+    int32 brandid = 5;
+    string brandname = 6;
+    int32 total = 7;
+    repeated Picitems picitems = 8;
+
+    message Picitems{
+      int32 itemid = 1;
+      int32 typeid = 2;
+      string itemname = 3;
+      int32 picid = 4;
+      string picpath = 5;
+      string remark = 6;
+    }
+  }
+}
+
+message SpecInnerColorBySpecIdRequest{
+  int32 specid = 1;
+}
+
+message SpecInnerColorBySpecIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 specid = 1;
+    int32 total = 2;
+    repeated Coloritems coloritems = 3;
+
+    message Coloritems{
+      int32 id = 1;
+      string name = 2;
+      string value = 3;
+      int32 picnum = 4;
+      int32 clubpicnum = 5;
+      int32 price = 6;
+      string remark = 7;
+    }
+  }
+}
+
+message SpecInfoBySeriesIdRequest{
+  int32 seriesid = 1;
+}
+
+message SpecInfoBySeriesIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+
+  message Result{
+    int32 id = 1;
+    int32 specparamisshow = 2;
+    int32 specstate = 3;
+    int32 specisimage = 4;
+    int32 year = 5;
+  }
+}
+
+
+message GetSpecInnerColorBySeriesIdRequest{
+  int32 seriesid = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetSpecInnerColorBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total = 1;
+    repeated SpecItem specitems= 2;
+  }
+  message SpecItem{
+    int32 specid = 1;
+    repeated ColorItem coloritems= 2;
+  }
+  message ColorItem{
+    int32 id = 1;
+    string name = 2;
+    string value = 3;
+    int32 picnum = 4;
+    int32 clubpicnum = 5;
+    int32 price = 6;
+    string remark = 7;
+  }
+}
+
+
+message GetSpecSpecColorBySeriesIdRequest{
+  int32 seriesid = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetSpecSpecColorBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total = 1;
+    repeated SpecItem specitems= 2;
+  }
+  message SpecItem{
+    int32 specid = 1;
+    repeated ColorItem coloritems= 2;
+  }
+  message ColorItem{
+    int32 id = 1;
+    string name = 2;
+    string value = 3;
+    int32 picnum = 4;
+    int32 clubpicnum = 5;
+    int32 price = 6;
+    string remark = 7;
+  }
+}
+
+message GetSpecNameResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 specid = 1;
+    string specname = 2;
+    int32 seriesid = 3;
+    string seriesname = 4;
+    int32 brandid = 5;
+    string brandname = 6;
+    int32 fctid = 7;
+    string fctname = 8;
+  }
+}
+
+message GetSpecLogoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 specid = 1;
+    string speclogo = 2;
+  }
+}
+message GetConfigListRequest{
+  int32 specid = 1;
+  int32 disptype = 2;
+  int32 type = 3;
+}
+message GetConfigListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 specid = 1;
+    repeated ConfTypeItems configtypeitems = 2;
+  }
+  message ConfTypeItems{
+    string name = 1;
+    repeated ConfigItems configitems = 2;
+    message ConfigItems{
+      int32 configid = 1;
+      string name = 2;
+      int32 id = 3;
+      int32 disptype = 4;
+      repeated Valueitem valueitems = 5;
+      message Valueitem{
+        int32 specid = 1 ;
+        string value = 2 ;
+        repeated SubPrice price = 3 ;
+        repeated SubItem sublist = 4 ;
+
+        message SubItem{
+          string subname = 1 ;
+          int32 subvalue = 2 ;
+          int32 price = 3 ;
+        }
+
+        message SubPrice{
+          string subname = 1 ;
+          int32 price = 2 ;
+        }
+      }
+    }
+  }
+}
+
+message GetSpecParamsBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid=1;
+    repeated Paramtypeitems paramtypeitems = 2;
+  }
+}
+
+
+message SpecDetailByYearIdRequest{
+  int32 seriesid = 1;
+  int32 yearid = 2;
+  string state = 3;
+}
+
+message SpecDetailByYearIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+ message Result{
+   int32 total = 1;
+   int32 seriesid = 2;
+   int32 yearid = 3;
+   repeated Specitem specitems = 4;
+
+  message Specitem{
+    int32 istaxexemption = 1;
+    int32 maxprice = 2;
+    int32 year = 3;
+    int32 istaxrelief = 4;
+    string structtype = 5;
+    string drivingmodename = 6;
+    int32 enginepower = 7;
+    int32 isclassic = 8;
+    string transmission = 9;
+    int32 minprice = 10;
+    string name = 11;
+    string logo = 12;
+    int32 flowmodeid = 13;
+    string flowmodename = 14;
+    double displacement = 15;
+    int32 id = 16;
+    int32 state = 17;
+    int32 ispreferential = 18;
+    int32 order = 19;
+    int32 paramisshow = 20;
+  }
+ }
+}
+
+
+message ConfigDistinctListBySpecListRequest{
+  repeated int32 speclist = 1;
+}
+
+message ConfigDistinctListBySpecListResponse{
+
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 timer = 1;
+    repeated Configtypeitem config = 2;
+
+    message Configtypeitem{
+      string name = 1 ;
+      repeated Configitem configitems = 2 ;
+
+      message Configitem{
+        string name = 1 ;
+        int32 disptype = 3 ;
+        repeated Valueitem valueitems = 4 ;
+
+        message Valueitem{
+          int32 specid = 1 ;
+          string value = 2 ;
+          repeated SubItem sublist = 4 ;
+
+          message SubItem{
+            string subname = 1 ;
+            int32 subvalue = 2 ;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+message GetSpecStateCountBySeriesIdRequest{
+  int32 seriesid = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetSpecStateCountBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    int32 total = 2;
+    repeated StateItem items= 3;
+  }
+  message StateItem{
+    int32 state = 1;
+    int32 count = 2;
+    int32 noimgcount = 3;
+  }
+}
+
+message GetSpecDetailBySpecListRequest{
+  string speclist = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetSpecDetailBySpecListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated SpecDetail specitems= 1;
+  }
+  message SpecDetail{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    int32 year = 4;
+    int32 minprice = 5;
+    int32 maxprice = 6;
+    string transmission = 7;
+    int32 state = 8;
+    string drivingmodename = 9;
+    int32 flowmodeid = 10;
+    string flowmodename = 11;
+    double displacement = 12;
+    int32 enginepower = 13;
+    int32 ispreferential = 14;
+    int32 istaxrelief = 15;
+    int32 istaxexemption = 16;
+    int32 order = 17;
+    int32 specorder = 18;
+    int32 paramisshow = 19;
+  }
+}
+message GetAppSpecParamBySpecListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated Specinfoitem specinfoitem = 1;
+    repeated Paramtypeitems paramtypeitems = 2;
+    message Specinfoitem{
+      string name = 1;
+      repeated Valueitem valueitems = 2;
+      message Valueitem{
+        int32 specid = 1;
+        string value = 2;
+      }
+    }
+    message Paramtypeitems{
+      string name = 1;
+      repeated Paramitems paramitems = 2;
+      message Paramitems{
+        int32 id = 1;
+        string name = 2;
+        repeated Valueitems valueitems = 3;
+      }
+      message Valueitems{
+        int32 specid = 1;
+        string value = 2;
+        string url = 3;
+      }
+    }
+  }
+}
+
+message SpecBaseInfbySpecListRequest{
+  string speclist = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message SpecBaseInfbySpecListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 rowcount = 1;
+    repeated SpecItem list= 3;
+  }
+  message SpecItem{
+    int32 specid = 1;
+    string specname = 2;
+    int32 seriesid = 3;
+    string seriesname = 4;
+    string pic = 5;
+    int32 minprice = 6;
+    int32 maxprice = 7;
+
+  }
+}
+
+message SpecAllSpecInfoRequest{
+  string state = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message SpecAllSpecInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 num = 1;
+    repeated SeriesItem list= 3;
+  }
+
+  message SeriesItem{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    int32 levelid = 3;
+    string levelname = 4;
+    string seriesplace = 5;
+    repeated SpecItem speclist = 6;
+  }
+
+  message SpecItem{
+    int32 specid = 1;
+    string specname = 2;
+    int32 specstat = 3;
+    string speclogo = 4;
+    int32 fueltype = 5;
+    int32 minprice = 6;
+    int32 maxprice = 7;
+
+  }
+}
+
+
+message GetCarSpecPriceByYearIdRequest{
+  int32 seriesid = 1;
+  int32 syearid = 2;
+  string appid = 3 [json_name = "_appid"];
+}
+
+message GetCarSpecPriceByYearIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated SpecItems result = 3;
+  message SpecItems{
+    string name = 1;
+    repeated SpecList speclist = 2;
+  }
+  message SpecList{
+    int32 specid = 1;
+    string specname = 2;
+    int32 specstate = 3;
+    int32 minprice = 4;
+    int32 maxprice = 5;
+    int32 fueltype = 6;
+    int32 fueltypedetail = 7;
+    string driveform = 8;
+    string drivetype = 9;
+    string gearbox = 10;
+    string evflag = 11;
+    string newcarflag = 12;
+    string subsidy = 13;
+    int32 syear = 14;
+    int32 paramisshow = 15;
+  }
+}
+
+message GetSpecParamSingleByItemRequest{
+  int32 specid = 1;
+  int32 itemid = 2;
+  string appid = 3 [json_name = "_appid"];
+}
+
+message GetSpecParamSingleByItemResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 specid = 1;
+    int32 itemid = 2;
+    string itemname = 3;
+    repeated ParamItem paramitems = 4;
+    message ParamItem{
+      string name = 1;
+      string value = 2;
+    }
+  }
+}
+
+
+message GetSpecListBySeriesIdsRequest{
+  repeated int32 seriesids = 1;
+  string state = 2;
+  string appid = 3 [json_name = "_appid"];
+}
+
+message GetSpecListBySeriesIdsResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated SpecItems result = 3;
+  message SpecItems{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    repeated SpecList list = 3;
+    message SpecList{
+      int32 specid = 1;
+      string specname = 2;
+      string img = 3;
+      int32 minprice = 4;
+      int32 maxprice = 5;
+      int32 specstate = 6;
+    }
+  }
+}
+
+
+message GetAppSpecInfoBySpecListRequest{
+  repeated int32 speclist = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetAppSpecInfoBySpecListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated SpecInfo result = 3;
+  message SpecInfo{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    int32 specid = 3;
+    string specname = 4;
+    int32 specminprice = 5;
+    int32 specmaxprice = 6;
+    int32 specistaxexemption= 7;
+    string seatnum = 8;
+    string displacement  = 9;
+    string seriesisimport = 10;
+  }
+}
+
+
+//message GetCarSpecParamListBySeriesIdRequest{
+//  int32 seriesid = 1;
+//  string appid = 2 [json_name = "_appid"];
+//}
+
+//message GetCarSpecParamListBySeriesIdResponse{
+//  int32 return_code = 1 [json_name = "returncode"];
+//  string return_msg = 2 [json_name = "message"];
+//  Result result = 3;
+//  message Result{
+//    int32 seriesid = 1;
+//    repeated SpecList speclist = 2;
+//    repeated Paramtypeitems paramtypeitems = 3;
+//  }
+//  message SpecList{
+//    int32 specid = 1;
+//    int32 specstate = 2;
+//    int32 showstate = 3;
+//  }
+//  message Paramtypeitems{
+//    string name = 1;
+//    repeated Paramitems paramitems = 2;
+//    message Paramitems{
+//      int32 id = 1;
+//      string name = 2;
+//      string pnid = 3;
+//      repeated Valueitems valueitems = 4;
+//    }
+//    message Valueitems{
+//      int32 specid = 1;
+//      string value = 2;
+//    }
+//  }
+//}
+
+message GetCarSeriesNameByFctIdRequest{
+  int32 fctid = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetCarSeriesNameByFctIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 id = 1;
+    string name = 2;
+    string logo = 3;
+    string officialurl = 4;
+    repeated Seriesitems seriesitems = 5;
+    message Seriesitems{
+      int32 id = 1;
+      string name = 2;
+      int32 levelid = 3;
+      string levelname = 4;
+      int32 ispublic = 5;
+      int32 seriesstate = 6;
+      string pnglogo = 7;
+      int32 minprice = 8;
+      int32 maxprice = 9;
+    }
+  }
+}
+
+message GetDingZhiSpecMainParamRequest{
+  int32 specid = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetDingZhiSpecMainParamResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 specid = 1;
+    string specname = 2;
+    int32 seriesid = 3;
+    string seriesname = 4;
+    string specimg = 5;
+    string rongliang = 6;
+    string gonglv = 7;
+    string niuju = 8;
+    string licheng = 9;
+    int32 fueltype = 10;
+  }
+}
+message GetLabelPicConfigListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 specid = 1;
+    repeated Configtypeitem configtypeitems = 2;
+
+    message Configtypeitem{
+      string name = 1;
+      repeated Configitem configitems = 2;
+
+      message Configitem{
+        int32 configid = 1;
+        string name = 2;
+        int32 disptype = 3;
+        string value = 4;
+        repeated SubList sublist = 5;
+      }
+      message SubList{
+        int32 subitemid = 1;
+        string subname = 2;
+        int32 subvalue = 3;
+      }
+    }
+  }
+}
+
+message GetUnifySpecListBySeriesRequest{
+  int32 seriesid = 1;
+  int32 syearid = 2;
+  string appid = 3 [json_name = "_appid"];
+}
+
+message GetUnifySpecListBySeriesResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 timer = 1;
+    repeated WaitSpecItem waitselllist = 2;
+    repeated SpecItem selllist = 3;
+  }
+  message SpecItem{
+    string name = 1;
+    repeated SpecList speclist = 2;
+  }
+  message WaitSpecItem{
+    string name = 1;
+    int32 isbooked = 2;
+    repeated WaitSpecList speclist = 3;
+  }
+  message WaitSpecList{
+    int32 specid = 1;
+    string specname = 2;
+    int32 specstate = 3;
+    int32 minprice = 4;
+    int32 maxprice = 5;
+    int32 fueltype = 6;
+    int32 fueltypedetail = 7;
+    string driveform = 8;
+    string drivetype = 9;
+    string gearbox = 10;
+    string evflag = 11;
+    string newcarflag = 12;
+    string subsidy = 13;
+    int32 syear = 14;
+    int32 paramisshow = 15;
+  }
+  message SpecList{
+    int32 specid = 1;
+    string specname = 2;
+    int32 specstate = 3;
+    int32 minprice = 4;
+    int32 maxprice = 5;
+    int32 fueltype = 6;
+    int32 fueltypedetail = 7;
+    string driveform = 8;
+    string drivetype = 9;
+    string gearbox = 10;
+    string evflag = 11;
+    string newcarflag = 12;
+    string subsidy = 13;
+    int32 syear = 14;
+    int32 paramisshow = 15;
+    string emissionstandards = 16;
+    string gearboxabbreviation =17;
+    double deliverycapacity = 18;
+    int32 flowmode = 19;
+    int32 endurancemileage = 20;
+    double electrickw = 21;
+  }
+}
+
+message GetDuibiSpecParamBySpecListRequest{
+  repeated int32 speclist = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetDuibiSpecParamBySpecListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated Param param = 1;
+  }
+  message Param{
+    int32 specid = 1;
+    string specname = 2;
+    string speclogo = 3;
+    int32 specstate = 4;
+    int32 seriesid = 5;
+    string seriesname = 6;
+    int32 brandid = 7;
+    int32 levelid = 8;
+    string levelname = 9;
+    int32 minprice = 10;
+    int32 maxprice = 11;
+    int32 length = 12;
+    int32 width = 13;
+    int32 height = 14;
+    int32 wheelbase = 15;
+    int32 enginepower = 16;
+    double enginetorque = 17;
+    double speed = 18;
+    int32 specmaxspeed = 19;
+    double oiloffical = 20;
+    double displacement = 21;
+    string spectransmission = 22;
+    int32 flowmode = 23;
+    string flowmodename = 24;
+    int32 fueltype = 25;
+    string fueltypename = 26;
+    int32 endurancemileage = 27;
+    double batterycapacity = 28[json_name="batteryCapacity"];
+    int32 fastchargebatterypercentage = 29[json_name="fastChargeBatteryPercentage"];
+    double officialfastchargetime = 30[json_name="officialFastChargetime"];
+    double officialslowchargetime = 31[json_name="officialSlowChargetime"];
+  }
+}
+
+message VerifyPERequest{
+  string specids = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message VerifyPEResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    string content = 1;
+  }
+}
+
+message GetSpecAllNameRequest{
+  string appid = 1 [json_name = "_appid"];
+}
+
+message GetSpecAllNameResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 total = 1;
+    repeated SpecItem seriesitems = 2;
+    message SpecItem{
+      int32 id = 1;
+      string name = 2;
+    }
+  }
+}

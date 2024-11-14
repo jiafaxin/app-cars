@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.web_main.v1.cms;
+option java_multiple_files = true;
+option java_outer_classname = "CmsProto";
+option java_package = "autohome.rpc.car.web_main.v1.cms";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/web_main/v1/cms;cms";
+option csharp_namespace = "autohome.rpc.car.web_main.v1.cms";
+
+
+/**
+  * service 样例
+  * 维护人: zhangfeifei16658
+  * 生产环境 - 主机: car_web_main.grpc.corpautohome.com
+  * 预发环境 - 主机: car_web_main.thallo.corpautohome.com
+  * 测试环境 - 主机: car_web_main.terra.corpautohome.com
+ */
+service CmsService {
+  /**
+    * rpc方法样例
+    * 维护人:shicuining
+    */
+  rpc GetCityNameById (GetCityNameRequest) returns (GetCityNameResponse) {}
+}
+
+message GetCityNameRequest {
+  int32 cityid = 1;
+}
+
+message GetCityNameResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result {
+    string cityname = 1;
+  }
+}
+

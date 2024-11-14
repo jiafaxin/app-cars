@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v3.series;
+option java_multiple_files = true;
+option java_outer_classname = "SeriesProto";
+option java_package = "autohome.rpc.car.car_api.v3.series";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v3/series;series";
+option csharp_namespace = "autohome.rpc.car.car_api.v3.series";
+
+
+/**
+  * service 样例
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service SeriesV3Service {
+/**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc ConfigGetListBySeriesId (ConfigGetListBySeriesIdRequest) returns (ConfigGetListBySeriesIdResponse) {}
+  /**
+      * APP参数配置页展示智能类视频
+      * @param seriesId
+      * @return
+      */
+  rpc ConfigWithAiVideoForApp(ConfigWithAiVideoRequest)returns(ConfigWithAiVideoResponse){}
+
+
+}
+
+message ConfigWithAiVideoRequest{
+  int32 seriesid = 1;
+
+}
+
+message ConfigWithAiVideoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    int32 specid = 2;
+    int32 configid = 3;
+    string configname = 4;
+    string videoid = 5;
+  }
+}
+
+
+message ConfigGetListBySeriesIdRequest{
+  int32 seriesid = 1;
+}
+
+message ConfigGetListBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 seriesid = 1;
+    repeated Configtypeitem configtypeitems = 2;
+
+    message Configtypeitem{
+      string name = 1 ;
+      string groupname = 2 ;
+      repeated Configitem configitems = 3 ;
+
+      message Configitem{
+        int32 configid = 1 ;
+        string name = 2 ;
+        int32 disptype = 3 ;
+        repeated Valueitem valueitems = 4 ;
+
+        message Valueitem{
+          int32 specid = 1 ;
+          string value = 2 ;
+          repeated SubPrice price = 3 ;
+          repeated SubItem sublist = 4 ;
+
+          message SubItem{
+            string subname = 1 ;
+            int32 subvalue = 2 ;
+            int32 price = 3 ;
+          }
+
+          message SubPrice{
+            string subname = 1 ;
+            int32 price = 2 ;
+          }
+        }
+      }
+    }
+  }
+}
+

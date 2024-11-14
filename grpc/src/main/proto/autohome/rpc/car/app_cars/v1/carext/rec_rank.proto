@@ -1,0 +1,322 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.carext;
+option java_multiple_files = true;
+option java_outer_classname = "RecRankProto";
+option java_package = "autohome.rpc.car.app_cars.v1.carext";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/carext;carext";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.carext";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+/**
+  * service 样例
+  * 维护人: chengjincheng
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service RecRankService {
+  /**
+    * 关注榜新车排名走势
+    */
+  rpc GetAttentionNewCarRankTrend (AttentionNewCarRankTrendRequest) returns (AttentionNewCarRankTrendResponse) {};
+  rpc GetRankListResult(RankResultRequest) returns (RankResultResponse){}
+  rpc GetRankHistory(RankHistoryRequest) returns (RankHistoryResponse);
+  rpc RefreshMonthAndWeekRank(RankSaleRefreshRequest) returns (RankSaleRefreshResponse){};
+  rpc GetRankLanResult(RankLanApiRequest) returns (RankLanApiResponse){};
+}
+
+message AttentionNewCarRankTrendRequest {
+  int32 seriesid = 1;
+}
+
+message AttentionNewCarRankTrendResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    string title = 3;
+    int32 max = 4;
+    int32 chartcolnum = 5;
+    repeated TrendDto trendlist = 6;
+    repeated MonthDayDto month = 7;
+
+
+    message TrendDto{
+      string rank = 1;
+      int32 ranknum = 2;
+      int32 attnum = 3;
+    }
+    message MonthDayDto{
+      string date = 1;
+      string dateformatstr = 2;
+    }
+  }
+
+}
+
+message RankResultRequest{
+  int32 pm = 1;
+  string pluginversion = 2;
+  string penetrate_version = 3;
+  int32 pageindex = 4;
+  int32 pagesize = 5;
+  string deviceid = 6;
+  int32 channel = 7;
+  int32 from = 8;
+  int32 model = 9;
+  int32 typeid = 10;
+  int32 subranktypeid = 11;
+  string levelid = 12;
+  int32 energytype = 13;
+  string fcttypeid = 14;
+  int32 issale = 15;
+  string brandid = 16;
+  string price = 17;
+  string date = 18;
+  string week = 19;
+  string pf = 20;
+  int32 cityid = 21;
+  string salecounttype = 22;
+  int32 provinceid = 23;
+  int32 koubeitypeid = 24;
+
+}
+
+message RankResultResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  int32 cdncachesecond = 4;
+  int32 cacheable = 5;
+
+  message Result{
+    Shareinfo shareinfo = 1;
+    string scenesubtitle = 2;
+    int32 pagecount = 3;
+    string morescheme = 4;
+    int32 pagesize = 5;
+    int32 pageindex = 6;
+    string saleranktip = 7;
+    string scenetitle = 8;
+    repeated RankItemList list = 9;
+
+    message Shareinfo{
+      string subtitle = 1;
+      string logo = 2;
+      string title = 3;
+      string url = 4;
+      int32 longpicshare = 5;
+    }
+    message RankItemList{
+      string rcmdesc = 1;
+      Rightinfo rightinfo = 2;
+      repeated SafeItem safeitemlist = 3;
+      string seriesname = 4;
+      repeated string rcmlist = 5;
+      carbase.Pvitem pvitem = 6;
+      string rank = 7;
+      string scoretip = 8;
+      int32 cardtype = 9;
+      string seriesimage = 10;
+      string priceinfo = 11;
+      string rcmtext = 12;
+      string specname = 13;
+      string righttexttwolinkurl = 14;
+      int32 rankchange = 15;
+      string righttexttwo = 16;
+      string seriesid = 17;
+      Shareinfo shareinfo = 18;
+      int32 showenergyicon = 19;
+      string righttextone = 20;
+      int32 rank_num = 21 [json_name = "rankNum"];
+      int32 rcmtype = 22;
+      string linkurl = 23;
+      int32 isshowscorevalue = 24;
+      string scorevalue = 25;
+      int32 showrankchange = 26;
+      string rcmlinkurl = 27;
+      string rcmrighttitle = 28;
+      string routecycle = 29; //路线周期
+      string routemileage = 30;//路线里程
+      string recommendreason = 31;//推荐理由
+      uint64 salecount = 32;
+      string pricelinkurl = 33;
+      string rcmpic = 34;
+      string seriestag = 35;
+      carbase.Pvitem rcmpvitem = 36;
+
+
+
+      message Rightinfo{
+        string ext = 1;
+        Priceinfo priceinfo = 2;
+        string righttextone = 3;
+        carbase.Pvitem pvitem = 4;
+        string rightpricetitle = 5;
+        string rightpriceeid = 6;
+        string righttexttwolinkurl = 7;
+        string rightpriceurl = 8;
+        string righttexttwo = 9;
+
+        message Priceinfo{
+          string ext = 1;
+          string eid = 2;
+          string linkurl = 3;
+          string title = 4;
+        }
+
+      }
+      message Shareinfo{
+        int32 canlongshare = 1;
+        repeated Sharelist sharelist = 2;
+        string shareext = 3;
+
+        message Sharelist{
+          carbase.Pvitem pvitem = 1;
+          string icon = 2;
+          string id = 3;
+          string title = 4;
+          int32 sharetypeid = 5;
+        }
+      }
+    }
+    message Pvitem{
+      Show show = 1;
+      Click click = 2;
+      map<string, string> argvs = 3;
+
+      message Show{
+        string eventid = 1;
+        map<string, string> argvs = 2;
+      }
+
+      message Click{
+        string eventid = 1;
+        map<string, string> argvs = 2;
+      }
+    }
+
+    message SafeItem {
+      string text = 1;
+      string desc = 2;
+      string desccolor = 3;
+    }
+  }
+}
+
+message RankHistoryRequest {
+  int32 pm = 1;
+  int32 seriesid = 2 [json_name = "seriesId"];
+  int32 typeid = 3;
+  int32 subranktypeid = 4;
+  string pluginversion = 5;
+  string date = 6;
+  int32 energytype = 7;
+}
+
+message RankHistoryResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  SaleSeriesRankHistoryResult result = 3;
+
+  message SaleSeriesRankHistoryResult{
+    int32 seriesid = 1;
+    int32 max = 2;
+    int32 chartcolnum = 3;
+    repeated HistorySaleCountItem salecount = 4;
+    repeated HistoryMonthItem month = 5;
+    repeated HistoryMonthSaleItem monthsale = 6;
+
+    message HistorySaleCountItem {
+      int32 count = 1;
+      string name = 2;
+    }
+    message HistoryMonthItem {
+      string name = 1;
+      string subname = 2;
+    }
+    message HistoryMonthSaleItem {
+      string name = 1;
+      string value = 2;
+      int32 type = 3;
+    }
+  }
+}
+
+message RankSaleRefreshRequest{
+  int32 operatetype = 1;//操作类型 1-更新月、2-更新周
+  string month = 2;//月份 2024-06
+  string week = 3;//周 每周的周二具体时间  2024-09-03
+  string secretkey = 4;//请求的秘钥
+}
+message RankSaleRefreshResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+}
+
+message RankLanApiRequest {
+  int32 typeid = 1;
+  string date = 2;
+  int32 cityid = 3;
+  int32 levelid = 4;
+}
+
+// 高德榜单响应结构
+message RankLanApiResponse {
+
+  message EnergySaleCount {
+    uint64 ofv = 1;
+    uint64 ev = 2;
+    uint64 phev = 3;
+    uint64 reev = 4;
+  }
+
+  message RankLanApiResult {
+    repeated RankLanApiItem list = 1;
+
+    message RankLanApiItem {
+      uint32 seriesid = 1;
+      uint32 brandid = 2;
+      string seriesname = 3;
+      string ranknum = 4;
+      string rankchange = 5;
+      EnergySaleCount energysalecount = 6;
+      uint64 salecount = 7;
+      uint64 citysalecount = 8;
+      string seriesimage = 9;
+      string brandimage = 10;
+      string brandname = 11;
+      repeated string energyflag = 12;
+      uint32 levelid = 13;
+      string price = 14;
+      uint32 minprice = 15;
+      uint32 maxprice = 16;
+      string month = 17;
+      string ratevalue = 18;
+      uint32 cityid = 19;
+      string cityname = 20;
+    }
+  }
+
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  RankLanApiResult result = 3;
+}
+
+

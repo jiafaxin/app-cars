@@ -1,0 +1,470 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v2.series;
+option java_multiple_files = true;
+option java_outer_classname = "SeriesProto";
+option java_package = "autohome.rpc.car.car_api.v2.series";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v2/series;series";
+option csharp_namespace = "autohome.rpc.car.car_api.v2.series";
+
+import "autohome/api/annotations.proto";
+
+/**
+  * service 样例
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service SeriesService {
+
+  /** 根据车系id获取车系相关参数信息
+   * 维护人: shicuining
+   */
+  rpc GetSeriesConfig(GetSeriesConfigRequestV2) returns (GetSeriesConfigResponseV2){
+    option (autohome.api.http) = {
+      get: "/v2/CarPrice/Series_ParamBySeriesId.ashx"
+      additional_bindings:{
+        get:"/v2/carprice/series_parambyseriesid.ashx"
+      }
+    };
+  }
+
+  /**
+   * 获取车系的白底车图，最多支持50个车系同时查询
+   */
+  rpc GetSeriesPhotoWhiteLogoBySeriesId(SeriesIdRequest) returns (GetSeriesPhotoWhiteLogoBySeriesIdResponse){
+    option (autohome.api.http) = {get: "/v2/carpic/series_photowhitelogobyseriesid.ashx"};
+  }
+
+  /**
+    * 根据车系id获取车型详细信息
+    * 维护人: shicuining
+   */
+  rpc SpecSpecItmesBySeriesId (SpecSpecItmesBySeriesIdRequest) returns (SpecSpecItmesBySeriesIdResponse) {}
+
+
+  /**
+   * 根据多个车系id获取车系相关参数信息
+   * author: zff
+   */
+  rpc GetSeriesParamBySeriesList(SeriesIdRequest) returns (GetSeriesParamBySeriesListResponse){
+    option (autohome.api.http) = {get: "/v2/carpic/Series_parambyserieslist.ashx"};
+  }
+
+  /**
+  * 三期
+  * 根据车系id获取在售车型的选装包信息
+  * 维护人：zff
+*/
+  rpc GetBagInfoBySeriesId (GetSeriesConfigRequestV2) returns (GetBagInfoBySeriesIdResponse) {
+    option (autohome.api.http) = {get: "/v2/car/Config_BagBySeriesId.ashx"};
+  }
+
+  /**
+  * 获取车系的透明车图，最多支持50个车系同时查询
+  * 维护人:jiaweiwei
+  */
+  rpc GetSeriesPngLogoBySeriesId (SeriesPngLogoBySeriesIdRequest) returns (SeriesPngLogoBySeriesIdResponse) {}
+  /**
+    *根据多个车型id及城市id获取补贴金额
+   */
+  rpc GetSeriesBuTieJiaBySeriesId(GetSeriesBuTieJiaBySeriesIdRequest)returns(GetSeriesBuTieJiaBySeriesIdResponse){}
+
+  rpc GetSeriesElectricList(GetSeriesElectricListRequest)returns(GetSeriesElectricListResponse){}
+
+  /*
+  * 根据车系id获取车型信息
+   */
+  rpc GetSpecBySeries(GetSpecBySeriesRequest)returns(GetSpecBySeriesResponse){}
+
+  /*
+  * 获取全部车系列表
+  */
+  rpc GetAllSeries(GetAllSeriesRequest)returns(GetAllSeriesResponse){}
+
+  rpc GetSeriesAllBaseInfo(GetSeriesAllBaseInfoRequest)returns(GetSeriesAllBaseInfoResponse){}
+  /**
+    *获取包含电动车车系列表 分类
+   */
+  rpc GetSelectElectricList(SelectElectricListRequest)returns(SelectElectricListResponse){}
+}
+
+message SelectElectricListRequest{
+
+}
+message SelectElectricListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 count = 1;
+    repeated SeriesItem items = 2;
+  }
+  message SeriesItem{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    double seriesrank = 3;
+    int32 state = 4;
+    int32 electricstate = 5;
+    int32 ispreferential = 6;
+    int32 istaxexemption = 7;
+    repeated ClassItem classitems = 8;
+  }
+  message ClassItem{
+    int32 typeid = 1;
+    string typename = 2;
+    string licheng = 3;
+  }
+}
+
+message GetSeriesElectricListRequest{}
+message GetSeriesElectricListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 count = 1;
+    repeated Item items = 2;
+    message Item{
+      int32 seriesid = 1;
+      string seriesname = 2;
+      int32 seriesstate = 3;
+    }
+  }
+}
+message GetSeriesBuTieJiaBySeriesIdRequest{
+  string serieslist = 1;
+  int32 cityid = 2;
+  int32 seriesstate  = 3;
+}
+message GetSeriesBuTieJiaBySeriesIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 cityid  = 1;
+    string name = 2;
+    repeated SeriesItem seriesitems = 3;
+  }
+  message SeriesItem{
+    int32 seriesid = 1;
+    int32 minprice = 2;
+    int32 maxprice = 3;
+  }
+}
+
+message GetBagInfoBySeriesIdResponse {
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    repeated SpecList speclist = 2;
+    repeated BagTypeItems bagtypeitems = 3;
+  }
+  message SpecList{
+    int32 specid = 1;
+    int32 specstate = 2;
+    int32 showstate = 3;
+  }
+  message BagTypeItems{
+    string name = 1;
+    repeated BagItems bagitems = 2;
+    message BagItems{
+      int32 specid = 1;
+      repeated ValueItems valueitems = 2;
+      message ValueItems{
+        int32 bagid = 1;
+        string name = 2;
+        string description = 3;
+        int32 price = 4;
+        string pricedesc = 5;
+      }
+    }
+  }
+}
+
+message GetSeriesConfigRequestV2 {
+  int32 seriesid = 1;
+  string appid = 2[json_name="_appid"];
+}
+
+message GetSeriesConfigResponseV2 {
+  int32 return_code = 1[json_name="returncode"];
+  string return_msg = 2[json_name="message"];
+  Result result = 3;
+
+  message Result{
+    int32 id = 1;
+    int32 series_relation_series_id = 2[json_name="seriesRelationSeriesId"];
+    string name = 3;
+    int32 maxprice = 4;
+    int32 minprice = 5;
+    int32 state = 6;
+    string series_official_url = 7[json_name="seriesOfficialUrl"];
+    int32 fctid = 8;
+    string fctname = 9;
+    int32 brandid = 10;
+    string brandname = 11;
+    repeated string structitems = 12;
+    repeated string transmissionitems = 13;
+    repeated string displacementitems = 14;
+    int32 levelid = 15;
+    string levelname = 16;
+    repeated string picitems = 17;
+    repeated SeriesLogo picinfoitems = 18;
+    int32 specnum = 19;
+    int32 sellspecnum = 20;
+    int32 stopspecnum = 21;
+    int32 waitspecnum = 22;
+    int32 picnum = 23;
+    int32 minfuelconsumption = 24;
+    int32 maxfuelconsumption = 25;
+    int32 isshow = 26;
+    int32 paramisshow = 27;
+    int32 existmaintain = 28;
+    int32 showelectricparam = 29;
+    repeated int32 electricmotormileage = 30;
+    repeated double electricmotorkw = 31;
+    string electricchargetime = 32;
+    repeated double electricrongliang = 33;
+    string createtime = 34;
+    int32 containbookedspec = 35;
+    double minoilwear = 36;
+    double maxoilwear = 37;
+    int32 containstopspec = 38;
+    int32 newenergy = 39;
+    string pnglogo = 40;
+    string pricedescription = 41;
+    string seriesplace = 42;
+    int32 paramnewisshow = 43;
+
+    message SeriesLogo{
+      int32 specid = 1;
+      int32 picid = 2;
+      string picpath = 3;
+      int32 specstate = 4;
+    }
+  }
+}
+
+message SeriesIdRequest{
+  string serieslist = 1;
+  string appid = 2[json_name="_appid"];
+}
+message GetSeriesPhotoWhiteLogoBySeriesIdResponse{
+  int32 return_code = 1[json_name="returncode"];
+  string return_msg = 2[json_name="message"];
+  Result result = 3;
+  message Result{
+    repeated SeriesList serieslist = 1;
+  }
+  message SeriesList{
+    int32 id = 1;
+    string picpath = 2;
+    string seriespnglogo = 3;
+  }
+}
+
+message GetSeriesParamBySeriesListResponse{
+  int32 return_code = 1[json_name = "returncode"];
+  string return_msg = 2[json_name = "message"];
+  repeated Result result = 3;
+  message Result{
+    int32 id = 1;//车系id
+    string name = 2;//车系名称
+    int32 maxprice = 3;//指导价高价
+    int32 minprice = 4;//指导价低价
+    int32 state = 5;//状态
+    int32 fctid = 6;//厂商Id
+    string fctname = 7;//厂商名称
+    int32 brandid = 8;///品牌id
+    string brandname = 9;//品牌名称
+    repeated string structitems = 10;//车身结构
+    repeated string transmissionitems = 11;//变速箱
+    repeated string displacementitems = 12;//排气量
+    int32 levelid = 13;//级别名称
+    string levelname = 14;//级别
+    repeated string picitems = 15;//图片列表
+    repeated Picinfoitems picinfoitems = 16;//图片详细列表
+    int32 specnum = 17;// 车型数量
+    int32 sellspecnum = 18;// 在售车型数量
+    int32 stopspecnum = 19;// 停售车型数量
+    int32 waitspecnum = 20;// 待售车型数量
+    int32 picnum = 21;// 图片数量
+    int32 minfuelconsumption = 22;// 最小油耗
+    int32 maxfuelconsumption = 23;//最大油耗
+    int32 isshow = 24;//车系频道是否外显
+    int32 paramisshow = 25;//是否有车型参数外显
+    int32 existmaintain = 26;//车系是否有保养信息
+    int32 containtelectriccar = 27;//  //车系下是否包含电动车
+    double minoilwear = 28;// 最小油耗
+    double maxoilwear = 29;// 最大油耗
+    double currentstateminoilwear = 30;// 车系当前状态下官方最小油耗
+    double currentstatemaxoilwear = 31;//车系当前状态下官方最大油耗
+    int32 containstopspec = 32;
+    int32 newenergy = 33;//  是否新能源
+    string pnglogo = 34;//车系透明代表图
+  }
+  message Picinfoitems{
+    int32 picid = 1;
+    int32 specid = 2;
+    string picpath = 3;
+  }
+}
+
+
+message SpecSpecItmesBySeriesIdRequest{
+  int32 seriesid = 1;
+  string state = 2;
+}
+
+message SpecSpecItmesBySeriesIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+
+  message Result{
+    string pricedescription = 1 ;
+    string seriestips = 2 ;
+    int32 seriesid = 3 ;
+    string seriesprice = 4 ;
+    repeated Speclist speclist = 5 ;
+
+   message Speclist{
+     int32 specid = 1;
+     string pricedescription = 2;
+     string spectitle = 3;
+     string specprice = 4;
+   }
+  }
+}
+
+message SeriesPngLogoBySeriesIdRequest{
+  string serieslist = 1;
+}
+
+message SeriesPngLogoBySeriesIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated Serieslist serieslist = 1;
+
+    message Serieslist{
+      int32 id = 1;
+      string name = 2;
+      string pnglogo = 3;
+
+    }
+  }
+}
+
+message GetSpecBySeriesRequest{
+  int32 seriesid = 1;
+  string appid = 2 [json_name="_appid"];
+}
+
+message GetSpecBySeriesResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 total = 1;
+    repeated Specitem specitems = 2;
+
+    message Specitem{
+      int32 fctid = 1;
+      string fctname = 2;
+      int32 brandid = 3;
+      string brandname = 4;
+      int32 seriesid = 5;
+      string seriesname = 6;
+      int32 levelid = 7;
+      string levelname = 8;
+      int32 specid = 9;
+      string specname = 10;
+      int32 specstate = 11;
+      string specimg = 12;
+      int32 yearid = 13;
+      string yearaliasname = 14;
+      int32 specprice = 15;
+      int32 specminprice = 16;
+
+    }
+  }
+}
+
+message GetAllSeriesRequest{
+  string appid = 1 [json_name="_appid"];
+}
+
+message GetAllSeriesResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 total = 1;
+    repeated SeriesItem seriesitems = 2;
+  }
+
+  message SeriesItem{
+    int32 id = 1;
+    string name = 2;
+    int32 fctid = 3;
+    string url = 4;
+    int32 brandid = 5;
+    int32 levelid = 6;
+    string levelname = 7;
+    string place = 8;
+    string edittime = 9;
+    string firstletter = 10;
+    string logo = 11;
+    string seriespnglogo = 12;
+    int32 state = 13;
+    int32 salespecnum = 14;
+    int32 minprice = 15;
+    int32 maxprice = 16;
+  }
+}
+
+message GetSeriesAllBaseInfoRequest{}
+message GetSeriesAllBaseInfoResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total = 1;
+    repeated SeriesItem seriesitems = 2;
+  }
+  message SeriesItem{
+    int32 id = 1;
+    string name = 2;
+    int32 levelid = 3;
+    string levelname = 4;
+    int32 factoryid = 5;
+    string factoryname = 6;
+    int32 brandid = 7;
+    string brandname = 8;
+    string place = 9;
+    int32 state = 10;
+    int32 rank = 11;
+  }
+}

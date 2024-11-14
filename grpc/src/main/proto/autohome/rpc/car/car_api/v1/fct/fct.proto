@@ -1,0 +1,219 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.fct;
+option java_multiple_files = true;
+option java_outer_classname = "FctProto";
+option java_package = "autohome.rpc.car.car_api.v1.fct";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/fct;fct";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.fct";
+import "autohome/api/annotations.proto";
+
+
+/**
+  * fct service
+  * 维护人: zhangfeifei16658
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service FctService {
+  /**
+    * 三期
+    * 根据厂商id获取厂商代表图
+    * 维护人：zff
+  */
+  rpc GetFctLogoByFctId (GetFctLogoByFctIdRequest) returns (GetFctLogoByFctIdResponse) {
+    option (autohome.api.http) = {get: "/v1/carprice/fct_logobyfctid.ashx"};
+  }
+
+  /**
+  * 三期
+  * 根据厂商id获取厂商名称
+  * 维护人：zff
+*/
+  rpc GetFctNameByFctId (GetFctNameByFctIdRequest) returns (GetGetFctNameByFctIdResponse) {
+    option (autohome.api.http) = {get: "/v1/CarPrice/Fct_GetFctNameByFctId.ashx"};
+  }
+
+  /**
+    五期
+    获取全部厂商名称
+  */
+  rpc GetFactoryName (GetFctNameRequest) returns (GetGetFctNameResponse) {}
+
+  /**
+  * 根据品牌获取厂商和车系
+   */
+  rpc FactoryAndSeriesByBrand(FactoryAndSeriesByBrandRequest) returns (FactoryAndSeriesByBrandResponse) {}
+  /**
+    *根据厂商id获取厂商及厂商下车系信息
+   */
+  rpc GetFctCorrelateInfoByFctId(GetFctCorrelateInfoByFctIdRequest)returns(GetFctCorrelateInfoByFctIdResponse){}
+  /**
+    *根据厂商id获取厂商model
+   */
+  rpc GetFctInfoByFctId(GetFctInfoByFctIdRequest)returns(GetFctInfoByFctIdResponse){}
+
+  /**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc ShowFct (ShowFctRequest) returns (ShowFctResponse) {}
+
+
+}
+
+message GetFctInfoByFctIdRequest{
+  int32 fctid = 1;
+}
+message GetFctInfoByFctIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 fctid = 1;
+    string fctname = 2;
+    string fctlogo = 3;
+    string fctofficialurl = 4;
+    string fctfirstletter = 5;
+    string fctisimport = 6;
+  }
+}
+message GetFctCorrelateInfoByFctIdRequest{
+  int32 fctid = 1;
+
+}
+
+message GetFctCorrelateInfoByFctIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 fctid = 1;
+    string fctname = 2;
+    string fctlogo = 3;
+    string officialurl = 4;
+    int32 sellseriescount = 5;
+    repeated SeriesItem serieslist = 6;
+    int32 sellspeccount = 7;
+  }
+  message SeriesItem{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    string series_logo = 3 [json_name = "seriesLogo"];
+    string minprice = 4;
+    string maxprice = 5;
+  }
+}
+
+
+message GetFctLogoByFctIdRequest {
+  int32 fctid = 1;
+}
+
+message GetFctLogoByFctIdResponse {
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 fctid = 1;
+    string fctlogo = 2;
+  }
+}
+
+message GetFctNameByFctIdRequest {
+  int32 fctid = 1;
+}
+
+message GetGetFctNameByFctIdResponse {
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 fctid = 1;
+    string fctname = 2;
+  }
+}
+message GetFctNameRequest{}
+message GetGetFctNameResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total = 1;
+    repeated Factoryitems factoryitems = 2;
+    message Factoryitems{
+      int32 id = 1;
+      string name = 2;
+    }
+  }
+}
+
+message FactoryAndSeriesByBrandRequest {
+  int32 brandid = 1;
+  string state = 2;
+  int32 typeid = 3;
+  string is_filter_spec_image = 4 [json_name="IsFilterSpecImage"];
+}
+
+message FactoryAndSeriesByBrandResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    repeated Factoryitems factoryitems = 1;
+  }
+
+  message Factoryitems{
+    int32 id = 1;
+    string name = 2;
+    string firstletter = 3;
+    repeated SeriesItem seriesitems = 4;
+  }
+
+  message SeriesItem{
+    int32 id = 1;
+    string name = 2;
+    string firstletter = 3;
+    int32 seriesstate = 4;
+    int32 seriesorder = 5;
+  }
+
+}
+
+
+
+message ShowFctRequest{
+
+}
+
+message ShowFctResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 total = 1;
+    repeated Fctitem fctitems = 2;
+
+    message Fctitem{
+      string firstletter = 1;
+      string name = 2;
+      int32 id = 3;
+    }
+  }
+}
+

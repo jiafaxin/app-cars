@@ -1,0 +1,193 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.app;
+option java_multiple_files = true;
+option java_outer_classname = "AppProto";
+option java_package = "autohome.rpc.car.car_api.v1.app";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/app;app";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.app";
+
+
+service AppService {
+/**
+  * 场景选车标签列表
+  * 维护人: shicuining
+ */
+  rpc AutoTagTagList (AutoTagTagListRequest) returns (AutoTagTagListResponse) {}
+
+
+  /**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc RecommendPicListv2 (RecommendPicListv2Request) returns (RecommendPicListv2Response) {}
+
+  /**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc AutoTagCarListAutoHome (AutoTagCarListAutoHomeRequest) returns (AutoTagCarListAutoHomeResponse) {}
+
+
+/**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc AutoTagCarListPrice (AutoTagCarListPriceRequest) returns (AutoTagCarListPriceResponse) {}
+
+
+
+}
+
+
+message AutoTagTagListRequest{
+  int32 top = 1;
+  int32 orderid = 2;
+}
+
+message AutoTagTagListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated Taglist taglist = 1;
+
+    message Taglist{
+      string name = 1;
+      int32 id = 2;
+    }
+  }
+}
+
+message RecommendPicListv2Request{
+  int32 size = 1;
+}
+
+message RecommendPicListv2Response{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 count = 1;
+    repeated Item items = 2;
+
+    message Item{
+      int32 specid = 1;
+      string bigimg = 2;
+      int32 displaytype = 3;
+      int32 looptype = 4;
+      int32 brandid = 5;
+      string publishtime = 6;
+      repeated Picitem picitems = 7;
+      int32 pictypeid = 8;
+      string title = 9;
+      int32 seriesid = 10;
+
+      message Picitem{
+        string picpath = 1;
+        int32 pictype = 2;
+        int32 picid = 3;
+      }
+    }
+  }
+}
+
+
+
+message AutoTagCarListAutoHomeRequest{
+  repeated int32 tagids = 1 ;
+  int32 pageindex = 2 ;
+  int32 pagesize = 3 ;
+  int32 orderid = 4 ;
+  int32 minprice = 5 ;
+  int32 maxprice = 6 ;
+  repeated int32 levels = 7 ;
+  repeated int32 countries = 8 ;
+  int32 adseriesid = 9 [json_name="adSeriesId"];
+  int32 opendebug = 10 ;
+}
+
+message AutoTagCarListAutoHomeResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated Seriesitem seriesitems = 1;
+    int32 rowcount = 2;
+    int32 pagecount = 3;
+    int32 speccount = 4;
+    int32 pageindex = 5;
+
+    message Seriesitem{
+      repeated string specitems = 1;
+      string img = 2;
+      string png_img = 3 [json_name = "pngImg"];
+      repeated string tagids = 4;
+      string brandname = 5;
+      string price = 6;
+      int32 brandid = 7;
+      int32 levelid = 8;
+      double kb = 9;
+      string name = 10;
+      int32 speccount = 11;
+      int32 id = 12;
+      string levelname = 13;
+    }
+  }
+}
+
+
+
+message AutoTagCarListPriceRequest{
+  int32 minprice = 1[json_name="minPrice"];
+  int32 maxprice = 2[json_name="maxPrice"];
+  int32 orderid = 3;
+  repeated int32 tagids = 4;
+  int32 pageindex = 5;
+  int32 pagesize = 6;
+}
+
+message AutoTagCarListPriceResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated Seriesitem seriesitems = 1;
+    int32 rowcount = 2;
+    int32 pagecount = 3;
+    int32 pageindex = 4;
+
+    message Seriesitem{
+      string seriesimg = 1;
+      repeated string specitems = 2;
+      string fctname = 3;
+      int32 seriesfctminprice = 4;
+      string brandname = 5;
+      int32 seriesid = 6;
+      string seriesname = 7;
+      int32 seriesfctmaxprice = 8;
+      int32 brandid = 9;
+      int32 levelid = 10;
+      int32 speccount = 11;
+      string levelname = 12;
+      int32 fctid = 13;
+    }
+  }
+}
+

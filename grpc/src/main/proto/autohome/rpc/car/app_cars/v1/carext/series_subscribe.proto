@@ -1,0 +1,251 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.carext;
+option java_multiple_files = true;
+option java_outer_classname = "SeriesSubscribeProto";
+option java_package = "autohome.rpc.car.app_cars.v1.carext";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/carext;carext";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.carext";
+
+
+/**
+  * 车系动态频道
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service SeriesSubscribeService {
+
+  /**
+    * 动态消息列表接口
+    */
+  rpc PageGetList (SeriesSubscribePageGetRequest) returns (SeriesSubscribePageGetResponse) {}
+
+  /**
+  * 订阅车系列表tab接口
+  */
+  rpc TagInfoList (SeriesSubscribeTagInfoRequest) returns (SeriesSubscribeTagInfoResponse) {}
+
+  /**
+  * 无动态推荐车系列表接口
+  */
+  rpc RecommendedCarList (SeriesSubscribeRecommendedCarRequest) returns (SeriesSubscribeRecommendedCarResponse) {}
+}
+
+message SeriesSubscribePageGetRequest{
+  int32 seriesid = 1;
+  int32 cityid = 2;
+  //1 ios,2 android
+  int32 pm = 3;
+  string searchafter = 4;
+  int32 pagesize = 5;
+  string deviceid = 6;
+  string pluginversion = 7;
+  //上次的点击时间
+  string lastclicktime = 8;
+  //对应场景（1动态频道，2动态浮层）
+  int32 source = 9;
+  //订阅的车型id,逗号分隔
+  string specids = 10;
+  int32 mycarseriesid = 11;
+  int32 mycarspecid = 12;
+  string assessab = 13; //评估报告实验 E、F
+}
+
+message SeriesSubscribePageGetResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    string searchafter = 1;
+    uint32 hasmore = 2;
+    string toasttext = 3;
+    repeated Newslist newslist = 4;
+    uint32 toastnum = 5;
+
+    message Newslist {
+      uint32 type = 1;
+      Data data = 2;
+    }
+
+    message Data {
+      uint32 biztype = 1;
+      uint32 seriesid = 2;
+      string seriesname = 3;
+      string newslinkurl = 4;
+      string title = 5;
+      string datetext = 6;
+      string subtitle = 7;
+      string linkurl = 8;
+      repeated List list = 9;
+      Pvitem cardpvitem = 10;
+      string righttext = 11;
+      string rightlinkurl = 12;
+      Pvitem rightpvitem = 13;
+      repeated string imglist = 14;
+
+      string pricespec = 15;
+      string pricespecvalue = 16;
+      string maxname = 17;
+      string maxvalue = 18;
+
+      string autotext = 19;
+      string author = 20;
+      uint32 isvideo = 21;
+      string videoimage = 22;
+      string browsecount = 23;
+      string describe = 24;
+      string carimage = 25;
+      string ownername = 26;
+      int32 maindataid = 27;
+      string liketext = 28;
+      string likespecname = 29;
+    }
+
+    message List {
+      string colortext = 1;
+      string imageurl = 2;
+      string linkurl = 3;
+      Pvitem pvitem = 4;
+
+      string specname = 5;
+      repeated Configlist configlist = 6;
+
+
+      string price = 7;
+      string pricecolor = 8;
+      string name = 9;
+      uint32 ispricedown = 10;
+      string value = 11;
+      string valuecolor = 12;
+      string month = 13;
+      string scheme = 14;
+    }
+
+    message Configlist {
+      string name = 1;
+      string value = 2;
+    }
+  }
+}
+
+
+message SeriesSubscribeTagInfoRequest{
+  int32 pm = 1;
+  string deviceid = 2;
+  string pluginversion = 3;
+  int32 cityid = 4;
+  uint32 seriesid = 5;
+  int32 mycarseriesid = 6;
+  string mycarspecid = 7;
+}
+
+message SeriesSubscribeTagInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result {
+    string title = 1;
+    repeated Tablist tablist = 2;
+
+    message Tablist {
+      uint32 tabid = 1;
+      string tabname = 2;
+      uint64 lastupdatetime = 3;
+      uint32 seriesid = 4;
+      string brandlogo = 5;
+      int32 subsstatus = 6;
+      string scheme = 7;
+      string specids = 8;
+      string tagname = 9;
+      int32 ismycar = 10;
+    }
+  }
+}
+
+
+message SeriesSubscribeRecommendedCarRequest{
+  int32 pm = 1;
+  string pluginversion = 2;
+  int32 cityid = 3;
+  string seriesids = 4;
+}
+
+message SeriesSubscribeRecommendedCarResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result {
+    string title = 1;
+    string subtitle = 2;
+    string describe = 3;
+    repeated Serieslist serieslist = 4;
+    Bottombtninfo bottombtninfo = 5;
+
+    message Bottombtninfo {
+      string btntitle = 1;
+      Pvitem pvitem = 2;
+    }
+
+    message Serieslist {
+      string sourceid = 1;
+      string seriesid = 2;
+      string seriesname = 3;
+      string serieslogo = 4;
+      string scheme = 5;
+      string newsname = 6;
+      string newslinkurl = 7;
+      uint32 status = 8;
+      string subtitle = 9;
+      Typeinfo typeinfo = 10;
+      string newstext = 11;
+      string btntitle = 12;
+      Pvitem seriespvitem = 13;
+      Pvitem btnpvitem = 14;
+      Pvitem cardpvitem = 15;
+    }
+
+    message Typeinfo {
+      uint32 type = 1;
+      string tagname = 2;
+      string saletext = 3;
+      string salevalue = 4;
+      string pricedowntext = 5;
+      string pricedownvalue = 6;
+    }
+  }
+}
+
+message Pvitem{
+  map<string, string> argvs = 1;
+  Click click = 2;
+  Show show = 3;
+
+  message Show{
+    string eventid = 1;
+  }
+
+  message Click{
+    string eventid = 1;
+  }
+}
+
+
+
+
+

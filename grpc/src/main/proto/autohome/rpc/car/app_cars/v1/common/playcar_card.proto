@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package autohome.rpc.car.app_cars.v1.common;
+option java_multiple_files = true;
+option java_outer_classname = "PlayCarCardProto";
+option java_package = "autohome.rpc.car.app_cars.v1.common";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/common;common";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.common";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+message PlayCarCard {
+  uint32 biz_id = 1 [json_name = "bizId"];
+  Carddata carddata = 2;
+  Extension extension = 3;
+  string main_data_type = 4 [json_name = "mainDataType"];
+  uint32 tabid = 5;
+
+  message Carddata {
+    Cardinfo cardinfo = 1;
+    uint32 cardtype = 2;
+    uint32 mediatype = 3;
+    carbase.Pvitem pvitem = 4;
+  }
+
+  message Extension {
+    uint32 istop = 1;
+    uint32 jumptype = 2;
+    string modulename = 3;
+    Objinfo objinfo = 4;
+    string scheme = 5;
+    uint32 schemecontainertype = 6;
+  }
+
+  message Cardinfo {
+    repeated Img img = 1;
+    string imgicon = 2;
+    string playtime = 3;
+    repeated Taginfo taginfo = 4;
+    string title = 5;
+  }
+
+  message Img {
+    string url = 1;
+  }
+
+  message Taginfo {
+    string bgcolor = 1;
+    string fontcolor = 2;
+    string iconurl = 3;
+    uint32 position = 4;
+    string scheme = 5;
+    uint32 styletype = 6;
+    string text = 7;
+  }
+
+  message Objinfo {
+    uint32 id = 1;
+    string title = 2;
+  }
+}

@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package autohome.rpc.car.app_cars.v1.common;
+option java_multiple_files = true;
+option java_outer_classname = "KouBeiCardProto";
+option java_package = "autohome.rpc.car.app_cars.v1.common";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/common;common";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.common";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+message KouBeiCard {
+  string posttime = 1;
+  int32 specid = 2;
+  string buyplace = 3;
+  int32 distance = 4;
+  string buyprice = 5;
+  int32 helpfulcount = 6;
+  int32 powertypefeelingid = 7;
+  int32 recommend = 8;
+  int32 userid = 9;
+  string carownername = 10;
+  int32 powertype = 11;
+  autohome.rpc.car.app_cars.v1.carbase.Pvitem pvitem = 12;
+  string isbattery = 13;
+  int32 id = 14;
+  int32 user_big_v_level = 15 [json_name = "userBigVLevel"];
+  int32 tabid = 16;
+  int32 actual_battery_consumption = 17 [json_name = "actual_battery_consumption"];
+  repeated string piclist = 18;
+  string commentlinkurl = 19;
+  int32 carownerlevels = 20;
+  string specname = 21;
+  string feeling_summary = 22 [json_name = "feeling_summary"];
+  double actual_oil_consumption = 23 [json_name = "actual_oil_consumption"];
+  int32 commentcount = 24;
+  repeated Content contents = 25;
+  string userimage = 26;
+  int32 big_v = 27 [json_name = "bigV"];
+  int32 viewcount = 28;
+  string linkurl = 29;
+  int32 isauth = 30;
+  string username = 31;
+
+  message Content{
+    int32 structuredid = 1;
+    string structuredname = 2;
+    string content = 3;
+  }
+}

@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.subsidy;
+option java_multiple_files = true;
+option java_outer_classname = "SubsidyTradeInProto";
+option java_package = "autohome.rpc.car.app_cars.v1.subsidy";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/subsidy;subsidy";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.subsidy";
+
+
+service SubsidyTradeInService {
+  /**
+  * 通过城市获取补贴
+  * 维护人: zhangchengtao
+ */
+  rpc GetBaseInfoByCityId (SubsidyTradeInRequest) returns (SubsidyTradeInResponse) {}
+/**
+  * 【请输入服务说明】
+  * 维护人: lihongchen
+ */
+  rpc GetSpecSubsidyInfo (SpecSubsidyInfoRequest) returns (SpecSubsidyInfoResponse) {}
+
+
+}
+
+
+message SubsidyTradeInRequest {
+  uint32 cityid = 1;
+  uint32 pm = 2;
+}
+
+
+message SubsidyTradeInResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated BaseHeadInfo baseInfoList = 1;
+    // 总价低
+    PartInfo lowTotalPrice = 2;
+    // 降幅高
+    PartInfo dropHigh = 3;
+    // tab 配置
+    repeated TabConfig tabList = 4;
+
+
+    message BaseHeadInfo {
+      uint32 position = 1;
+      string desc = 2;
+      int32 amount = 3;
+    }
+
+
+    message PartInfo {
+      uint32 partId = 1;
+      string partName = 2;
+      repeated PartItem itemList = 3;
+
+      message PartItem {
+        uint32 seriesid = 1;
+        uint32 specid = 2;
+        string seriesname = 3;
+        string seriesimage = 4;
+        string priceinfo = 5;
+        string downprice = 6;
+        string btntitle = 7;
+        string btnprice = 8;
+      }
+    }
+
+    message TabConfig{
+      uint32 tabId = 1;
+      string tabName = 2;
+    }
+  }
+}
+
+message SpecSubsidyInfoRequest{
+  int32 pm = 1;
+  string pluginversion = 2;
+  int32 cityid = 3;
+  int32 seriesid = 4;
+  int32 specid = 5;
+}
+message SpecSubsidyInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 subsidy_type_id = 1 [json_name = "subsidyTypeId"];
+    repeated string receive_path = 2 [json_name = "receivePath"];
+    string start_time = 3 [json_name = "startTime"];
+    string end_time = 4 [json_name = "endTime"];
+    string title = 5;
+    repeated PriceList price_list = 6 [json_name = "priceList"];
+    string subsidy_policy = 7 [json_name = "subsidyPolicy"];
+    int32 index = 8;
+
+     message PriceList{
+       int32 amount = 1;
+       int32 min_price = 2 [json_name = "minPrice"];
+       int32 max_price_include = 3 [json_name = "maxPriceInclude"];
+       int32 min_price_include = 4 [json_name = "minPriceInclude"];
+       int32 max_price = 5 [json_name = "maxPrice"];
+     }
+  }
+}

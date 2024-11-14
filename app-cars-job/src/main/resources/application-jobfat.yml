@@ -1,0 +1,20 @@
+autohome:
+  job:
+    executor:
+      appname: app-cars-fat
+    admin:
+      addresses: http://jobadmin.autohome.com.cn
+    accessToken: fat88d379aa3cb2a53cc2184f3d05745eb3
+
+kafkatopics: autohome_data_transit
+
+#spring:
+#  elasticsearch:
+#    uris: lf-online-public-es79.search.corpautohome.com
+#    port: 80
+#    username: jxsbaojia_read
+#    password: CIheaZf1CWrQxqH6A3oR
+#    indexname: dealer-app-baojia-city_spec_benefits_public
+#  elasticsearch2:
+#    uris: lf-appes-es68.search.hera.corpautohome.com
+#    port: 80

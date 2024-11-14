@@ -1,0 +1,198 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.show;
+option java_multiple_files = true;
+option java_outer_classname = "ShowProto";
+option java_package = "autohome.rpc.car.car_api.v1.show";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/show;show";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.show";
+
+
+/**
+  * service 样例
+  * 维护人: zhangfeifei16658
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service ShowService {
+  /**
+    获取所有车展信息
+    */
+  rpc GetShowInfo (GetShowInfoRequest) returns (GetShowInfoResponse) {}
+
+  /**
+  根据多个品牌ID获取某车展中车系图片信息
+   */
+  rpc GetShowPicInfoByBrandList (GetShowPicInfoByBrandListRequest) returns (GetShowPicInfoByBrandListResponse) {}
+
+  /**
+    根据展馆id获取某车展中车系图片
+   */
+  rpc GetShowPicInfoByPavilionId (GetShowPicInfoByPavilionIdRequest) returns (GetShowPicInfoByPavilionIdResponse) {}
+  /**
+    *根据车展ID,多个级别ID获取某车展前N条车系图片信息
+   */
+  rpc GetShowPicInfoByLevelList(GetShowPicInfoByLevelListRequest)returns(GetShowPicInfoByLevelListResponse){}
+  /**
+    *根据车展id,车系id 获取图片列表
+   */
+  rpc GetShowPicInfoByShowIdSeriesId(ShowPicInfoByShowIdSeriesIdRequest)returns(ShowPicInfoByShowIdSeriesIdResponse){}
+  /**
+    *根据厂商id 获取参展中车系列表
+   */
+  rpc GetShowSeriesByFctId(ShowSeriesByFctIdRequest)returns(ShowSeriesByFctIdResponse){}
+
+}
+message ShowSeriesByFctIdRequest{
+  int32 fctid = 1;
+
+}
+message ShowSeriesByFctIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 fctid = 1;
+    int32 total = 2;
+    repeated SeriesItem seriesitems = 3;
+  }
+  message SeriesItem{
+    int32 id = 1;
+    string name = 2;
+  }
+}
+
+message ShowPicInfoByShowIdSeriesIdRequest{
+  int32 showid = 1;
+  int32 seriesid = 2;
+
+}
+message ShowPicInfoByShowIdSeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 showid = 1;
+    int32 seriesid = 2;
+    int32 total = 3;
+    repeated CarShowPicItem picitems = 4;
+  }
+  message CarShowPicItem {
+    int32 picid = 1;
+    string bigfilepath = 2;
+    string smallfilepath = 3;
+    string fctname = 4;
+    string seriesname = 5;
+  }
+}
+
+message GetShowPicInfoByLevelListRequest{
+  int32 size = 1;
+  int32 showid = 2;
+  string levellist = 3;
+  int32 evcar = 4;
+}
+message GetShowPicInfoByLevelListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 showid = 1;
+    int32 total = 2;
+    repeated SeriesItem seriesitems = 3;
+  }
+  message SeriesItem{
+    int32 id = 1;
+    string name = 2;
+    int32 levelid = 3;
+    int32 picid = 4;
+    string filepath = 5;
+    int32 picnum = 6;
+  }
+}
+
+message GetShowInfoRequest {}
+
+message GetShowInfoResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total = 1;
+    repeated Showitem showitems = 2;
+    message Showitem{
+      int32 id = 1;
+      string name = 2;
+    }
+  }
+}
+message GetShowPicInfoByBrandListRequest{
+  int32 showid = 1;
+  int32 evcar = 2;
+  string brandlist = 3;
+}
+message GetShowPicInfoByBrandListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 showid = 1;
+    int32 total = 2;
+    repeated Seriesitems  seriesitems = 3;
+    message Seriesitems{
+      int32 id = 1;
+      string name = 2;
+      int32 brandid = 3;
+      string brandname = 4;
+      int32 fctid = 5;
+      string fctname = 6;
+      int32 picid = 7;
+      string filepath = 8;
+      int32 picnum = 9;
+    }
+  }
+}
+message GetShowPicInfoByPavilionIdRequest{
+  int32 showid = 1;
+  int32 pavilionid = 2;
+}
+message GetShowPicInfoByPavilionIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 showid = 1;
+    int32 pavilionid = 2;
+    int32 total = 3;
+    repeated Seriesitem seriesitems = 4;
+
+    message Seriesitem{
+      int32 id = 1;
+      string name = 2;
+      int32 brandid = 3;
+      string brandname = 4;
+      int32 fctid = 5;
+      string fctname = 6;
+      int32 picid = 7;
+      string filepath = 8;
+      int32 picnum = 9;
+    }
+  }
+}
+
+

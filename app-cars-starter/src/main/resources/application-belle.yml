@@ -1,0 +1,128 @@
+auto-httpclient:
+  env: ONLINE
+
+spring:
+  datasource:
+    dynamic:
+      datasource:
+        default:
+          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+          url: jdbc:sqlserver://DB-PRODUCT-READ.LQ.AUTOHOME.COM.CN; DatabaseName=popauto;encrypt=true;trustServerCertificate=true
+          username: product_reader
+          password: 8956DD34-7288-4ED3-8E16-4DA94DEEB383
+
+        popauto:
+          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+          url: jdbc:sqlserver://DB-PRODUCT-READ.LQ.AUTOHOME.COM.CN; DatabaseName=popauto;encrypt=true;trustServerCertificate=true
+          username: product_reader
+          password: 8956DD34-7288-4ED3-8E16-4DA94DEEB383
+        appcars:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://appcars-mw0-3306d.mysql.db.corpautohome.com:3306/app_cars?characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+          username: app_cars_wr
+          password: 038p_IOh5a2noNw0
+        car:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://car-mw0-3306d.mysql.db.corpautohome.com:3306/car?characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+          username: car_r
+          password: _n8uUsCteo37v05b
+  kafka:
+    default:
+      bootstrap-servers: yz-public02-broker0.kafka.mq.corpautohome.com:9092,yz-public02-broker1.kafka.mq.corpautohome.com:9092,yz-public02-broker2.kafka.mq.corpautohome.com:9092
+      client-id: 91c8297cea11496bad4adb86ab3760b9
+      consumer:
+        group-id: app-cars
+
+  redis:
+    main-data:
+      password:
+      cluster:
+        nodes[0]: 10.235.18.250:6379
+        nodes[1]: 10.235.18.248:6379
+        nodes[2]: 10.235.19.3:6379
+        nodes[3]: 10.235.19.2:6379
+        nodes[4]: 10.235.18.255:6379
+        nodes[5]: 10.235.18.247:6379
+        nodes[6]: 10.235.19.9:6379
+        nodes[7]: 10.235.18.251:6379
+        nodes[8]: 10.235.19.4:6379
+        nodes[9]: 10.235.19.8:6379
+        nodes[10]: 10.235.18.254:6379
+        nodes[11]: 10.235.19.1:6379
+        nodes[12]: 10.235.19.5:6379
+        nodes[13]: 10.235.18.249:6379
+        nodes[14]: 10.235.19.6:6379
+        nodes[15]: 10.235.18.253:6379
+        nodes[16]: 10.235.18.252:6379
+        nodes[17]: 10.235.19.7:6379
+        nodes[18]: 10.235.18.246:6379
+        nodes[19]: 10.235.19.0:6379
+    peer-main-data:
+      password:
+      cluster:
+        nodes[0]: 10.245.37.163:6379
+        nodes[1]: 10.245.37.148:6379
+        nodes[2]: 10.245.37.161:6379
+        nodes[3]: 10.245.37.152:6379
+        nodes[4]: 10.245.37.156:6379
+        nodes[5]: 10.245.37.165:6379
+        nodes[6]: 10.245.37.155:6379
+        nodes[7]: 10.245.37.153:6379
+        nodes[8]: 10.245.37.149:6379
+        nodes[9]: 10.245.37.159:6379
+        nodes[10]: 10.245.37.158:6379
+        nodes[11]: 10.245.37.166:6379
+        nodes[12]: 10.245.37.150:6379
+        nodes[13]: 10.245.37.164:6379
+        nodes[14]: 10.245.37.147:6379
+        nodes[15]: 10.245.37.151:6379
+        nodes[16]: 10.245.37.157:6379
+        nodes[17]: 10.245.37.160:6379
+        nodes[18]: 10.245.37.154:6379
+        nodes[19]: 10.245.37.162:6379
+    default:
+      password:
+      cluster:
+        nodes[0]: 10.235.18.250:6379
+        nodes[1]: 10.235.18.248:6379
+        nodes[2]: 10.235.19.3:6379
+        nodes[3]: 10.235.19.2:6379
+        nodes[4]: 10.235.18.255:6379
+        nodes[5]: 10.235.18.247:6379
+        nodes[6]: 10.235.19.9:6379
+        nodes[7]: 10.235.18.251:6379
+        nodes[8]: 10.235.19.4:6379
+        nodes[9]: 10.235.19.8:6379
+        nodes[10]: 10.235.18.254:6379
+        nodes[11]: 10.235.19.1:6379
+        nodes[12]: 10.235.19.5:6379
+        nodes[13]: 10.235.18.249:6379
+        nodes[14]: 10.235.19.6:6379
+        nodes[15]: 10.235.18.253:6379
+        nodes[16]: 10.235.18.252:6379
+        nodes[17]: 10.235.19.7:6379
+        nodes[18]: 10.235.18.246:6379
+        nodes[19]: 10.235.19.0:6379
+
+  elasticsearch:
+    uris: lf-test-es79.search.corpautohome.com
+    port: 80
+    username: autotest
+    password: 4R16vKlFMYZEltuZ4YaC
+  elasticsearch2:
+    uris: lf-appes-es68.search.hera.corpautohome.com
+    port: 80
+
+
+# Apollo配置
+app.id: app-cars
+apollo:
+  cacheDir: /opt/data/                        #配置本地配置缓存目录
+  cluster: default                            #指定使用哪个集群的配置
+  meta: http://apollometa.app.autohome.com.cn #PRO环境配置中心地址
+  autoUpdateInjectedSpringProperties: true    #是否开启 Spring 参数自动更新
+  bootstrap:
+    enabled: true                             #是否开启 Apollo
+    namespaces: application                   #设置 Namespace
+    eagerLoad:
+      enabled: false                          #将 Apollo 加载提到初始化日志系统之前

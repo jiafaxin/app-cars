@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.pingan;
+option java_multiple_files = true;
+option java_outer_classname = "PinganProto";
+option java_package = "autohome.rpc.car.car_api.v1.pingan";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/pingan;pingan";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.pingan";
+
+
+/**
+  * service 样例
+  * 维护人: jinzixu
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service PinganService {
+
+  rpc SyearAndSpecBySeries(SyearAndSpecBySeriesRequest)returns(SyearAndSpecBySeriesResponse){}
+  /**
+   * 平安获取品牌信息接口
+   */
+  rpc GetBrandInfoAll(BrandInfoRequest)returns(BrandInfoResponse){}
+  /**
+    * 平安根据品牌获取车系信息
+   */
+  rpc GetSeriesInfoByBrandId(SeriesInfoRequest)returns(SeriesInfoResponse){}
+  /**
+    * 平安根据车系获取车型信息
+   */
+  rpc GetSpecInfoBySeriesId(SpecInfoRequest)returns(SpecInfoResponse){}
+}
+
+message BrandInfoRequest{
+
+}
+message BrandInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+  message Result{
+    int32 brandid = 1 [json_name = "brandId"];
+    string brandname = 2 [json_name = "brandName"];
+    string brandlogo = 3 [json_name = "brandLogo"];
+    string firstletter = 4 [json_name = "firstLetter"];
+    string edittime = 5 [json_name = "editTime"];
+  }
+}
+
+message SeriesInfoRequest{
+  int32 brandid = 1 [json_name = "brandId"];
+}
+
+message SeriesInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+  message Result{
+    int32 seriesid = 1 [json_name = "seriesId"];
+    string seriesname = 2 [json_name = "seriesName"];
+    int32 brandid = 3 [json_name = "brandId"];
+    string seriesimg = 4 [json_name = "seriesImg"];
+    string nobglogo = 5 [json_name = "noBgLogo"];
+    int32 seriespricemin = 6 [json_name = "seriesPriceMin"];
+    int32 seriespricemax = 7 [json_name = "seriesPriceMax"];
+    string firstletter = 8 [json_name = "firstLetter"];
+    int32 seriesstate = 9 [json_name = "seriesState"];
+    int32 newenergy = 10 [json_name = "newEnergy"];
+    string edittime = 11 [json_name = "editTime"];
+    int32 fctid = 12 [json_name = "fctId"];
+    string fctname = 13 [json_name = "fctName"];
+  }
+}
+
+message SpecInfoRequest{
+  int32 seriesid = 1 [json_name = "seriesId"];
+}
+
+message SpecInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+  message Result{
+    int32 specid = 1 [json_name = "specId"];
+    string specname = 2 [json_name = "specName"];
+    int32 year = 3 ;
+    int32 seriesid = 4 [json_name = "seriesId"];
+    int32 brandid = 5 [json_name = "brandId"];
+    string specimg = 6 [json_name = "specImg"];
+    int32 specpricemin = 7 [json_name = "specPriceMin"];
+    int32 specpricemax = 8 [json_name = "specPriceMax"];
+    int32 specstate = 9 [json_name = "specState"];
+    double specdisplacement = 10 [json_name = "specDisplacement"];
+    int32 horsepower = 11 [json_name = "horsePower"];
+    int32 flowmode = 12 [json_name = "flowMode"];
+    int32 driveform = 13 [json_name = "driveForm"];
+    string transmissionname = 14 [json_name = "transmissionName"];
+    string seats = 15;
+    string edittime = 16 [json_name = "editTime"];
+  }
+}
+
+message SyearAndSpecBySeriesRequest{
+  int32 seriesid = 1;
+  string state = 2;
+  int32 is_filter_spec_image = 3[json_name="IsFilterSpecImage"];
+}
+
+message SyearAndSpecBySeriesResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated YearItem yearitems = 1;
+  }
+  message YearItem{
+    int32 id = 1;
+    string name = 2;
+    repeated SpecItem specitems = 3;
+    message SpecItem{
+      int32 id = 1;
+      string name = 2;
+      string speclogo = 3;
+      int32 state = 4;
+      int32 minprice = 5;
+      int32 maxprice = 6;
+    }
+  }
+}

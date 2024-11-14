@@ -1,0 +1,47 @@
+
+spring:
+  datasource:
+    dynamic:
+      primary: default
+      strict: false
+  redis:
+    main-data:
+      read-timeout: 1000
+      connect-timeout: 6000
+      max-redirects: 5
+      pool:
+        max-active: 50
+        max-idle: 50
+        min-idle: 20
+        max-wait: 1000
+        time-between-eviction-runs: 60000
+    peer-main-data:
+      read-timeout: 1000
+      connect-timeout: 6000
+      max-redirects: 5
+      pool:
+        max-active: 50
+        max-idle: 50
+        min-idle: 20
+        max-wait: 1000
+        time-between-eviction-runs: 60000
+    default:
+      read-timeout: 5000
+      connect-timeout: 6000
+      max-redirects: 5
+      pool:
+        max-active: 50
+        max-idle: 50
+        min-idle: 20
+        max-wait: 1000
+        time-between-eviction-runs: 60000
+management:
+  endpoint:
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+        exclude: env,beans,heapdump,mappings,info,loggers,configprops
+      base-path: /

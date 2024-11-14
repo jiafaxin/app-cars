@@ -1,0 +1,13 @@
+version: v1
+name: ""
+lint:
+  use:
+    - DEFAULT
+    - UNARY_RPC
+#  except:
+#    - RPC_RESPONSE_NAME_HAS_TWO_FIELDS
+    
+breaking:
+  use:
+    - FILE
+  ignore_unstable_packages: true

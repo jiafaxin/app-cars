@@ -1,0 +1,304 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v3.spec;
+option java_multiple_files = true;
+option java_outer_classname = "SpecProto";
+option java_package = "autohome.rpc.car.car_api.v3.spec";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v3/spec;spec";
+option csharp_namespace = "autohome.rpc.car.car_api.v3.spec";
+
+/**
+  * 【请输入服务说明】
+  * spec 服务
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service SpecV3Service {
+  /**
+    * 根据多个车型id获取多个配置信息,配置改版 支持竖排显示
+    * 维护人: shicuining
+   */
+  rpc ConfigGetListBySpecList (ConfigGetListBySpecListRequest) returns (ConfigGetListBySpecListResponse) {}
+
+  /**
+     * 根据多个车型id获取多个配置信息,配置改版 支持竖排显示
+     */
+      rpc GetConfigListBySpecList(GetConfigListBySpecListRequest)returns(GetConfigListBySpecListResponse){}
+
+  /**
+    * 根据车系id获取多个配置信息
+    * 配置改版 ，支持竖排显示项
+   */
+  rpc ConfigGetListBySpecId (ConfigGetListBySpecIdRequest) returns (ConfigGetListBySpecIdResponse) {}
+
+  /**
+   * 根据车系id，年代id，获取多个配置信息,配置改版 支持竖排显示
+   */
+  rpc GetConfigListByYearId(ConfigGetListByYearIdRequest)returns(ConfigGetListByYearIdResponse){}
+  /**
+    *多个车型获取配置信息
+   */
+  rpc GetConfigInfoBySpecIdsAndTypeIds(ConfigInfoBySpecIdsAndTypeIdsRequest)returns(ConfigInfoBySpecIdsAndTypeIdsResponse){}
+
+}
+
+message ConfigInfoBySpecIdsAndTypeIdsRequest{
+  string specids = 1;
+  string typeids = 2;
+}
+
+message ConfigInfoBySpecIdsAndTypeIdsResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+  message Result{
+    int32 specid = 1;
+    repeated ConfigTypeItem configtypeitems = 2;
+  }
+  message ConfigTypeItem{
+    int32 typeid = 1;
+    string typename = 2;
+    repeated ConfigItem configitems = 3 ;
+  }
+  message ConfigItem{
+    int32 itemid = 1 ;
+    string itemname = 2 ;
+    int32 itemvalue = 3;
+    int32 disptype = 4 ;
+    int32 relationpic = 5;
+    repeated SubItem subitems = 6 [json_name = "subItems"];
+  }
+  message SubItem{
+    int32 subid = 1;
+    string subname = 2;
+    int32 subvalue = 3 ;
+    int32 relationpic = 4;
+  }
+
+}
+
+
+message ConfigGetListBySpecListRequest{
+  repeated int32 speclist = 1;
+
+}
+
+message ConfigGetListBySpecListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated Configtypeitem configtypeitems = 1;
+
+    message Configtypeitem{
+      string name = 1 ;
+      string groupname = 2 ;
+      repeated Configitem configitems = 3 ;
+
+      message Configitem{
+        int32 configid = 1 ;
+        string name = 2 ;
+        int32 disptype = 3 ;
+        repeated Valueitem valueitems = 4 ;
+
+        message Valueitem{
+          int32 specid = 1 ;
+          string value = 2 ;
+          repeated SubPrice price = 3 ;
+          repeated SubItem sublist = 4 ;
+
+          message SubItem{
+            string subname = 1 ;
+            int32 subvalue = 2 ;
+            int32 price = 3 ;
+          }
+
+          message SubPrice{
+            string subname = 1 ;
+            int32 price = 2 ;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+message GetConfigListBySpecListRequest{
+  string speclist = 1;
+  string appid = 2 [json_name = "_appid"];
+}
+
+message GetConfigListBySpecListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+ message Result{
+   repeated Configtypeitem configtypeitems = 1;
+
+  message Configtypeitem{
+    string name = 1 ;
+    string groupname = 2 ;
+    repeated Configitem configitems = 3 ;
+
+   message Configitem{
+     int32 configid = 1 ;
+     string name = 2 ;
+     int32 disptype = 3 ;
+     repeated Valueitem valueitems = 4 ;
+
+    message Valueitem{
+      int32 specid = 1 ;
+      string value = 2 ;
+      repeated SubPrice price = 3 ;
+      repeated SubItem sublist = 4 ;
+
+      message SubItem{
+        string subname = 1 ;
+        int32 subvalue = 2 ;
+        int32 price = 3 ;
+      }
+
+      message SubPrice{
+        string subname = 1 ;
+        int32 price = 2 ;
+      }
+    }
+   }
+  }
+ }
+}
+
+message Result{
+    repeated ConfigTypeItem configtypeitems = 1;
+  }
+
+  message ConfigTypeItem{
+    string name = 1;
+    repeated ConfigItem configitems = 2;
+
+    message ConfigItem{
+      int32 configid = 1;
+      string name = 2;
+      int32 disptype = 3;
+      repeated ValueItem valueitems = 4;
+
+      message ValueItem{
+        int32 specid = 1;
+        string value = 2;
+
+      }
+    }
+
+
+}
+
+
+message ConfigGetListBySpecIdRequest{
+  int32 specid = 1;
+}
+
+message ConfigGetListBySpecIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 specid = 1 ;
+    repeated Configtypeitem configtypeitems = 2;
+
+    message Configtypeitem{
+      string groupname = 1 ;
+      string name = 2 ;
+      repeated Configitem configitems = 3 ;
+
+      message Configitem{
+        int32 configid = 1 ;
+        string name = 2 ;
+        int32 disptype = 3 ;
+        string value = 4 ;
+        repeated SubPrice price = 5 ;
+        repeated SubItem sublist = 6 ;
+
+        message SubItem{
+          int32 subitemid = 1;
+          string subname = 2 ;
+          int32 subvalue = 3 ;
+          int32 price = 4 ;
+        }
+
+        message SubPrice{
+          string subname = 1 ;
+          int32 price = 2 ;
+        }
+      }
+    }
+  }
+}
+
+
+message ConfigGetListByYearIdRequest{
+  int32 seriesid = 1;
+  int32 yearid = 2;
+  string appid = 3 [json_name = "_appid"];
+}
+
+message ConfigGetListByYearIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    int32 seriesid = 1;
+    int32 yearid = 2;
+    repeated Configtypeitem configtypeitems = 3;
+
+    message Configtypeitem{
+      string name = 1 ;
+      string groupname = 2 ;
+      repeated Configitem configitems = 3 ;
+
+      message Configitem{
+        int32 configid = 1 ;
+        string name = 2 ;
+        int32 disptype = 3 ;
+        repeated Valueitem valueitems = 4 ;
+
+        message Valueitem{
+          int32 specid = 1 ;
+          string value = 2 ;
+          repeated SubPrice price = 3 ;
+          repeated SubItem sublist = 4 ;
+
+          message SubItem{
+            string subname = 1 ;
+            int32 subvalue = 2 ;
+            int32 price = 3 ;
+          }
+
+          message SubPrice{
+            string subname = 1 ;
+            int32 price = 2 ;
+          }
+        }
+      }
+    }
+  }
+}

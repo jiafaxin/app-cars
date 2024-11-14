@@ -1,0 +1,39 @@
+server:
+  port: 8882
+spring:
+  profiles:
+    active: ${spring.profiles.active:dev,devjob}
+
+projectName: app-cars-job
+
+autohome:
+  job:
+    executor:
+      appname: app-cars
+      ip:
+      port: 27705
+      logpath: /data/logroot/apifactory-job/xxl-job/jobhandler/
+
+dubbo:
+  application:
+    name: com-autohome-car-app-cars
+    qos-port: 22222
+    metadataServicePort: 20885
+    qosEnable: true
+    qosAcceptForeignIp: true
+  protocol:
+    name: tri
+    port: 50051
+  registry:
+    address: N/A
+  consumer: #此节点只有消费者需要
+    meshEnable: true
+  tri:
+    builtin:
+      service:
+        init: true
+
+logging:
+  level:
+    com.autohome.app.cars.mapper: warn
+    root: warn

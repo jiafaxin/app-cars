@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v3.cache;
+option java_multiple_files = true;
+option java_outer_classname = "CacheProto";
+option java_package = "autohome.rpc.car.car_api.v3.cache";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v3/cache;cache";
+option csharp_namespace = "autohome.rpc.car.car_api.v3.cache";
+
+
+/**
+  * service 样例
+  * 维护人: jiafaxin
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service CacheService {
+
+  /**
+    *刷新缓存(本地缓存和redis)
+   */
+  rpc RefreshCache(ReqRefreshCacheRequest)returns(ResRefreshCacheResponse){}
+}
+
+message ReqRefreshCacheRequest{
+  int32 locationid = 1;
+  int32 seriesid = 2;
+  int32 specid = 3;
+
+}
+
+message ResRefreshCacheResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+
+  }
+}
+
+message SampleRequest {
+  string name = 1;
+}
+
+message SampleResponse {
+  int32  return_code = 1;
+  string return_msg = 2;
+
+  bytes bytes_field = 3;
+  bool bool_field = 4;
+  double double_field = 5;
+  float float_field = 6;
+  int64 int64_field = 7;
+  map<string, string> map_field = 8;
+  repeated string list_string_field = 9;  //类似java的List<String>
+  SampleEnum enum_field = 10;
+}
+
+enum SampleEnum {
+  ENUM_FIELD1 = 0;
+  ENUM_FIELD2 = 1;
+  ENUM_FIELD3 = 2;
+}

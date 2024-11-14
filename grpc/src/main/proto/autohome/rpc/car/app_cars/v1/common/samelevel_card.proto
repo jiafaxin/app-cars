@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package autohome.rpc.car.app_cars.v1.common;
+option java_multiple_files = true;
+option java_outer_classname = "SameLevelCardProto";
+option java_package = "autohome.rpc.car.app_cars.v1.common";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/common;common";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.common";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+message SameLevelCard {
+  string attentionrank = 1;
+  string btnlinkurl = 2;
+  string btntitle = 3;
+  string eid = 4;
+  string energetype = 5;
+  uint32 fromtype = 6;
+  string image = 7;
+  uint32 isad = 8;
+  string priceinfo = 9;
+  Pvdata pvdata = 10;
+  string recm_id = 11 [json_name = "recm_id"];
+  string refreshtype = 12;
+  uint32 seriesid = 13;
+  string seriesname = 14;
+  uint32 specid = 15;
+
+
+  message Pvdata {
+    string cardtypeid = 1;
+    string object_id = 2;
+    string p = 3;
+    string pvid = 4;
+    string stra = 5;
+    string t = 6;
+  }
+}

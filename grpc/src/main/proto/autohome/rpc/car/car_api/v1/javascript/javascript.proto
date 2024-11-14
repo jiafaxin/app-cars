@@ -1,0 +1,230 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.javascript;
+option java_multiple_files = true;
+option java_outer_classname = "JavascriptProto";
+option java_package = "autohome.rpc.car.car_api.v1.javascript";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/javascript;javascript";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.javascript";
+
+/**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service JavaScriptService {
+/**
+  * 【请输入服务说明】
+  * 维护人: shicuining
+ */
+  rpc SpecBySeries (SpecBySeriesRequest) returns (SpecBySeriesResponse) {}
+
+  /**
+   Modify：20131216 zhangpd 添加isFilterSpecImage（是否过滤图片车型）条件
+   */
+  rpc SpecBySYear (SpecBySYearRequest) returns (SpecBySYearResponse) {}
+
+  /**
+  * 根据车系获取年代款及车型
+   */
+  rpc SyearAndSpecBySeries(SyearAndSpecBySeriesRequest)returns(SyearAndSpecBySeriesResponse){}
+
+  rpc BrandListByCondition(BrandListByConditionRequest)returns(BrandListByConditionResponse){}
+  /**
+  * 根据品牌厂商获取车系信息
+  */
+  rpc SeriesByFactory(SeriesByFactoryRequest)returns(SeriesByFactoryResponse){}
+
+  rpc IndexSlidePic(IndexSlidePicRequest)returns(IndexSlidePicResponse){}
+
+  rpc FactoryByCondition(FactoryByConditionRequest)returns(FactoryByConditionResponse){}
+
+  rpc BrandRankList(BrandListByConditionRequest)returns(BrandListByConditionResponse){}
+}
+
+
+message SpecBySeriesRequest{
+  int32 seriesid = 1;
+  string state = 2;
+  int32 is_filter_spec_image = 3[json_name="IsFilterSpecImage"];
+}
+
+message SpecBySeriesResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated Specitem specitems = 1;
+
+    message Specitem{
+      int32 minprice = 1;
+      int32 maxprice = 2;
+      string name = 3;
+      int32 id = 4;
+      int32 state = 5;
+    }
+  }
+}
+
+message SyearAndSpecBySeriesRequest{
+  int32 seriesid = 1;
+  string state = 2;
+  string is_filter_spec_image = 3 [json_name="IsFilterSpecImage"];
+}
+
+message SyearAndSpecBySeriesResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated Yearitems yearitems = 1;
+
+
+  }
+
+  message Yearitems{
+    string name = 1;
+    int32 id = 2;
+    repeated Specitems specitems = 3;
+  }
+
+  message Specitems{
+    int32 minprice = 1;
+    int32 maxprice = 2;
+    string name = 3;
+    int32 id = 4;
+    int32 state = 5;
+  }
+
+}
+
+message SpecBySYearRequest{
+  int32 yearid = 1;
+  string state = 2;
+  int32 is_filter_spec_image = 3[json_name="IsFilterSpecImage"];
+}
+
+message SpecBySYearResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated Specitem specitems = 1;
+    message Specitem{
+      int32 id = 1;
+      string name = 2;
+      int32 state = 3;
+      int32 minprice = 4;
+      int32 maxprice = 5;
+    }
+  }
+}
+
+message SeriesByFactoryRequest {
+  int32 brandid = 1;
+  int32 factoryid = 2;
+  string state = 3;
+  int32 typeid = 4;
+  string is_filter_spec_image = 5 [json_name="IsFilterSpecImage"];
+}
+
+message SeriesByFactoryResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    repeated SeriesItem seriesitems = 1;
+  }
+
+  message SeriesItem{
+    int32 id = 1;
+    string name = 2;
+    string sfirstletter = 3;
+    int32 seriesstate = 4;
+    int32 seriesorder=  5;
+  }
+}
+
+
+message BrandListByConditionRequest{
+  int32 typeid = 1;
+  string state = 2;
+  int32 is_filter_spec_image = 3[json_name="IsFilterSpecImage"];
+}
+
+message BrandListByConditionResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated BrandItem branditems = 1;
+    message BrandItem{
+      int32 id = 1;
+      string name = 2;
+      string bfirstletter = 3;
+      string logo = 4;
+    }
+  }
+}
+
+message IndexSlidePicRequest{
+  string appid = 1 [json_name = "_appid"];
+}
+
+message IndexSlidePicResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated PicItem bigpiclist = 1;
+    repeated PicItem smallpiclist = 2;
+  }
+
+  message PicItem{
+    string title = 1;
+    string imgurl = 2;
+    string linkurl = 3;
+    int32 sortid = 4;
+  }
+}
+
+
+message FactoryByConditionRequest {
+  string state = 1;
+  int32 typeid = 2;
+  int32 is_filter_spec_image = 3 [json_name="IsFilterSpecImage"];
+  string appid = 4 [json_name = "_appid"];
+}
+
+message FactoryByConditionResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3 ;
+
+  message Result{
+    repeated FactoryItem factoryitems = 1;
+  }
+  message FactoryItem{
+    int32 id = 1;
+    string name = 2;
+    string ffirstletter = 3;
+  }
+}

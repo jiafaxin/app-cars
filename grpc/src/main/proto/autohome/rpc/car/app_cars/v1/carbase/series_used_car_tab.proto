@@ -1,0 +1,369 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.carbase;
+option java_multiple_files = true;
+option java_outer_classname = "SeriesUsedCarTabProto";
+option java_package = "autohome.rpc.car.app_cars.v1.carbase";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/carbase;carbase";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.carbase";
+import "autohome/rpc/car/app_cars/v1/carbase/common.proto";
+
+/**
+  * 车系tab接口
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service SeriesUsedCarTabService {
+  /**
+    * 车系tab接口
+    */
+  rpc getUsedCarList (SeriesUsedCarTabRequest) returns (SeriesUsedCarTabResponse) {}
+  rpc getHedgeRatioCarList (SeriesUsedCarTabRequest) returns (SeriesHedgeRatioResponse) {}
+  rpc getHedgeCharts(SeriesUsedCarTabRequest) returns (HedgeRatioChartResponse) {}
+  rpc getPicUsedCarList(PicUsedCarRequest) returns (PicUsedCarResponse) {}
+}
+
+message SeriesUsedCarTabRequest {
+  //车系id
+  int32 seriesid = 1;
+
+  //1 ios,2 android
+  int32 pm = 2;
+
+  int32 cityid = 3;
+
+  //插件版本
+  string pluginversion = 4;
+
+  string deviceid = 5;
+
+  // 二手车筛选无限流页码
+  int32 pageindex = 6;
+  // 二手车筛选页码
+  int32 pagesize = 7;
+  // 二手车筛选排序方式
+  int32 sort = 8;
+  // 二手车筛选价格
+  string price = 9;
+  // 二手车筛选里程
+  string mileage = 10;
+  // 二手车筛选车龄
+  string age = 11;
+  string seriesyearid = 12;
+  int32 ext = 13;
+
+}
+
+message SeriesUsedCarTabResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    message Style {
+      string txtcolor = 1;
+      string bgcolor = 2;
+    }
+
+    message TagInfo {
+      string name = 1;
+      Style style = 2;
+    }
+
+    message ImagePicTag {
+      string imgurl = 1;
+      uint32 imagewidth = 2;
+      uint32 imageheight = 3;
+    }
+
+    message Data {
+      uint32 isrecommend = 1;
+      string linkurl = 2;
+      Pvitem pvitem = 3;
+      uint32 infoid = 4;
+      string mark = 5;
+      string price = 6;
+      TagInfo imagetxttag = 7;
+      ImagePicTag imagepictag = 8;
+      uint32 hasvideo = 9;
+      string specimage = 10;
+      TagInfo specnametag = 11;
+      string specname = 12;
+      repeated TagInfo colorsubmarks = 13;
+      string location = 14;
+      uint32 savetitleline = 15;
+      string saveprice = 16;
+      string savetitle = 17;
+      string savetitlepre = 18;
+      RdPvInfo rdpvinfo = 19;
+      message RdPvInfo {
+        string url = 1;
+        string json = 2;
+      }
+    }
+
+    message List {
+      uint32 type = 1;
+      Data data = 2;
+    }
+    message YearList {
+      string yearname = 1;
+      int32 yearvalue = 2;
+      string guidepricetip = 3;
+      string usedpricetip = 4;
+      string guideprice = 5;
+      string usedprice = 6;
+    }
+
+    int32 pageindex = 1;
+    int32 pagecount = 2;
+    string recommendtitle = 4;
+    repeated List list = 5;
+    repeated YearList yearlist = 6;
+    repeated UsedCarFilter filter = 7;
+
+    message UsedCarFilterItem {
+      string name = 1;
+      uint32 selected = 2;
+      string typeid = 3;
+      string value = 4;
+    }
+
+    message UsedCarFilter {
+      repeated UsedCarFilterItem list = 1;
+      string name = 2;
+      string parameter = 3;
+    }
+
+  }
+}
+
+message HedgeRatioChartResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message BaseInfo {
+    string seriesname = 1;
+    string scheme = 2;
+    string image = 3;
+    string level = 4;
+    string price = 5;
+    string bgimage = 6;
+  }
+
+  message XList {
+    string name = 1;
+  }
+
+  message YList {
+    string name = 1;
+    double value = 2;
+  }
+
+  message Values {
+    double value = 1;
+    string showvalue = 2;
+  }
+
+  message Lines {
+    string name = 1;
+    string color = 2;
+    repeated Values values = 3;
+  }
+
+  message ChartInfo {
+    repeated XList xlist = 1;
+    repeated YList ylist = 2;
+    repeated Lines lines = 3;
+  }
+
+  message BzlData {
+    string title = 1;
+    string detail = 2;
+    string bzltitle = 3;
+    string bzlvalue = 4;
+    ChartInfo chartinfo = 5;
+  }
+
+  message HedgeRatioCard {
+    uint32 type = 1;
+    BzlData data = 2;
+  }
+
+  message UsedCarXList {
+    string name = 1;
+    string count = 2;
+    string year = 3;
+  }
+
+
+
+  message UsedCarValues {
+    double value = 1;
+    string showvalue = 2;
+    uint32 count = 3;
+    uint32 allyear = 4;
+    double minvalue = 5;
+    double maxvalue = 6;
+    string showminvalue = 7;
+    string showmaxvalue = 8;
+  }
+
+  // 车源分布图片折线数据
+  message UsedCarLines {
+    string name = 1;
+    string color = 2;
+    repeated UsedCarValues values = 3;
+  }
+
+  message ChartList {
+    string areaid = 1;
+    string area = 2;
+    repeated UsedCarXList xlist = 3;
+    repeated YList ylist = 4;
+    repeated UsedCarLines lines = 5;
+  }
+
+  message CarData {
+    string title = 1;
+    string detail = 2;
+    repeated ChartList chartlist = 3;
+  }
+
+  message UsedCarCard {
+    uint32 type = 1;
+    CarData data = 2;
+  }
+
+  message Result {
+    BaseInfo baseinfo = 1;
+    HedgeRatioCard bzlcard = 2;
+    UsedCarCard usedcarcard = 3;
+  }
+
+
+}
+
+
+message SeriesHedgeRatioResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    message Style {
+      string txtcolor = 1;
+      string bgcolor = 2;
+    }
+
+    message Cornermarkinfo {
+      uint32 type = 1;
+      string name = 2;
+      Style style = 3;
+    }
+
+
+    message Colorsubmarks {
+      string name = 1;
+      Style style = 2;
+    }
+
+
+    message Specnametag {
+      string name = 1;
+      Style style = 2;
+    }
+
+    message Data {
+      string linkurl = 1;
+      Pvitem pvitem = 2;
+      Cornermarkinfo cornermarkinfo = 3;
+      string mark = 4;
+      repeated Colorsubmarks colorsubmarks = 5;
+      uint32 hasvideo = 6;
+      string price = 7;
+      string saveprice = 8;
+      string savetitle = 9;
+      string savetitlepre = 10;
+      uint32 savetitleline = 11;
+      uint32 specid = 12;
+      Specnametag specnametag = 13;
+      string specimage = 14;
+      string specname = 15;
+      string citytip = 16;
+      string tip = 17;
+    }
+
+    message List {
+      uint32 type = 1;
+      Data data = 2;
+    }
+
+
+    int32 pageindex = 1;
+    int32 pagecount = 2;
+    string recommendtitle = 4;
+    repeated List list = 5;
+  }
+}
+
+// 图库页二手车列表request
+message PicUsedCarRequest {
+  string pluginversion = 1;
+  int32 pm = 2;
+  int32 cityid = 3;
+  int32 seriesid = 4;
+  int32 specid = 5;
+}
+
+message PicUsedCarResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Piclist {
+    uint32 picId = 1;
+    string picUrl = 2;
+    string scheme = 3;
+  }
+
+  message Cars {
+    string titleName = 1;
+    string price = 2;
+    string firstPrice = 3;
+    string carDetailTitle = 4;
+    string carDetailScheme = 5;
+    string carInfo = 6;
+    repeated string tag = 7;
+    uint32 infoid = 8;
+    uint32 picCount = 9;
+    repeated Piclist picList = 10;
+  }
+
+  message List {
+    uint32 seriesid = 1;
+    uint32 specid = 2;
+    string specname = 3;
+    repeated Cars cars = 4;
+  }
+
+  message Result {
+    bool hasmore = 1;
+    string hasmorescheme = 2;
+    repeated List list = 3;
+  }
+}

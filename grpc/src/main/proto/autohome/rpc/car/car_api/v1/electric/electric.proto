@@ -1,0 +1,214 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v1.electric;
+option java_multiple_files = true;
+option java_outer_classname = "ElectricProto";
+option java_package = "autohome.rpc.car.car_api.v1.electric";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v1/electric;electric";
+option csharp_namespace = "autohome.rpc.car.car_api.v1.electric";
+import "autohome/api/annotations.proto";
+
+
+/**
+  * Electric 服务
+  * 维护人: zhangfeifei16658
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service ElectricService {
+
+  /**
+    * 二期
+    * 维护人：zff
+   */
+  rpc GetElectricParamBySeriesId (GetElectricParamBySeriesIdRequest) returns (GetElectricParamBySeriesIdResponse) {
+    option (autohome.api.http) = {get: "/v1/App/Electric_ParamBySeriesId.ashx"};
+  }
+
+  /**
+    * 二期
+    * 维护人：zff
+   */
+  rpc GetElectricSeriesListByBrandId (GetElectricSeriesListByBrandIdRequest) returns (GetElectricSeriesListByBrandIdResponse) {
+    option (autohome.api.http) = {get: "/v1/App/Electric_SeriesListByBrandId.ashx"};
+  }
+
+  rpc GetElectricBrandList (GetElectricBrandListRequest) returns (GetElectricBrandListResponse) {}
+  /**
+    *根据车系id列表获取车系下所有燃料类型
+   */
+  rpc GetFuelTypeBySeriesList(GetFuelTypeBySeriesListRequest)returns(GetFuelTypeBySeriesListResponse){}
+  /**
+    *根据品牌id和其他条件获取车系信息
+   */
+  rpc GetElectricSeriesListByBrandIdAndOther(GetElectricSeriesListByBrandIdAndOtherRequest)returns(GetElectricSeriesListByBrandIdAndOtherResponse){}
+
+  rpc GetElectricSeriesList (GetElectricSeriesListRequest) returns (GetElectricSeriesListResponse) {}
+}
+
+message GetElectricSeriesListByBrandIdAndOtherRequest{
+  int32 brandid = 1;
+  string state = 2;
+  int32 is_filter_spec_image = 3 [json_name = "IsFilterSpecImage"];
+  int32 typeid = 4;
+}
+
+message GetElectricSeriesListByBrandIdAndOtherResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated FactoryItem factoryitems = 1;
+  }
+  message FactoryItem{
+    int32 fctid = 1;
+    string fctname = 2;
+    repeated SeriesItem seriesitems = 3;
+  }
+  message SeriesItem{
+    int32 seriesid = 1;
+    string seriesname = 2;
+    string serieslogo = 3;
+    string seriespnglogo = 4;
+    int32 minprice = 5;
+    int32 maxprice = 6;
+    int32 seriesorder = 7;
+    repeated int32 endurancemileage = 8;
+    repeated FuelItem fueltype = 9;
+    int32 state = 10;
+  }
+  message FuelItem{
+    int32 id = 1;
+    string name = 2;
+  }
+}
+
+message GetFuelTypeBySeriesListRequest{
+  string seriesids = 1;
+  string state = 2;
+}
+message GetFuelTypeBySeriesListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+  message Result{
+    int32 seriesid = 1;
+    repeated string fueltyplist = 2;
+  }
+}
+
+message GetElectricBrandListRequest{}
+message GetElectricBrandListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+  message Result{
+    string firstletter = 1;
+    repeated Branditem branditems = 2;
+    message Branditem{
+      int32 id = 1;
+      string name = 2;
+      string logo = 3;
+      string firstletter = 4;
+      int32 state = 5;
+      string country = 6;
+      repeated int32 fueltype = 7;
+      int32 maxmileage = 8;
+      double fastestchargetime = 9;
+    }
+  }
+}
+message GetElectricParamBySeriesIdRequest{
+  string appid = 1 [json_name = "_appid"];
+  int32 seriesid = 2;
+}
+
+message GetElectricParamBySeriesIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated  Result result = 3;
+  message Result{
+    string key = 1;
+    int32 type = 2;
+    repeated string value = 3;
+  }
+}
+
+message GetElectricSeriesListByBrandIdRequest{
+  int32 brand_id = 1[json_name="brandId"];
+  int32 city_id = 2[json_name="cityId"];
+}
+message GetElectricSeriesListByBrandIdResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated SeriesList list = 1;
+  }
+  message SeriesList{
+    int32 brandid = 1;
+    string brandname = 2;
+    string brandletter = 3;
+    int32 fctid = 4;
+    string fctname = 5;
+    int32 seriesid = 6;
+    string seriesname = 7;
+    string serieslogo = 8;
+    string seriespnglogo = 9;
+    double minprice = 10;
+    double maxprice = 11;
+    repeated string seriesdescribe = 12;
+    repeated int32 endurancemileage = 13;
+    int32 seriesstate = 14;
+    int32 subsidyminprice = 15;
+    int32 subsidymaxprice = 16;
+    int32 levelid = 17;
+    string levelname = 18;
+    int32 isforeigncar = 19;
+  }
+}
+
+
+message GetElectricSeriesListRequest{
+  int32 city_id = 1[json_name="cityId"];
+}
+message GetElectricSeriesListResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    repeated SeriesList list = 1;
+  }
+  message SeriesList{
+    int32 brandid = 1;
+    string brandname = 2;
+    string brandletter = 3;
+    int32 seriesid = 4;
+    string seriesname = 5;
+    string serieslogo = 6;
+    string seriespnglogo = 7;
+    double minprice = 8;
+    double maxprice = 9;
+    repeated string seriesdescribe = 10;
+    repeated int32 endurancemileage = 11;
+    int32 seriesstate = 12;
+    int32 subsidyminprice = 13;
+    int32 subsidymaxprice = 14;
+  }
+}
+
+
+

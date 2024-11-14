@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.car_api.v2.fct;
+option java_multiple_files = true;
+option java_outer_classname = "FctProto";
+option java_package = "autohome.rpc.car.car_api.v2.fct";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/car_api/v2/fct;fct";
+option csharp_namespace = "autohome.rpc.car.car_api.v2.fct";
+
+/**
+  * service 样例
+  * 维护人: jiafaxin
+  * 生产环境 - 主机: car_car_api.grpc.corpautohome.com
+  * 预发环境 - 主机: car_car_api.thallo.corpautohome.com
+  * 测试环境 - 主机: car_car_api.terra.corpautohome.com
+ */
+service FctService {
+  /**
+    * 获取全部厂商列表
+    * 维护人:jiafaxin
+    */
+  rpc GetAllFactory(GetAllFactoryRequest)returns (GetAllFactoryResponse) {}
+  /**
+    *根据厂商ID获取厂商名称
+   */
+  rpc GetFctNameById(GetFctNameByIdRequest)returns(GetFctNameByIdResponse){}
+  /**
+    *根据品牌ID获取品牌下厂商列表
+   */
+  rpc GetFctByBrandIdAndState(GetFctByBrandIdAndStateRequest)returns(GetFctByBrandIdAndStateResponse){}
+
+  rpc GetFctById(GetFctByIdRequest)returns (GetFctByIdResponse) {}
+}
+message GetFctByBrandIdAndStateRequest{
+  int32 brandid = 1;
+  string state = 2;
+}
+message GetFctByBrandIdAndStateResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  repeated Result result = 3;
+  message Result{
+    int32 fctid = 1;
+    string fctname = 2;
+    string fctlogo = 3;
+    string fctofficialurl = 4;
+    string fctfirstletter = 5;
+    string fctisimport = 6;
+  }
+}
+message GetFctNameByIdRequest{
+  int32 fctid = 1;
+}
+
+message GetFctNameByIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 fctid = 1;
+    string fctname = 2;
+  }
+}
+
+message GetAllFactoryRequest{
+
+}
+
+message GetAllFactoryResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 total = 1;
+    repeated FctItem fctitems = 2;
+  }
+  message FctItem{
+    int32 id = 1;
+    string name = 2;
+    string url = 3;
+    string isimport = 4;
+    string createtime = 5;
+    string edittime = 6;
+    string firstletter = 7;
+    string logo = 8;
+  }
+}
+
+message GetFctByIdRequest{
+  int32 fctid = 1;
+}
+
+message GetFctByIdResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+  message Result{
+    int32 fctid = 1;
+    string fctname = 2;
+    string fctlogo = 3;
+    string fctofficialurl = 4;
+    string fctfirstletter = 5;
+    string fctisimport = 6;
+  }
+}

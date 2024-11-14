@@ -1,0 +1,518 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.app_cars.v1.carcfg;
+option java_multiple_files = true;
+option java_outer_classname = "NewSpecCompareProto";
+option java_package = "autohome.rpc.car.app_cars.v1.carcfg";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/app_cars/v1/carcfg;carcfg";
+option csharp_namespace = "autohome.rpc.car.app_cars.v1.carcfg";
+
+
+/**
+  * 【请输入服务说明】
+  * 维护人: lihongchen
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service NewSpecCompareService {
+/**
+  * 【请输入服务说明】
+  * 维护人: lihongchen
+ */
+  rpc NewSpecCompare (NewSpecCompareRequest) returns (NewSpecCompareResponse) {}
+
+  rpc GetBaikeInfo (GetBaiKeInfoRequest) returns (GetBaiKeInfoResponse) {}
+  /**
+  * 【参配分享】
+  * 维护人: 【dongshuhao】
+ */
+  rpc GetConfigShare (GetConfigShareRequest) returns (GetConfigShareResponse) {}
+
+
+}
+
+message NewSpecCompareRequest{
+  int32 cityid = 1 [json_name = "cityid"];
+  int32 seriesid = 2 [json_name = "seriesid"];
+  int32 pm = 3;
+  int32 site = 4;
+  string specids = 5;
+  int32 model = 6;
+  string pluginversion = 7;
+  int32 year = 8;
+  string bjabtest = 9;
+  string baikeabtest = 10;
+  string usedcarabtest = 11;
+  int32 sourceid = 12;
+}
+
+message GetBaiKeInfoRequest{
+  int32 configid = 1;//参配对应的百科id
+  int32 specid = 2;//车型id
+  int32 pm = 3;
+  string pluginversion = 4;
+  string videoid = 5;//视频id
+  int32 itemid = 6;//参配id
+  int32 seriesid = 7;//车系id
+  int32 subitemid = 8;//子参配id
+  int32 year = 9;//车型年款
+  int32 site = 10;
+}
+
+message GetBaiKeInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  ConfigWikiResult result = 3;
+
+  message ConfigWikiResult{
+    string content = 1;
+    string imageurl = 2;
+    string videopic = 3;
+    string videoid = 4;
+    ListHeader listheader = 5;
+    repeated KouBeiInfo list = 6;
+    ListFooter listfooter = 7;
+  }
+
+  message ListHeader{
+    string title = 1;
+  }
+
+  message KouBeiInfo{
+    string scheme = 1;
+    UserInfo userinfo = 2;
+    KouBeiContent content = 3;
+    Pvitem pvitem = 4;
+  }
+  message UserInfo{
+    string avatar = 1;
+    string username = 2;
+    string carimage = 3;
+    string identity = 4;
+    string specname = 5;
+  }
+
+  message KouBeiContent{
+    string text = 1;
+    string hightext = 2;
+    string pubtime = 3;
+    string articletitle = 4;
+  }
+
+  message ListFooter{
+    string title = 1;
+    string scheme = 2;
+    Pvitem pvitem = 3;
+  }
+}
+
+message NewSpecCompareResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated Conditionlist conditionlist = 1;
+    repeated Paramitem paramitems = 2;
+    repeated Configitem configitems = 3;
+    Usedinfo usedinfo = 4;
+    string seriesids = 5;
+    repeated string filterlist = 6;
+    Toolboxentry toolboxentry = 7;
+    Footaskpriceinfo footaskpriceinfo = 8;
+    repeated string selectconfig = 9;
+    Specinfo specinfo = 10;
+    repeated Mustseelist mustseelist = 11;
+    Cpsinfo cpsinfo = 12;
+    int32 hasmore = 13;
+    Attentionspecinfo attentionspecinfo = 14;
+    string deletespecids = 15;
+    string deletetip = 16;
+
+
+    message Specinfo{
+      repeated Specitem specitems = 1;
+    }
+  }
+}
+
+
+/**
+  * 【请输入服务说明】
+  * 维护人: lihongchen
+  * 生产环境 - 主机: car_app_cars.grpc.corpautohome.com
+  * 预发环境 - 主机: car_app_cars.thallo.corpautohome.com
+  * 测试环境 - 主机: car_app_cars.terra.corpautohome.com
+ */
+service SpecParamConfigService {
+  /**
+    * 获取车型参配信息（通过车系id或车型id）
+    * 维护人: lihongchen
+   */
+  rpc GetSpecParamConfigInfo (GetSpecParamConfigInfoRequest) returns (GetSpecParamConfigInfoResponse) {}
+}
+
+message GetSpecParamConfigInfoRequest{
+  int32 cityid = 1 [json_name = "cityid"];
+  int32 seriesid = 2 [json_name = "seriesid"];
+  int32 pm = 3;
+  int32 site = 4;
+  string specids = 5;
+  int32 model = 6;
+  string pluginversion = 7;
+  int32 year = 8;
+  string bjabtest = 9;
+  int32 test = 10;
+  string baikeabtest = 11;
+}
+
+message GetSpecParamConfigInfoResponse{
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    repeated Titlelist titlelist = 1;
+    repeated Datalist datalist = 2;
+    repeated Mustseelist mustseelist = 3;
+    repeated Conditionlist conditionlist = 4;
+    Attentionspecinfo attentionspecinfo = 5;
+    Toolboxentry toolboxentry = 6;
+    Cpsinfo cpsinfo = 7;
+    Footaskpriceinfo footaskpriceinfo = 8;
+    string deletespecids = 9;
+    string deletetip = 10;
+    string seriesids = 11;
+
+    message Datalist{
+      Specitem specinfo = 1;
+      repeated Paramitem paramitems = 2;
+      repeated Configitem configitems = 3;
+    }
+
+    message Titlelist{
+      string itemtype = 1;
+      string groupname = 2;
+      repeated Item items = 3;
+      bool showtips = 4;
+
+      message Item{
+        int32 paramitemid = 1;
+        string name = 2;
+        int32 datatype = 3;
+        int32 id = 4;
+      }
+    }
+  }
+}
+
+
+message Pvitem{
+  map<string, string> argvs = 1;
+  Click click = 2;
+  Show show = 3;
+
+  message Show{
+    string eventid = 1;
+  }
+
+  message Click{
+    string eventid = 1;
+  }
+}
+
+message Conditionlist{
+  string typevalue = 1;
+  string name = 2;
+  int32 index = 3;
+  int32 typeid = 4;
+  int32 isselectmore = 5;
+  string grouptext = 6;
+  repeated List list = 7;
+
+  message List{
+    string name = 1;
+    string id = 2;
+    int32 lazyload = 3;
+  }
+}
+
+message Attentionspecinfo{
+  string seriesname = 1;
+  int32 specid = 2;
+  string priceinfo = 3;
+  string specname = 4;
+  int32 seriesid = 5;
+  int32 paramisshow = 6;
+}
+
+message Cpsinfo{
+  int32 typeid = 1;
+  string title = 2;
+  string linkurl = 3;
+}
+
+message Footaskpriceinfo{
+  int32 canaskprice = 1;
+  string askpricetitle = 2;
+  string askpricesubtitle = 3;
+  string askpricescheme = 4;
+  string imtitle = 5;
+  string imsubtitle = 6;
+  string imiconurl = 7;
+  string imlinkurl = 8;
+  Phoneinfo phoneinfo = 9;
+  int32 entertype = 10;
+
+  message Phoneinfo{
+  }
+}
+
+message Mustseelist{
+  string itemtype = 1;
+  string paramitemname = 2;
+}
+
+message Toolboxentry{
+  repeated List list = 1;
+  Pvitem entrypvdata = 2;
+
+  message List{
+    string iconurl = 1;
+    int32 typeid = 2;
+    string linkurl = 3;
+    Pvitem pvdata = 4;
+    string title = 5;
+  }
+}
+
+message Usedinfo{
+  int32 usedtype = 1;
+}
+
+message Specitem{
+  int32 specid = 1;
+  string pricetitle = 2;
+  int32 year = 3;
+  Iminfo iminfo = 4;
+  Askpriceinfo askpriceinfo = 5;
+  string seriesname = 6;
+  int32 noshowprice = 7;
+  string minprice = 8;
+  int32 brandid = 9;
+  int32 onsale_order = 10 [json_name = "onsaleOrder"];
+  string downprice = 11;
+  int32 paramisshow = 12;
+  int32 canaskprice = 13;
+  string dealerpricetip = 14;
+  string specname = 15;
+  int32 count = 16;
+  Phoneinfo phoneinfo = 17;
+  string dealerprice = 18;
+  repeated string picitems = 19;
+  Moresendinfo moresendinfo = 20;
+  int32 seriesid = 21;
+  string arscheme = 22;
+  repeated string condition = 23;
+  int32 presell = 24;
+  int32 specisbooked = 25;
+  int32 specstatus = 26;
+  string dynamicprice = 27;
+  string referprice = 28;
+  string referpricetitle = 29;
+
+  message Iminfo{
+    string imtitle = 1;
+    string imiconurl = 2;
+    string imlinkurl = 3;
+    int32 entertype = 4;
+  }
+
+  message Askpriceinfo{
+    string ext = 1;
+    int32 canaskprice = 2;
+    string askpricesubtitle = 3;
+    string copa = 4;
+    string scheme = 5;
+    string askpriceurl = 6;
+    int32 type = 7;
+    string askpricetitle = 8;
+  }
+
+  message Phoneinfo{
+  }
+
+  message Moresendinfo{
+    string moresendsubbtnname = 1;
+    string product_type = 2 [json_name = "product_type"];
+    string item_id = 3 [json_name = "item_id"];
+    string moresendbtnname = 4;
+    string item_type = 5 [json_name = "item_type"];
+    int32 fromtype = 6;
+    string position = 7;
+    string yldf_locationid = 8 [json_name = "yldf_locationid"];
+    string moresendlinkurl = 9;
+  }
+}
+
+message Paramitem{
+  string itemtype = 1;
+  bool showtips = 2;
+  string groupname = 3;
+  repeated Item items = 4;
+}
+
+message Configitem{
+  string itemtype = 1;
+  bool showtips = 2;
+  string groupname = 3;
+  repeated Item items = 4;
+}
+
+message Item{
+  int32 subid = 1;
+  int32 datatype = 2;
+  string contentid = 3;
+  string name = 4;
+  int32 paramitemid = 5;
+  repeated Modelexcessid modelexcessids = 6;
+  string videoid = 7;
+  int32 id = 8;
+  string linkurl = 9;
+  int32 playstarttime = 10;
+
+  message Modelexcessid{
+    int32 id = 1;
+    string value = 2;
+    string priceinfo = 3;
+    string tip = 4;
+    string videoid = 5;
+    string linkurl = 6;
+    string ah100url = 7;
+    int32 haspic = 8;
+    string cornerscheme = 9;
+    int32 cornertype = 10;
+    int32 order = 11;
+    Colorinfo colorinfo = 12;
+    string toast = 13;
+    string subvalue = 14;
+    string playurl = 15;
+    repeated Sublist sublist = 16;
+
+    message Sublist{
+      string priceinfo = 1;
+      string name = 2;
+      string value = 3;
+      int32 id = 4;
+    }
+
+    message Colorinfo{
+      repeated List list = 1;
+      string title = 2;
+      int32 type = 3;
+
+      message List{
+        bool isaddprice = 1;
+        string picurl = 2;
+        string name = 3;
+        string addpricetext = 4;
+        string remark = 5;
+        string value = 6;
+      }
+
+    }
+  }
+}
+
+
+
+
+
+message GetConfigShareRequest{
+  int32 cityid = 1 [json_name = "cityid"];
+  int32 seriesid = 2 [json_name = "seriesid"];
+  int32 pm = 3;
+  int32 site = 4;
+  string specids = 5;
+  int32 model = 6;
+  string pluginversion = 7;
+  int32 year = 8;
+  string bjabtest = 9;
+  string baikeabtest = 10;
+}
+
+message GetConfigShareResponse{
+  int32  return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result = 3;
+
+  message Result{
+    string weixintitle = 1;
+    string path = 2;
+    string url = 3;
+    string qrcode = 4;
+    string bgimgurl = 5;
+    repeated Specitem specList = 6;
+    SeriesInfo seriesinfo = 7;
+  }
+
+  message SpecList{
+    repeated Specitem specitems = 1;
+  }
+  message SeriesInfo{
+    int32 isnewenergy= 1;
+    int32 seriesid =2;
+    string seriesname = 3;
+    string guidingpricerange = 4;
+    string referencepricerange = 5;
+    string logo = 6;
+    string brandname = 7;
+    string seriestype = 8;
+    string bgcarimgurl = 9;
+    string bigpic = 10;
+    repeated Newenergy newenergy = 11;
+    repeated Paramsconfig paramsconfig = 12;
+
+  }
+  message Specitem{
+    int32 specid = 1;
+    string specname = 2;
+    string guidingprice = 3;
+    string referenceprice = 4;
+    int32 seriesid = 5;
+    string seriesname = 6;
+  }
+  message Newenergy{
+    string logo = 1;
+    string subtitle = 2;
+    string title = 3;
+  }
+  message Paramsconfig{
+      string cfgname =1;
+      string cfgvalue=2;
+//    string maxpower = 1;
+//    string engine = 2;
+//    string environmentalstandard = 3;
+//    string energytype = 4;
+//    string transmissionType = 5;
+//    string manufacturer = 6;
+//    string markettime = 7;
+//    string motor = 8;
+//    string accelerate=9;
+  }
+}
+
+

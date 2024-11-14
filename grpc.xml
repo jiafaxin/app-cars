@@ -1,0 +1,6 @@
+<project>
+   <support_grpc>true</support_grpc>
+   <multi_module>true</multi_module>
+   <idl_path>autohome/rpc/car/app_cars</idl_path>
+   <grpc_module_path>/grpc/</grpc_module_path>
+</project>

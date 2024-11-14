@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+/* 注意事项:
+ * package 和 option 是固定的，不可更改
+ * service、rpc方法、message、enum的命名须符合PascalCase规范
+ * service名称必须以Service结尾
+ * 入参的message必须以Request结果
+ * 出参的message必须以Response结尾，切前2个字段必须是return_code和return_msg
+ * message的字段命名须符合lower_snake_case
+ * 枚举项全部大写，且至少有一个，枚举序号必须从0开始
+ * 字段常用的基础数据类型:double、float、int32、int64、bool、string、bytes
+ * 一旦将文件提交至大仓，不得再对service名、rpc方法名、message名以及字段名、字段类型、字段序号进行修改
+ */
+
+package autohome.rpc.car.web_main.v1.dealer;
+option java_multiple_files = true;
+option java_outer_classname = "DealerProto";
+option java_package = "autohome.rpc.car.web_main.v1.dealer";
+option go_package = "git.corpautohome.com/microservice/go-genproto/autohome/rpc/car/web_main/v1/dealer;dealer";
+option csharp_namespace = "autohome.rpc.car.web_main.v1.dealer";
+
+
+/**
+  * service 样例
+  * 维护人: xianaichen
+  * 生产环境 - 主机: car_web_main.grpc.corpautohome.com
+  * 预发环境 - 主机: car_web_main.thallo.corpautohome.com
+  * 测试环境 - 主机: car_web_main.terra.corpautohome.com
+ */
+service DealerGrpcService {
+  /**
+    * http://wiki.corpautohome.com/pages/viewpage.action?pageId=30313551
+    * 维护人:xianaichen
+    */
+  rpc PostAskPrice (AskPriceRequest) returns (AskPriceResponse) {}
+}
+
+/**
+  询价入参：
+  字段全部小写，减少对接过程出现问题；
+ */
+message AskPriceRequest {
+  repeated DealerInfo dealers = 1;
+  int32 ordertype = 2;
+  int32 specid = 3;
+  int32 seriesid = 4;
+  string username = 5;
+  string phone = 6;
+  int32 cid = 7;
+  int32 originalsource = 8;
+  int32 memberid = 9;
+  string ip = 10;
+  string sessionid = 11;
+  string sessionvid = 12;
+  string currenturl = 13;
+  string referurl = 14;
+  string eid = 15;
+  int32 isselloldcar = 16;
+  int32 selloldcarsource = 17;
+  OrderExtend orderextendinfo = 18;
+  int32 scarspecid = 19;
+
+  message  DealerInfo{
+    int32 dealerid =1;
+  }
+  message OrderExtend{
+    string bizline =1;
+    string extdata =2;
+  }
+
+}
+/**
+   提交订单之后 返回的 结构；
+ */
+message AskPriceResponse {
+  int32 return_code = 1 [json_name = "returncode"];
+  string return_msg = 2 [json_name = "message"];
+  Result result =3;
+  message Result{
+    repeated List list =1;
+    message List{
+      int32 dealerid =1;
+      string result =2;
+      int32 returncode =3;
+      string orderguid =4;
+
+    }
+  }
+}
+
